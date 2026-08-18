@@ -1,0 +1,460 @@
+/* ============================================
+   KIDORA — Ecosystem Components
+   LearnCard, PlayCard, GrowCard, AchieveCard, MissionCard, RewardBadge
+   ============================================ */
+
+/* ---- Ecosystem Card (base) ---- */
+.eco-card {
+  background: var(--color-surface);
+  border-radius: var(--radius-xl);
+  padding: var(--space-5);
+  box-shadow: var(--shadow-card);
+  transition: all var(--transition-base);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  border: 2px solid transparent;
+}
+
+.eco-card:hover {
+  box-shadow: var(--shadow-card-hover);
+  transform: translateY(-4px);
+}
+
+.eco-card:active {
+  transform: translateY(-1px) scale(0.99);
+}
+
+.eco-card__emoji {
+  font-size: 40px;
+  line-height: 1;
+  margin-bottom: var(--space-3);
+  display: block;
+}
+
+.eco-card__title {
+  font-size: var(--text-md);
+  font-weight: var(--weight-bold);
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-1);
+}
+
+.eco-card__subtitle {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-3);
+}
+
+.eco-card__meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: var(--space-3);
+}
+
+.eco-card__tag {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-bold);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-full);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+/* ---- Learn Card ---- */
+.eco-card--learn {
+  background: var(--gradient-card-learn);
+  border-color: rgba(74, 144, 226, 0.12);
+}
+
+.eco-card--learn:hover {
+  border-color: rgba(74, 144, 226, 0.3);
+  box-shadow: var(--shadow-glow-blue);
+}
+
+.eco-card--learn .eco-card__tag {
+  background: var(--color-primary-bg);
+  color: var(--color-primary);
+}
+
+/* ---- Play Card ---- */
+.eco-card--play {
+  background: var(--gradient-card-play);
+  border-color: rgba(92, 195, 110, 0.12);
+}
+
+.eco-card--play:hover {
+  border-color: rgba(92, 195, 110, 0.3);
+  box-shadow: var(--shadow-glow-green);
+}
+
+.eco-card--play .eco-card__tag {
+  background: var(--color-secondary-bg);
+  color: var(--color-secondary-dark);
+}
+
+/* ---- Grow Card ---- */
+.eco-card--grow {
+  background: var(--gradient-card-grow);
+  border-color: rgba(142, 124, 242, 0.12);
+}
+
+.eco-card--grow:hover {
+  border-color: rgba(142, 124, 242, 0.3);
+  box-shadow: var(--shadow-glow-purple);
+}
+
+.eco-card--grow .eco-card__tag {
+  background: var(--color-purple-bg);
+  color: var(--color-purple);
+}
+
+/* ---- Achieve Card ---- */
+.eco-card--achieve {
+  background: var(--gradient-card-achieve);
+  border-color: rgba(255, 111, 145, 0.12);
+}
+
+.eco-card--achieve:hover {
+  border-color: rgba(255, 111, 145, 0.3);
+  box-shadow: var(--shadow-glow-pink);
+}
+
+.eco-card--achieve .eco-card__tag {
+  background: var(--color-pink-bg);
+  color: var(--color-pink);
+}
+
+/* ---- Mission Card ---- */
+.mission-card {
+  background: var(--color-surface);
+  border-radius: var(--radius-xl);
+  padding: var(--space-5);
+  box-shadow: var(--shadow-card);
+  transition: all var(--transition-base);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  border: 2px solid transparent;
+}
+
+.mission-card:hover {
+  box-shadow: var(--shadow-card-hover);
+  transform: translateY(-3px);
+}
+
+.mission-card--in-progress {
+  border-color: var(--color-secondary);
+  background: var(--gradient-card-play);
+}
+
+.mission-card--completed {
+  border-color: var(--color-yellow);
+  background: var(--color-yellow-bg);
+}
+
+.mission-card--new {
+  border-color: var(--color-border-light);
+}
+
+.mission-card--locked {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.mission-card__header {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  margin-bottom: var(--space-3);
+}
+
+.mission-card__emoji {
+  font-size: 36px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.mission-card__info {
+  flex: 1;
+}
+
+.mission-card__title {
+  font-size: var(--text-md);
+  font-weight: var(--weight-bold);
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-1);
+}
+
+.mission-card__status {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-bold);
+  padding: 2px var(--space-3);
+  border-radius: var(--radius-full);
+  display: inline-block;
+}
+
+.mission-card__status--in-progress {
+  background: var(--color-secondary-bg);
+  color: var(--color-secondary-dark);
+}
+
+.mission-card__status--completed {
+  background: var(--color-yellow-bg);
+  color: var(--color-yellow-dark);
+}
+
+.mission-card__status--new {
+  background: var(--color-primary-bg);
+  color: var(--color-primary);
+}
+
+.mission-card__status--locked {
+  background: var(--color-border-light);
+  color: var(--color-text-muted);
+}
+
+.mission-card__steps {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.mission-card__step {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  background: var(--color-border-light);
+  transition: all var(--transition-base);
+}
+
+.mission-card__step--completed {
+  background: var(--color-secondary);
+  color: var(--color-white);
+}
+
+.mission-card__step--current {
+  background: var(--color-primary);
+  color: var(--color-white);
+  animation: pulseGlow 2s ease-in-out infinite;
+}
+
+.mission-card__step-connector {
+  flex: 1;
+  height: 3px;
+  background: var(--color-border-light);
+  border-radius: var(--radius-full);
+}
+
+.mission-card__step-connector--completed {
+  background: var(--color-secondary);
+}
+
+.mission-card__xp {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin-top: var(--space-3);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-bold);
+  color: var(--color-yellow-dark);
+}
+
+/* ---- Reward Badge (celebration) ---- */
+.reward-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: var(--space-6);
+}
+
+.reward-badge__circle {
+  width: 100px;
+  height: 100px;
+  border-radius: var(--radius-full);
+  background: var(--gradient-sunset);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+  box-shadow: var(--shadow-glow-yellow);
+  margin-bottom: var(--space-4);
+  position: relative;
+}
+
+.reward-badge__circle::after {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: var(--radius-full);
+  border: 4px solid var(--color-yellow);
+  opacity: 0.5;
+}
+
+.reward-badge__points {
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-extrabold);
+  color: var(--color-yellow-dark);
+  margin-bottom: var(--space-2);
+}
+
+.reward-badge__label {
+  font-size: var(--text-md);
+  font-weight: var(--weight-bold);
+  color: var(--color-text-primary);
+}
+
+.reward-badge__sublabel {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  margin-top: var(--space-1);
+}
+
+/* ---- Ecosystem Hub (Home Grid) ---- */
+.eco-hub {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-4);
+}
+
+.eco-hub__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-6) var(--space-4);
+  border-radius: var(--radius-xl);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  text-decoration: none;
+  border: 2px solid transparent;
+  min-height: 140px;
+}
+
+.eco-hub__item:hover {
+  transform: translateY(-4px);
+}
+
+.eco-hub__item:active {
+  transform: translateY(-1px) scale(0.98);
+}
+
+.eco-hub__item--learn {
+  background: var(--gradient-card-learn);
+  border-color: rgba(74, 144, 226, 0.15);
+}
+
+.eco-hub__item--learn:hover {
+  box-shadow: var(--shadow-glow-blue);
+}
+
+.eco-hub__item--play {
+  background: var(--gradient-card-play);
+  border-color: rgba(92, 195, 110, 0.15);
+}
+
+.eco-hub__item--play:hover {
+  box-shadow: var(--shadow-glow-green);
+}
+
+.eco-hub__item--grow {
+  background: var(--gradient-card-grow);
+  border-color: rgba(142, 124, 242, 0.15);
+}
+
+.eco-hub__item--grow:hover {
+  box-shadow: var(--shadow-glow-purple);
+}
+
+.eco-hub__item--achieve {
+  background: var(--gradient-card-achieve);
+  border-color: rgba(255, 111, 145, 0.15);
+}
+
+.eco-hub__item--achieve:hover {
+  box-shadow: var(--shadow-glow-pink);
+}
+
+.eco-hub__emoji {
+  font-size: 40px;
+  margin-bottom: var(--space-3);
+}
+
+.eco-hub__label {
+  font-size: var(--text-lg);
+  font-weight: var(--weight-extrabold);
+  color: var(--color-text-primary);
+}
+
+.eco-hub__sublabel {
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+  margin-top: var(--space-1);
+}
+
+@media (min-width: 641px) {
+  .eco-hub {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* ---- Skill Card (Grow) ---- */
+.skill-card {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-base);
+}
+
+.skill-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.skill-card__emoji {
+  font-size: 32px;
+  flex-shrink: 0;
+}
+
+.skill-card__info {
+  flex: 1;
+  min-width: 0;
+}
+
+.skill-card__name {
+  font-size: var(--text-base);
+  font-weight: var(--weight-bold);
+  margin-bottom: var(--space-1);
+}
+
+.skill-card__level {
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-2);
+}
+
+.skill-card__stars {
+  display: flex;
+  gap: 2px;
+  margin-top: var(--space-2);
+}
+
+.skill-card__star {
+  font-size: 14px;
+  opacity: 0.3;
+}
+
+.skill-card__star--filled {
+  opacity: 1;
+}

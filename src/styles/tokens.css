@@ -1,0 +1,156 @@
+/* ============================================
+   KIDORA — Design Tokens
+   Color palette, spacing, radius, shadows, z-index
+   Extracted from brand reference
+   ============================================ */
+
+:root {
+  /* ---- Primary Colors ---- */
+  --color-primary: #4A90E2;         /* Sky Blue — nav, headers, LEARN */
+  --color-primary-light: #6BA8F0;
+  --color-primary-dark: #3578C8;
+  --color-primary-bg: #EBF4FF;
+
+  --color-secondary: #5CC36E;       /* Nature Green — success, PLAY */
+  --color-secondary-light: #7DD48C;
+  --color-secondary-dark: #45A856;
+  --color-secondary-bg: #EDFBEF;
+
+  /* ---- Accent Colors ---- */
+  --color-yellow: #FFCB3D;          /* Sunshine Yellow — stars, rewards */
+  --color-yellow-light: #FFD96A;
+  --color-yellow-dark: #E5B020;
+  --color-yellow-bg: #FFF9E5;
+
+  --color-purple: #8E7CF2;          /* Magic Purple — GROW, achievements */
+  --color-purple-light: #A99AF5;
+  --color-purple-dark: #7460D8;
+  --color-purple-bg: #F3F0FF;
+
+  --color-pink: #FF6F91;            /* Coral Pink — hearts, ACHIEVE */
+  --color-pink-light: #FF94AB;
+  --color-pink-dark: #E55577;
+  --color-pink-bg: #FFF0F3;
+
+  --color-teal: #00C4C7;            /* Ocean Teal — badges, accents */
+  --color-teal-light: #33D4D6;
+  --color-teal-dark: #009FA2;
+  --color-teal-bg: #E5FAFA;
+
+  /* ---- Ecosystem Theme Colors ---- */
+  --color-learn: var(--color-primary);
+  --color-learn-bg: var(--color-primary-bg);
+  --color-play: var(--color-secondary);
+  --color-play-bg: var(--color-secondary-bg);
+  --color-grow: var(--color-purple);
+  --color-grow-bg: var(--color-purple-bg);
+  --color-achieve: var(--color-pink);
+  --color-achieve-bg: var(--color-pink-bg);
+
+  /* ---- Neutral Colors ---- */
+  --color-white: #FFFFFF;
+  --color-bg: #F8FAFB;
+  --color-bg-warm: #FFF9F0;
+  --color-surface: #FFFFFF;
+  --color-surface-hover: #F5F7FA;
+  --color-border: #E8ECF0;
+  --color-border-light: #F0F3F6;
+  --color-text-primary: #2D3748;
+  --color-text-secondary: #6B7A8D;
+  --color-text-muted: #A0ADB8;
+  --color-text-inverse: #FFFFFF;
+  --color-overlay: rgba(0, 0, 0, 0.4);
+
+  /* ---- Gradient Presets ---- */
+  --gradient-sky: linear-gradient(135deg, #87CEEB 0%, #4A90E2 100%);
+  --gradient-nature: linear-gradient(135deg, #A8E6A3 0%, #5CC36E 100%);
+  --gradient-sunset: linear-gradient(135deg, #FFD96A 0%, #FF6F91 100%);
+  --gradient-magic: linear-gradient(135deg, #A99AF5 0%, #8E7CF2 100%);
+  --gradient-ocean: linear-gradient(135deg, #33D4D6 0%, #4A90E2 100%);
+  --gradient-hero: linear-gradient(180deg, #EBF4FF 0%, #EDFBEF 50%, #FFF9E5 100%);
+  --gradient-card-learn: linear-gradient(145deg, #EBF4FF 0%, #E0F0FF 100%);
+  --gradient-card-play: linear-gradient(145deg, #EDFBEF 0%, #E0F8E4 100%);
+  --gradient-card-grow: linear-gradient(145deg, #F3F0FF 0%, #EBE8FF 100%);
+  --gradient-card-achieve: linear-gradient(145deg, #FFF0F3 0%, #FFE8ED 100%);
+
+  /* ---- Spacing Scale (4px base) ---- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 32px;
+  --space-8: 40px;
+  --space-9: 48px;
+  --space-10: 56px;
+  --space-11: 64px;
+  --space-12: 80px;
+  --space-13: 96px;
+  --space-14: 128px;
+
+  /* ---- Border Radius (Rounded Theme) ---- */
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --radius-2xl: 36px;
+  --radius-full: 9999px;
+
+  /* ---- Shadows (Soft, Playful) ---- */
+  --shadow-xs: 0 1px 3px rgba(0, 0, 0, 0.04);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.10);
+  --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.12);
+  --shadow-glow-blue: 0 4px 20px rgba(74, 144, 226, 0.25);
+  --shadow-glow-green: 0 4px 20px rgba(92, 195, 110, 0.25);
+  --shadow-glow-yellow: 0 4px 20px rgba(255, 203, 61, 0.3);
+  --shadow-glow-purple: 0 4px 20px rgba(142, 124, 242, 0.25);
+  --shadow-glow-pink: 0 4px 20px rgba(255, 111, 145, 0.25);
+  --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.06), 0 1px 4px rgba(0, 0, 0, 0.04);
+  --shadow-card-hover: 0 8px 30px rgba(0, 0, 0, 0.10), 0 2px 8px rgba(0, 0, 0, 0.06);
+  --shadow-nav: 0 -2px 16px rgba(0, 0, 0, 0.06);
+
+  /* ---- Z-Index Scale ---- */
+  --z-base: 0;
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-nav: 300;
+  --z-modal-backdrop: 400;
+  --z-modal: 500;
+  --z-tooltip: 600;
+  --z-mascot: 700;
+  --z-toast: 800;
+
+  /* ---- Transitions ---- */
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+  --transition-slow: 400ms ease;
+  --transition-bounce: 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* ---- Container Widths ---- */
+  --container-sm: 640px;
+  --container-md: 768px;
+  --container-lg: 1024px;
+  --container-xl: 1280px;
+  --container-max: 1440px;
+
+  /* ---- Nav Dimensions ---- */
+  --nav-height-mobile: 72px;
+  --nav-width-desktop: 88px;
+  --header-height: 64px;
+}
+
+/* ---- Dark mode variables (for parent dashboard) ---- */
+[data-theme="dark"] {
+  --color-bg: #1A202C;
+  --color-surface: #2D3748;
+  --color-surface-hover: #374151;
+  --color-border: #4A5568;
+  --color-border-light: #374151;
+  --color-text-primary: #F7FAFC;
+  --color-text-secondary: #CBD5E0;
+  --color-text-muted: #A0AEC0;
+}

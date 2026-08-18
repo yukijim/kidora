@@ -1,0 +1,70 @@
+/* ============================================
+   KIDORA — Parent PIN Modal / Gateway Styles
+   ============================================ */
+
+.pin-modal-card {
+  max-width: 420px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.pin-inputs-row {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-3);
+  margin: var(--space-5) 0 var(--space-4);
+}
+
+.pin-digit-input {
+  width: 56px;
+  height: 64px;
+  font-size: var(--text-3xl);
+  font-weight: var(--weight-extrabold);
+  text-align: center;
+  border-radius: var(--radius-lg);
+  border: 2px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-primary);
+  outline: none;
+  transition: all var(--transition-base);
+}
+
+.pin-digit-input:focus {
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-glow-blue);
+  transform: translateY(-2px);
+}
+
+.pin-error-text {
+  color: var(--color-pink-dark);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-bold);
+  margin-bottom: var(--space-3);
+  animation: shake 0.4s ease;
+}
+
+.pin-hint {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  margin-top: var(--space-3);
+}
+
+.parent-gateway-screen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-6);
+  background: var(--gradient-hero);
+}
+
+.parent-gateway-box {
+  background: var(--color-surface);
+  border-radius: var(--radius-2xl);
+  padding: var(--space-8);
+  box-shadow: var(--shadow-xl);
+  border: 2px solid rgba(74, 144, 226, 0.15);
+  max-width: 440px;
+  width: 100%;
+  text-align: center;
+}

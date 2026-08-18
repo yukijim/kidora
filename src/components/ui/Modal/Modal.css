@@ -1,0 +1,122 @@
+/* ============================================
+   KIDORA — Modal Component
+   Centered modal with celebration variant
+   ============================================ */
+
+.kidora-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: var(--color-overlay);
+  z-index: var(--z-modal-backdrop);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+  animation: fadeIn 0.2s ease-out;
+}
+
+.kidora-modal {
+  background: var(--color-surface);
+  border-radius: var(--radius-2xl);
+  padding: var(--space-8);
+  max-width: 480px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  z-index: var(--z-modal);
+  box-shadow: var(--shadow-xl);
+  animation: modalSlideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+}
+
+@keyframes modalSlideUp {
+  from {
+    transform: translateY(40px) scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+.kidora-modal__close {
+  position: absolute;
+  top: var(--space-4);
+  right: var(--space-4);
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  background: var(--color-surface-hover);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: none;
+  font-size: var(--text-lg);
+  color: var(--color-text-secondary);
+  transition: all var(--transition-fast);
+}
+
+.kidora-modal__close:hover {
+  background: var(--color-border);
+  color: var(--color-text-primary);
+}
+
+.kidora-modal__header {
+  text-align: center;
+  margin-bottom: var(--space-6);
+}
+
+.kidora-modal__emoji {
+  font-size: 64px;
+  line-height: 1;
+  margin-bottom: var(--space-4);
+  display: block;
+}
+
+.kidora-modal__title {
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-extrabold);
+  color: var(--color-text-primary);
+}
+
+.kidora-modal__body {
+  text-align: center;
+  color: var(--color-text-secondary);
+  font-size: var(--text-md);
+  line-height: var(--leading-relaxed);
+  margin-bottom: var(--space-6);
+}
+
+.kidora-modal__actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  align-items: center;
+}
+
+/* ---- Celebration variant ---- */
+.kidora-modal--celebration {
+  background: linear-gradient(180deg, #FFF9E5 0%, #FFFFFF 40%);
+  border: 3px solid var(--color-yellow);
+  overflow: visible;
+}
+
+.kidora-modal--celebration .kidora-modal__emoji {
+  animation: starSpin 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.kidora-modal--celebration .kidora-modal__points {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: var(--color-yellow-bg);
+  padding: var(--space-2) var(--space-5);
+  border-radius: var(--radius-full);
+  font-size: var(--text-xl);
+  font-weight: var(--weight-extrabold);
+  color: var(--color-yellow-dark);
+  margin-bottom: var(--space-4);
+  animation: countBounce 0.4s ease 0.5s both;
+}

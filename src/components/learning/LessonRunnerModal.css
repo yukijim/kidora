@@ -1,0 +1,136 @@
+/* ============================================
+   KIDORA — Lesson Runner Modal Styles
+   Subject -> Topic -> Lesson -> Activity -> Challenge -> Reward
+   ============================================ */
+
+.lesson-runner {
+  text-align: center;
+}
+
+.lesson-runner__badge-strip {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.lesson-runner__tag {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-bold);
+  padding: 3px 12px;
+  border-radius: var(--radius-full);
+}
+
+.lesson-runner__objective-box {
+  background: var(--color-surface-hover);
+  border-radius: var(--radius-xl);
+  padding: var(--space-5);
+  margin: var(--space-4) 0 var(--space-6);
+  text-align: left;
+  border: 2px solid var(--color-border-light);
+}
+
+.lesson-runner__objective-title {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-extrabold);
+  text-transform: uppercase;
+  color: var(--color-primary);
+  margin-bottom: var(--space-1);
+}
+
+.lesson-runner__objective-text {
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text-primary);
+  line-height: var(--leading-relaxed);
+}
+
+.lesson-runner__challenge-box {
+  background: var(--gradient-card-learn);
+  border-radius: var(--radius-2xl);
+  padding: var(--space-6);
+  margin-bottom: var(--space-6);
+  border: 2px solid rgba(74, 144, 226, 0.2);
+}
+
+.lesson-runner__visual {
+  font-size: 48px;
+  margin: var(--space-4) 0;
+  letter-spacing: 6px;
+  line-height: 1.2;
+}
+
+.lesson-runner__options-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-3);
+  margin: var(--space-5) 0 var(--space-3);
+}
+
+.lesson-option-btn {
+  background: var(--color-surface);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-4);
+  font-size: var(--text-lg);
+  font-weight: var(--weight-extrabold);
+  color: var(--color-text-primary);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lesson-option-btn:hover {
+  border-color: var(--color-primary);
+  background: var(--color-primary-bg);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+.lesson-option-btn--correct {
+  background: var(--color-secondary-bg) !important;
+  border-color: var(--color-secondary) !important;
+  color: var(--color-secondary-dark) !important;
+  animation: pulseGlowGreen 1.5s infinite;
+}
+
+.lesson-option-btn--wrong {
+  background: var(--color-pink-bg) !important;
+  border-color: var(--color-pink) !important;
+  animation: shake 0.4s ease;
+}
+
+.lesson-runner__hint {
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+  background: var(--color-yellow-bg);
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-3);
+  margin-top: var(--space-3);
+  display: inline-block;
+}
+
+.lesson-runner__reward-box {
+  text-align: center;
+  padding: var(--space-4) 0;
+}
+
+.lesson-runner__reward-stats {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-6);
+  margin: var(--space-5) 0;
+}
+
+.lesson-runner__stat-pill {
+  background: var(--color-yellow-bg);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-full);
+  font-size: var(--text-lg);
+  font-weight: var(--weight-extrabold);
+  color: var(--color-yellow-dark);
+}

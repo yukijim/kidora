@@ -1,0 +1,38 @@
+/* ============================================
+   KIDORA — App Level Styles
+   ============================================ */
+
+/* Global background */
+#root {
+  background: var(--color-bg);
+}
+
+/* Smooth page transitions */
+.app-shell__content {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-muted);
+}
+
+/* Selection color */
+::selection {
+  background: rgba(74, 144, 226, 0.2);
+  color: var(--color-text-primary);
+}

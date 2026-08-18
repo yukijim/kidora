@@ -1,0 +1,29 @@
+# KIDORA — Traefik dynamic config (Coolify file provider)
+# Route kidora.com.my / www.kidora.com.my → KIDORA backend (host port 5000)
+# Letak di: /data/coolify/proxy/dynamic/kidora.yaml
+http:
+  routers:
+    kidora:
+      entryPoints:
+        - https
+      rule: Host(`kidora.com.my`) || Host(`www.kidora.com.my`)
+      service: kidora
+      tls:
+        certResolver: letsencrypt
+    kidora-http:
+      entryPoints:
+        - http
+      rule: Host(`kidora.com.my`) || Host(`www.kidora.com.my`)
+      middlewares:
+        - kidora-redirect
+      service: kidora
+  middlewares:
+    kidora-redirect:
+      redirectScheme:
+        scheme: https
+        permanent: true
+  services:
+    kidora:
+      loadBalancer:
+        servers:
+          - url: "http://172.16.1.1:5000"
