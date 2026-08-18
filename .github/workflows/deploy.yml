@@ -1,0 +1,18 @@
+name: Deploy to Coolify
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Coolify redeploy
+        env:
+          COOLIFY_TOKEN: ${{ secrets.COOLIFY_TOKEN }}
+        run: |
+          curl -fsS -X GET \
+            -H "Authorization: Bearer ${COOLIFY_TOKEN}" \
+            "http://187.127.214.69:8000/api/v1/applications/gcvc6jhpsbbk3yi8zboe9zbi/start"
+          echo "Coolify deployment triggered."
