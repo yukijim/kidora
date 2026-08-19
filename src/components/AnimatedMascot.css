@@ -1,0 +1,50 @@
+/* ============================================
+   KIDORA — Maskot Animasi (SVG + CSS)
+   ============================================ */
+
+.mascot {
+  width: 100%;
+  height: auto;
+  display: block;
+  animation: mascot-bob 3.2s ease-in-out infinite;
+  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.08));
+}
+
+/* Badan beralun naik-turun */
+@keyframes mascot-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+/* Lengan kanan melambai */
+.mascot-arm {
+  transform-origin: 156px 158px;
+  animation: mascot-wave 1.5s ease-in-out infinite;
+}
+
+@keyframes mascot-wave {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(-58deg); }
+}
+
+/* Mata kelip */
+.mascot-eyes {
+  transform-origin: 120px 92px;
+  animation: mascot-blink 4.5s ease-in-out infinite;
+}
+
+@keyframes mascot-blink {
+  0%, 91%, 100% { transform: scaleY(1); }
+  94%, 96% { transform: scaleY(0.08); }
+}
+
+/* Ekor bergoyang */
+.mascot-tail {
+  transform-origin: 74px 176px;
+  animation: mascot-tail-sway 2.6s ease-in-out infinite;
+}
+
+@keyframes mascot-tail-sway {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(12deg); }
+}

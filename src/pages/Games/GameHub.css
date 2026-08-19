@@ -1,0 +1,206 @@
+/* ---- Gerbang Kod Akses ---- */
+.gate {
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: var(--gradient-hero);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-6);
+}
+
+.gate__card {
+  background: var(--color-white);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-lg);
+  padding: var(--space-8) var(--space-7);
+  max-width: 440px;
+  width: 100%;
+  text-align: center;
+}
+
+.gate__logo {
+  font-size: var(--text-xl);
+  font-weight: var(--weight-black);
+  color: var(--color-primary);
+  margin-bottom: var(--space-4);
+}
+
+.gate__title {
+  font-size: var(--text-2xl);
+  margin-bottom: var(--space-2);
+}
+
+.gate__sub {
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-6);
+}
+
+.gate__form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.gate__input {
+  padding: var(--space-4);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  font-size: var(--text-lg);
+  text-align: center;
+  letter-spacing: 0.08em;
+  font-weight: var(--weight-bold);
+  text-transform: uppercase;
+}
+.gate__input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+
+.gate__error {
+  color: var(--color-pink-dark);
+  font-weight: var(--weight-bold);
+}
+
+.gate__btn {
+  padding: var(--space-4);
+  background: var(--color-primary);
+  color: #fff;
+  border-radius: var(--radius-lg);
+  font-size: var(--text-lg);
+  font-weight: var(--weight-extrabold);
+  box-shadow: var(--shadow-glow-blue);
+  transition: transform var(--transition-fast);
+}
+.gate__btn:active {
+  transform: scale(0.97);
+}
+.gate__btn:disabled {
+  opacity: 0.6;
+}
+
+.gate__link {
+  margin-top: var(--space-5);
+  color: var(--color-text-secondary);
+  font-weight: var(--weight-semibold);
+  font-size: var(--text-sm);
+}
+
+/* ---- Hab Permainan ---- */
+.hub {
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: var(--gradient-hero);
+}
+
+.hub__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-4) var(--space-5);
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: 0;
+  z-index: var(--z-nav);
+}
+
+.hub__back {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-full);
+  background: var(--color-white);
+  box-shadow: var(--shadow-sm);
+  font-size: var(--text-lg);
+  font-weight: var(--weight-extrabold);
+}
+
+.hub__brand {
+  font-weight: var(--weight-black);
+  color: var(--color-primary);
+  font-size: var(--text-lg);
+}
+
+.hub__logout {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-bold);
+  color: var(--color-text-secondary);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-full);
+  background: var(--color-bg);
+}
+
+.hub__body {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: var(--space-8) var(--space-5) var(--space-10);
+}
+
+.hub__title {
+  font-size: var(--text-3xl);
+  text-align: center;
+  margin-bottom: var(--space-2);
+}
+
+.hub__sub {
+  text-align: center;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-7);
+}
+
+.hub__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-5);
+}
+
+@media (min-width: 640px) {
+  .hub__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.hub__game {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-7) var(--space-5);
+  border-radius: var(--radius-2xl);
+  text-align: center;
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+.hub__game:not(:disabled):hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-card-hover);
+}
+.hub__game:not(:disabled):active {
+  transform: scale(0.97);
+}
+
+.hub__game--locked {
+  opacity: 0.55;
+  filter: grayscale(0.3);
+}
+
+.hub__game-emoji {
+  font-size: 56px;
+  line-height: 1;
+}
+
+.hub__game-name {
+  font-size: var(--text-lg);
+  font-weight: var(--weight-extrabold);
+}
+
+.hub__game-desc {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+}
+
+.hub__pkg {
+  text-align: center;
+  margin-top: var(--space-7);
+  color: var(--color-text-secondary);
+}

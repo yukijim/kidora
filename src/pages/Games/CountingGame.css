@@ -1,0 +1,105 @@
+/* ============================================
+   Mari Mengira
+   ============================================ */
+
+.count-progress {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-6);
+}
+.count-progress__dot {
+  width: 14px;
+  height: 14px;
+  border-radius: var(--radius-full);
+  background: var(--color-border);
+  transition: background var(--transition-fast), transform var(--transition-fast);
+}
+.count-progress__dot--on {
+  background: var(--color-yellow);
+  transform: scale(1.2);
+}
+
+.count-question {
+  text-align: center;
+  margin-bottom: var(--space-7);
+}
+.count-question__label {
+  font-size: var(--text-xl);
+  font-weight: var(--weight-extrabold);
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-4);
+}
+.count-objects {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-3);
+  padding: var(--space-6);
+  background: var(--color-white);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-card);
+  min-height: 90px;
+}
+.count-objects--correct {
+  background: var(--color-secondary-bg);
+  animation: anim-bounce-pop 0.5s ease;
+}
+@keyframes anim-bounce-pop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+.count-object {
+  font-size: 44px;
+  line-height: 1;
+  animation: pop-in 0.3s ease backwards;
+}
+@keyframes pop-in {
+  from { transform: scale(0); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.count-options {
+  display: flex;
+  gap: var(--space-4);
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: var(--space-7);
+}
+.count-option {
+  flex: 1;
+  min-width: 90px;
+  max-width: 150px;
+  padding: var(--space-5);
+  font-size: 48px;
+  font-weight: var(--weight-black);
+  color: var(--color-text-primary);
+  background: var(--color-white);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-card);
+  border: 3px solid transparent;
+  transition: transform var(--transition-fast), border-color var(--transition-fast), background var(--transition-fast);
+}
+.count-option:active {
+  transform: scale(0.95);
+}
+.count-option--correct {
+  border-color: var(--color-secondary);
+  background: var(--color-secondary-bg);
+  color: var(--color-secondary-dark);
+  animation: anim-bounce-pop 0.5s ease;
+}
+.count-option--wrong {
+  border-color: var(--color-pink);
+  background: var(--color-pink-bg);
+  animation: shake 0.5s ease;
+}
+
+.count-score {
+  text-align: center;
+  margin-top: var(--space-7);
+  font-size: var(--text-xl);
+  font-weight: var(--weight-extrabold);
+  color: var(--color-yellow-dark);
+}

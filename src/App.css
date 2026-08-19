@@ -2,37 +2,74 @@
    KIDORA — App Level Styles
    ============================================ */
 
-/* Global background */
 #root {
   background: var(--color-bg);
+  min-height: 100vh;
+  min-height: 100dvh;
 }
 
-/* Smooth page transitions */
-.app-shell__content {
+/* Smooth page entrance */
+.page {
   animation: fadeIn 0.3s ease-out;
 }
 
-/* Scrollbar styling */
+/* Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
-
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
 ::-webkit-scrollbar-thumb {
   background: var(--color-border);
   border-radius: var(--radius-full);
 }
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--color-text-muted);
-}
-
-/* Selection color */
 ::selection {
   background: rgba(74, 144, 226, 0.2);
   color: var(--color-text-primary);
+}
+
+/* ============================================
+   Gaya kongsi untuk semua permainan
+   ============================================ */
+
+.game-win {
+  text-align: center;
+  padding: var(--space-8) 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+}
+.game-win__emoji {
+  font-size: 80px;
+  animation: float 2.5s ease-in-out infinite;
+}
+.game-win__title {
+  font-size: var(--text-3xl);
+  font-weight: var(--weight-black);
+  color: var(--color-text-primary);
+}
+.game-win__score {
+  font-size: var(--text-xl);
+  color: var(--color-text-secondary);
+  font-weight: var(--weight-semibold);
+}
+.game-win__stars {
+  font-size: 36px;
+  letter-spacing: 4px;
+}
+.game-btn {
+  padding: var(--space-4) var(--space-8);
+  border-radius: var(--radius-full);
+  font-size: var(--text-lg);
+  font-weight: var(--weight-extrabold);
+  transition: transform var(--transition-fast);
+  margin-top: var(--space-3);
+}
+.game-btn:active {
+  transform: scale(0.95);
+}
+.game-btn--primary {
+  background: var(--color-primary);
+  color: #fff;
+  box-shadow: var(--shadow-glow-blue);
 }

@@ -1,7 +1,7 @@
 # ============================================
 # KIDORA — Docker image (untuk Coolify / mana-mana PaaS)
-# Satu image: build frontend (Vite) + jalankan backend Express
-# yang serve API + static frontend (dist) + SPA fallback.
+# Satu image: build frontend (Vite) + backend Express yang serve
+# static frontend (dist) + API + SPA fallback.
 # ============================================
 
 # ---- Peringkat 1: Build frontend ----
@@ -16,7 +16,6 @@ RUN npm run build
 FROM node:20-alpine AS runtime
 WORKDIR /app
 COPY --from=build /app/server ./server
-COPY --from=build /app/src ./src
 COPY --from=build /app/dist ./dist
 WORKDIR /app/server
 RUN npm ci --omit=dev
