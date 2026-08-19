@@ -1,11 +1,11 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AccessProvider } from './context/AccessContext.jsx';
-import Landing from './pages/Landing/Landing.jsx';
+import Landing from './pages/landing/Landing.jsx';
 import GameHub from './pages/Games/GameHub.jsx';
 import ThankYou from './pages/ThankYou/ThankYou.jsx';
-import AbcGame from './pages/games/AbcGame.jsx';
-import CountingGame from './pages/games/CountingGame.jsx';
-import MatchingGame from './pages/games/MatchingGame.jsx';
+import AbcGame from './pages/Games/AbcGame.jsx';
+import CountingGame from './pages/Games/CountingGame.jsx';
+import MatchingGame from './pages/Games/MatchingGame.jsx';
 
 import './styles/reset.css';
 import './styles/tokens.css';
