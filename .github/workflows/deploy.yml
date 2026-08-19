@@ -12,7 +12,7 @@ jobs:
         env:
           COOLIFY_TOKEN: ${{ secrets.COOLIFY_TOKEN }}
         run: |
-          curl -fsS -X GET \
-            -H "Authorization: Bearer ${COOLIFY_TOKEN}" \
-            "http://187.127.214.69:8000/api/v1/applications/gcvc6jhpsbbk3yi8zboe9zbi/start"
+          curl -fsS -X POST \
+            -H "Authorization: Bearer $COOLIFY_TOKEN" \
+            "http://187.127.214.69:8000/api/v1/deploy?uuid=gcvc6jhpsbbk3yi8zboe9zbi&force=false"
           echo "Coolify deployment triggered."
