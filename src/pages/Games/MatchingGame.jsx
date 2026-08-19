@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import GameShell from '../../components/GameShell.jsx';
+import Confetti from '../../components/Confetti.jsx';
 import { PAIRS, shuffle } from '../../data/games.js';
 import { playCorrect, playWrong, playWin, playTap, speak } from '../../lib/audio.js';
 import './MatchingGame.css';
@@ -11,6 +12,7 @@ export default function MatchingGame() {
   const [moves, setMoves] = useState(0);
   const [busy, setBusy] = useState(false);
   const [done, setDone] = useState(false);
+  const [feedback, setFeedback] = useState('');
 
   const build = () => {
     const deck = [...PAIRS, ...PAIRS].map((p, i) => ({ ...p, uid: i }));
@@ -20,6 +22,7 @@ export default function MatchingGame() {
     setMoves(0);
     setBusy(false);
     setDone(false);
+    setFeedback('');
   };
 
   useEffect(() => {
@@ -27,6 +30,11 @@ export default function MatchingGame() {
   }, []);
 
   const isFaceUp = (card) => flipped.includes(card.uid) || matched.includes(card.id);
+
+  const showFeedback = (msg) => {
+    setFeedback(msg);
+    setTimeout(() => setFeedback(''), 1100);
+  };
 
   const flip = (card) => {
     if (busy || done) return;
@@ -48,21 +56,23 @@ export default function MatchingGame() {
         setFlipped([]);
         playCorrect();
         speak(cardA.name);
+        showFeedback(`🎉 Padan! ${cardA.name}!`);
         if (newMatched.length === PAIRS.length) {
           setTimeout(() => {
             playWin();
             setDone(true);
-          }, 500);
+          }, 600);
         }
       } else {
         setBusy(true);
         setTimeout(() => {
           playWrong();
+          showFeedback('🙈 Bukan pasangan! Cuba lagi!');
         }, 350);
         setTimeout(() => {
           setFlipped([]);
           setBusy(false);
-        }, 1000);
+        }, 1100);
       }
     }
   };
@@ -71,9 +81,10 @@ export default function MatchingGame() {
     <GameShell title="Padankan Gambar" emoji="🃏">
       {done ? (
         <div className="game-win">
+          <Confetti />
           <div className="game-win__emoji">🏆</div>
-          <h2 className="game-win__title">Hebat! Semua Padan!</h2>
-          <p className="game-win__score">Kamu siap dalam {moves} langkah 🎯</p>
+          <h2 className="game-win__title">Hebat! Semua Padan! 🎉</h2>
+          <p className="game-win__score">Siap dalam {moves} langkah 🎯</p>
           <div className="game-win__stars">
             <span>⭐</span><span>⭐</span><span>⭐</span>
           </div>
@@ -82,8 +93,13 @@ export default function MatchingGame() {
       ) : (
         <>
           <p className="match-status">
-            Pasangan: {matched.length} / {PAIRS.length} · Langkah: {moves}
+            🐾 Pasangan: {matched.length} / {PAIRS.length} &nbsp;·&nbsp; 🎯 Langkah: {moves}
           </p>
+
+          {feedback && (
+            <div className="game-feedback game-feedback--correct">{feedback}</div>
+          )}
+
           <div className="match-grid">
             {cards.map((card) => {
               const faceUp = isFaceUp(card);

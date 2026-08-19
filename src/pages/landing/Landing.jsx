@@ -123,7 +123,7 @@ export default function Landing() {
 
       {/* ===== Masalah ===== */}
       <section className="landing-pain">
-        <h2 className="landing-section-title">Biasa tak, mak ayah rasa macam ni?</h2>
+        <h2 className="landing-section-title">😅 Biasa tak, mak ayah rasa macam ni?</h2>
         <p className="landing-section-sub">Anda tidak keseorangan. Ramai ibu bapa hadapi benda yang sama.</p>
         <div className="landing-pain__grid">
           {[
@@ -146,7 +146,7 @@ export default function Landing() {
       <section className="landing-solution">
         <div className="landing-solution__inner">
           <div className="landing-solution__text">
-            <h2 className="landing-section-title landing-section-title--left">Perkenalkan KIDORA</h2>
+            <h2 className="landing-section-title landing-section-title--left">🦁 Perkenalkan KIDORA</h2>
             <p className="landing-solution__desc">
               KIDORA ialah platform permainan pendidikan untuk anak kecil. Setiap kali anak menekan,
               meneka dan menyusun, dia sebenarnya sedang <strong>belajar kemahiran asas</strong> —
@@ -170,7 +170,7 @@ export default function Landing() {
 
       {/* ===== Permainan ===== */}
       <section className="landing-games" id="games">
-        <h2 className="landing-section-title">3 Permainan Yang Anak Akan Suka</h2>
+        <h2 className="landing-section-title">🎮 3 Permainan Yang Anak Akan Suka</h2>
         <p className="landing-section-sub">Setiap permainan direka supaya anak belajar sambil seronok.</p>
         <div className="landing-games__grid">
           {GAMES.map((g) => (
@@ -197,7 +197,7 @@ export default function Landing() {
 
       {/* ===== Cara Ia Berfungsi ===== */}
       <section className="landing-how">
-        <h2 className="landing-section-title">Mudah Nak Mula — 3 Langkah</h2>
+        <h2 className="landing-section-title">🚀 Mudah Nak Mula — 3 Langkah</h2>
         <div className="landing-how__steps">
           {[
             { n: '1', icon: '🛒', title: 'Pilih Pakej', desc: 'Pilih pakej yang sesuai dan klik "Beli Sekarang".' },
@@ -216,7 +216,7 @@ export default function Landing() {
 
       {/* ===== Pakej Harga ===== */}
       <section className="landing-pricing" id="pricing">
-        <h2 className="landing-section-title">Pilih Pakej Anda</h2>
+        <h2 className="landing-section-title">💰 Pilih Pakej Anda</h2>
         <p className="landing-section-sub">
           Bayaran <strong>sekali sahaja</strong>. Tiada yuran bulanan tersembunyi. Main selamanya.
         </p>
@@ -247,7 +247,7 @@ export default function Landing() {
 
       {/* ===== FAQ ===== */}
       <section className="landing-faq">
-        <h2 className="landing-section-title">Soalan Lazim</h2>
+        <h2 className="landing-section-title">❓ Soalan Lazim</h2>
         <div className="landing-faq__list">
           {[
             { q: 'Anak umur berapa sesuai guna KIDORA?', a: 'KIDORA direka untuk kanak-kanak 3–6 tahun, tetapi anak 2 dan 7 tahun juga boleh menikmatinya.' },

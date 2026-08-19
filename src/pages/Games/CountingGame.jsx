@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import GameShell from '../../components/GameShell.jsx';
+import Confetti from '../../components/Confetti.jsx';
 import { NUMBERS, shuffle } from '../../data/games.js';
 import { playCorrect, playWrong, playWin, speak } from '../../lib/audio.js';
 import './CountingGame.css';
@@ -54,7 +55,7 @@ export default function CountingGame() {
         } else {
           startRound(round + 1);
         }
-      }, 1000);
+      }, 1100);
     } else {
       setStatus('wrong');
       setWrongIdx(idx);
@@ -63,7 +64,7 @@ export default function CountingGame() {
       setTimeout(() => {
         setStatus('idle');
         setWrongIdx(null);
-      }, 850);
+      }, 900);
     }
   };
 
@@ -77,8 +78,9 @@ export default function CountingGame() {
     <GameShell title="Mari Mengira" emoji="🔢">
       {done ? (
         <div className="game-win">
+          <Confetti />
           <div className="game-win__emoji">🏆</div>
-          <h2 className="game-win__title">Hebat! Pandainya!</h2>
+          <h2 className="game-win__title">Hebat! Pandainya! 🎉</h2>
           <p className="game-win__score">Kamu dapat {score} / {ROUNDS} ⭐</p>
           <div className="game-win__stars">
             {Array.from({ length: Math.max(1, Math.round((score / ROUNDS) * 3)) }).map((_, i) => (
@@ -99,7 +101,7 @@ export default function CountingGame() {
           </div>
 
           <div className="count-question">
-            <p className="count-question__label">Berapa banyak?</p>
+            <p className="count-question__label">🔢 Berapa banyak?</p>
             <div className={`count-objects ${status === 'correct' ? 'count-objects--correct' : ''}`}>
               {target && Array.from({ length: target.value }).map((_, i) => (
                 <span key={i} className="count-object">{target.emoji}</span>
@@ -121,7 +123,13 @@ export default function CountingGame() {
             ))}
           </div>
 
-          <div className="count-score">⭐ {score}</div>
+          {status !== 'idle' && (
+            <div className={`game-feedback game-feedback--${status}`}>
+              {status === 'correct' ? `🎉 Betul! ${target ? target.name : ''}!` : '💪 Hampir! Cuba lagi!'}
+            </div>
+          )}
+
+          <div className="count-score">⭐ {score} betul</div>
         </>
       )}
     </GameShell>

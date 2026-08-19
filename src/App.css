@@ -73,3 +73,34 @@
   color: #fff;
   box-shadow: var(--shadow-glow-blue);
 }
+
+/* Maklum balas (betul / salah) — dikongsi semua permainan */
+.game-feedback {
+  text-align: center;
+  font-size: var(--text-xl);
+  font-weight: var(--weight-extrabold);
+  padding: var(--space-3) var(--space-5);
+  border-radius: var(--radius-full);
+  margin: var(--space-4) auto 0;
+  max-width: 360px;
+  animation: feedback-pop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.game-feedback--correct {
+  background: var(--color-secondary-bg);
+  color: var(--color-secondary-dark);
+}
+.game-feedback--wrong {
+  background: var(--color-pink-bg);
+  color: var(--color-pink-dark);
+  animation: feedback-pop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), shake 0.5s ease 0.1s;
+}
+@keyframes feedback-pop {
+  from {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

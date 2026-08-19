@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import GameShell from '../../components/GameShell.jsx';
+import Confetti from '../../components/Confetti.jsx';
 import { LETTERS, shuffle } from '../../data/games.js';
 import { playCorrect, playWrong, playWin, speak } from '../../lib/audio.js';
 import './AbcGame.css';
@@ -54,7 +55,7 @@ export default function AbcGame() {
         } else {
           startRound(round + 1);
         }
-      }, 1000);
+      }, 1100);
     } else {
       setStatus('wrong');
       setWrongIdx(idx);
@@ -63,7 +64,7 @@ export default function AbcGame() {
       setTimeout(() => {
         setStatus('idle');
         setWrongIdx(null);
-      }, 850);
+      }, 900);
     }
   };
 
@@ -77,8 +78,9 @@ export default function AbcGame() {
     <GameShell title="Kenal Huruf ABC" emoji="🔤">
       {done ? (
         <div className="game-win">
+          <Confetti />
           <div className="game-win__emoji">🏆</div>
-          <h2 className="game-win__title">Hebat! Pandainya!</h2>
+          <h2 className="game-win__title">Hebat! Pandainya! 🎉</h2>
           <p className="game-win__score">Kamu dapat {score} / {ROUNDS} ⭐</p>
           <div className="game-win__stars">
             {Array.from({ length: Math.max(1, Math.round((score / ROUNDS) * 3)) }).map((_, i) => (
@@ -99,7 +101,7 @@ export default function AbcGame() {
           </div>
 
           <div className="abc-question">
-            <p className="abc-question__label">Tekan huruf ini</p>
+            <p className="abc-question__label">🔍 Tekan huruf ini</p>
             <div className={`abc-target abc-target--${status}`}>
               <span className="abc-target__letter">{target ? target.letter : ''}</span>
             </div>
@@ -125,7 +127,13 @@ export default function AbcGame() {
             ))}
           </div>
 
-          <div className="abc-score">⭐ {score}</div>
+          {status !== 'idle' && (
+            <div className={`game-feedback game-feedback--${status}`}>
+              {status === 'correct' ? '🎉 Betul! Hebat!' : '💪 Hampir! Cuba lagi!'}
+            </div>
+          )}
+
+          <div className="abc-score">⭐ {score} betul</div>
         </>
       )}
     </GameShell>
