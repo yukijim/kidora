@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 
 const STORAGE_KEY = 'kidora_access_v1';
-const DEMO_MINUTES = 15;
+const DEMO_MINUTES = 10;
 const AccessContext = createContext(null);
 
 export function AccessProvider({ children }) {
