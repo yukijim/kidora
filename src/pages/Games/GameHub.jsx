@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAccess } from '../../context/AccessContext.jsx';
 import { useLang } from '../../context/LanguageContext.jsx';
 import { api } from '../../lib/api.js';
-import { GAMES, PACKAGES, pick } from '../../data/games.js';
+import { GAMES, PACKAGES, LETTERS, LETTER_MODULES, pick } from '../../data/games.js';
 import { playTap, playWrong, playWin } from '../../lib/audio.js';
 import LanguageToggle from '../../components/LanguageToggle.jsx';
 import './GameHub.css';
@@ -70,6 +70,52 @@ export default function GameHub() {
   }
 
   const pkg = PACKAGES.find((p) => p.id === access.package);
+  const skillGames = GAMES.filter((g) => g.category === 'huruf');
+  const otherGames = GAMES.filter((g) => g.category !== 'huruf');
+  const unit1 = LETTER_MODULES.filter((m) => m.unit === 1);
+  const unit2 = LETTER_MODULES.filter((m) => m.unit === 2);
+
+  const openItem = (item) => {
+    if (!hasAccess(item.id)) return;
+    playTap();
+    if (item.kind === 'letter') navigate(`/main/huruf/${item.letter}`);
+    else navigate(`/main/${item.id}`);
+  };
+
+  const renderLetterCard = (m) => {
+    const unlocked = hasAccess(m.id);
+    const ld = LETTERS.find((x) => x.letter === m.letter);
+    const word = pick(lang, ld, 'word');
+    const emoji = pick(lang, ld, 'emoji');
+    return (
+      <button
+        key={m.id}
+        className={`hub__letter-card ${unlocked ? '' : 'hub__letter-card--locked'}`}
+        onClick={() => openItem(m)}
+        disabled={!unlocked}
+      >
+        <span className="hub__letter-card__icon">{m.letter}</span>
+        <span className="hub__letter-card__name">{unlocked ? `${word} ${emoji}` : '🔒'}</span>
+      </button>
+    );
+  };
+
+  const renderGameCard = (g) => {
+    const unlocked = hasAccess(g.id);
+    return (
+      <button
+        key={g.id}
+        className={`hub__game ${unlocked ? '' : 'hub__game--locked'}`}
+        style={{ background: g.bg }}
+        onClick={() => openItem(g)}
+        disabled={!unlocked}
+      >
+        <span className="hub__game-emoji">{unlocked ? g.emoji : '🔒'}</span>
+        <span className="hub__game-name" style={{ color: g.color }}>{pick(lang, g, 'name')}</span>
+        <span className="hub__game-desc">{unlocked ? pick(lang, g, 'desc') : t('hubLocked')}</span>
+      </button>
+    );
+  };
 
   return (
     <div className="hub page">
@@ -90,26 +136,27 @@ export default function GameHub() {
         <h1 className="hub__title">{t('hubGreet')}</h1>
         <p className="hub__sub">{t('hubSub')}</p>
 
-        <div className="hub__grid">
-          {GAMES.map((g) => {
-            const unlocked = hasAccess(g.id);
-            return (
-              <button
-                key={g.id}
-                className={`hub__game ${unlocked ? '' : 'hub__game--locked'}`}
-                style={{ background: g.bg }}
-                onClick={() => {
-                  if (unlocked) { playTap(); navigate(`/main/${g.id}`); }
-                }}
-                disabled={!unlocked}
-              >
-                <span className="hub__game-emoji">{unlocked ? g.emoji : '🔒'}</span>
-                <span className="hub__game-name" style={{ color: g.color }}>{pick(lang, g, 'name')}</span>
-                <span className="hub__game-desc">{unlocked ? pick(lang, g, 'desc') : t('hubLocked')}</span>
-              </button>
-            );
-          })}
-        </div>
+        <section className="hub__unit">
+          <h2 className="hub__unit-title">📚 {t('unit1')}</h2>
+          <div className="hub__grid--letters">{unit1.map(renderLetterCard)}</div>
+        </section>
+
+        <section className="hub__unit">
+          <h2 className="hub__unit-title">📚 {t('unit2')}</h2>
+          <div className="hub__grid--letters">{unit2.map(renderLetterCard)}</div>
+        </section>
+
+        <section className="hub__unit">
+          <h2 className="hub__unit-title">🎯 {t('unit3')}</h2>
+          <div className="hub__grid">{skillGames.map(renderGameCard)}</div>
+        </section>
+
+        {otherGames.length > 0 && (
+          <section className="hub__unit">
+            <h2 className="hub__unit-title">🎮 {t('unitOther')}</h2>
+            <div className="hub__grid">{otherGames.map(renderGameCard)}</div>
+          </section>
+        )}
 
         <p className="hub__pkg">
           {t('hubPkg')} <strong>{pkg ? pick(lang, pkg, 'name') : '—'}</strong>

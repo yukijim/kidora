@@ -46,11 +46,11 @@ export const STRINGS = {
 
     // Permainan
     gamesTitle: '🎮 Permainan Yang Anak Akan Suka',
-    gamesSub: '10 modul huruf + mengira & padanan — semua direka supaya anak belajar sambil seronok.',
+    gamesSub: '39 modul huruf + mengira & padanan — semua direka supaya anak belajar sambil seronok.',
 
     // Kategori permainan (landing)
-    catLetters: '🔤 10 Modul Huruf',
-    catLettersDesc: 'Kenal huruf, bunyi, susun abjad, eja perkataan & banyak lagi.',
+    catLetters: '🔤 39 Modul Huruf',
+    catLettersDesc: 'Kenal huruf, bunyi, suku kata, susun abjad, eja & banyak lagi.',
     catCount: '🔢 Mari Mengira',
     catCountDesc: 'Kira objek & kenal nombor 1–10.',
     catMatch: '🃏 Padankan Gambar',
@@ -59,6 +59,7 @@ export const STRINGS = {
     // Permainan huruf baharu
     soundLabel: '🔊 Dengar bunyi, tekan huruf',
     soundPlay: '🔊 Dengar',
+    syllableLabel: '🗣️ Baca suku kata',
     firstLabel: '🖼️ Huruf pertama untuk…',
     vowelLabel: '🎈 Vokal atau konsonan?',
     vowelOption: 'Vokal',
@@ -68,6 +69,14 @@ export const STRINGS = {
     findLabel: '🔍 Cari huruf',
     orderLabel: '🧩 Susun ikut turutan',
     spellLabel: '✍️ Eja perkataan ini',
+    unit1: 'Huruf A–M',
+    unit2: 'Huruf N–Z',
+    unit3: 'Kemahiran Huruf',
+    unitOther: 'Permainan Lain',
+    moduleSee: '🔤 Kenal huruf',
+    moduleHear: '🔊 Dengar bunyi',
+    nextModule: 'Seterusnya →',
+    moduleDone: 'Hebat! Siap modul! 🎉',
 
     // Testimoni
     testiTitle: '💬 Kata Ibu Bapa',
@@ -228,11 +237,11 @@ export const STRINGS = {
 
     // Games
     gamesTitle: '🎮 Games Your Child Will Love',
-    gamesSub: '10 letter modules + counting & matching — all designed so kids learn while having fun.',
+    gamesSub: '39 letter modules + counting & matching — all designed so kids learn while having fun.',
 
     // Game categories (landing)
-    catLetters: '🔤 10 Letter Modules',
-    catLettersDesc: 'Recognise letters, sounds, alphabet order, spelling & more.',
+    catLetters: '🔤 39 Letter Modules',
+    catLettersDesc: 'Recognise letters, sounds, syllables, alphabet order, spelling & more.',
     catCount: '🔢 Let\'s Count',
     catCountDesc: 'Count objects & learn numbers 1–10.',
     catMatch: '🃏 Picture Match',
@@ -241,6 +250,7 @@ export const STRINGS = {
     // New letter games
     soundLabel: '🔊 Listen to the sound, tap the letter',
     soundPlay: '🔊 Listen',
+    syllableLabel: '🗣️ Read the syllable',
     firstLabel: '🖼️ First letter for…',
     vowelLabel: '🎈 Vowel or consonant?',
     vowelOption: 'Vowel',
@@ -250,6 +260,14 @@ export const STRINGS = {
     findLabel: '🔍 Find the letter',
     orderLabel: '🧩 Put in order',
     spellLabel: '✍️ Spell this word',
+    unit1: 'Letters A–M',
+    unit2: 'Letters N–Z',
+    unit3: 'Letter Skills',
+    unitOther: 'More Games',
+    moduleSee: '🔤 Recognise the letter',
+    moduleHear: '🔊 Listen to the sound',
+    nextModule: 'Next →',
+    moduleDone: 'Great! Module complete! 🎉',
 
     // Testimonials
     testiTitle: '💬 What Parents Say',

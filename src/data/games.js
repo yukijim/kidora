@@ -1,5 +1,5 @@
 // ============================================
-// KIDORA — Data permainan & pakej (dwibahasa)
+// KIDORA — Data permainan, modul & pakej (dwibahasa)
 // ============================================
 
 // Pilih medan ikut bahasa semasa (cth: name / nameEn)
@@ -40,6 +40,11 @@ export const LETTERS = [
 // Huruf vokal
 export const VOWELS = ['A', 'E', 'I', 'O', 'U'];
 
+// Suku kata (konsonan + vokal) — dwibahasa (sama dalam phonics EN)
+const SYL_CONSONANTS = ['B', 'C', 'D', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'R', 'S', 'T', 'W'];
+const SYL_VOWELS = ['A', 'I', 'U', 'E', 'O'];
+export const SYLLABLES = SYL_CONSONANTS.flatMap((c) => SYL_VOWELS.map((v) => c + v));
+
 // Nombor 1–10: sebutan + emoji objek untuk mengira
 export const NUMBERS = [
   { value: 1, name: 'satu', emoji: '🍎', nameEn: 'one' },
@@ -74,8 +79,19 @@ export const SPELL_WORDS = [
   { word: 'KUCING', wordEn: 'CAT', emoji: '🐱' },
 ];
 
-// Senarai id modul huruf (untuk pakej)
-export const LETTER_GAME_IDS = ['abc', 'bunyi', 'awal', 'vokal', 'kuiz', 'besarkecil', 'ingatan', 'cari', 'susun', 'eja'];
+// 26 modul huruf (A–M = unit 1, N–Z = unit 2)
+export const LETTER_MODULES = LETTERS.map((l) => ({
+  id: `h-${l.letter.toLowerCase()}`,
+  unit: l.letter <= 'M' ? 1 : 2,
+  kind: 'letter',
+  letter: l.letter,
+  name: `Huruf ${l.letter}`,
+  nameEn: `Letter ${l.letter}`,
+}));
+
+export const LETTER_MODULE_IDS = LETTER_MODULES.map((m) => m.id);
+export const SKILL_GAME_IDS = ['abc', 'bunyi', 'awal', 'vokal', 'kuiz', 'besarkecil', 'ingatan', 'cari', 'susun', 'eja', 'suku', 'ulang1', 'ulang2'];
+export const ALL_LETTER_IDS = [...LETTER_MODULE_IDS, ...SKILL_GAME_IDS]; // 39
 
 // Pakej harga (mesti sepadan dengan backend server/src/server.js)
 export const PACKAGES = [
@@ -86,10 +102,10 @@ export const PACKAGES = [
     priceLabel: 'RM 9.90',
     tagline: 'Cuba-cuba dulu',
     taglineEn: 'Just try it',
-    games: LETTER_GAME_IDS,
+    games: ALL_LETTER_IDS,
     popular: false,
-    features: ['10 modul permainan huruf', 'Akses tanpa had', 'Mudah untuk mula'],
-    featuresEn: ['10 letter game modules', 'Unlimited access', 'Easy to start'],
+    features: ['39 modul permainan huruf', 'Akses tanpa had', 'Mudah untuk mula'],
+    featuresEn: ['39 letter game modules', 'Unlimited access', 'Easy to start'],
   },
   {
     id: 'lengkap',
@@ -98,10 +114,10 @@ export const PACKAGES = [
     priceLabel: 'RM 19.90',
     tagline: 'Paling popular',
     taglineEn: 'Most popular',
-    games: [...LETTER_GAME_IDS, 'kira', 'padan'],
+    games: [...ALL_LETTER_IDS, 'kira', 'padan'],
     popular: true,
-    features: ['Semua 10 modul huruf', 'Mari Mengira + Padankan Gambar', 'Akses tanpa had', 'Nilai terbaik'],
-    featuresEn: ['All 10 letter modules', 'Counting + Picture Match', 'Unlimited access', 'Best value'],
+    features: ['Semua 39 modul huruf', 'Mari Mengira + Padankan Gambar', 'Akses tanpa had', 'Nilai terbaik'],
+    featuresEn: ['All 39 letter modules', 'Counting + Picture Match', 'Unlimited access', 'Best value'],
   },
   {
     id: 'keluarga',
@@ -110,16 +126,18 @@ export const PACKAGES = [
     priceLabel: 'RM 29.90',
     tagline: 'Untuk seisi keluarga',
     taglineEn: 'For the whole family',
-    games: [...LETTER_GAME_IDS, 'kira', 'padan'],
+    games: [...ALL_LETTER_IDS, 'kira', 'padan'],
     popular: false,
-    features: ['Semua 12 permainan', '3 kod akses (3 peranti)', 'Permainan baru percuma', 'Sokongan WhatsApp keutamaan'],
-    featuresEn: ['All 12 games', '3 access codes (3 devices)', 'Free new games', 'Priority WhatsApp support'],
+    features: ['Semua 41 permainan', '3 kod akses (3 peranti)', 'Permainan baru percuma', 'Sokongan WhatsApp keutamaan'],
+    featuresEn: ['All 41 games', '3 access codes (3 devices)', 'Free new games', 'Priority WhatsApp support'],
   },
 ];
 
+// Permainan (category: 'huruf' = kemahiran huruf; 'kira' / 'padan' = lain-lain)
 export const GAMES = [
   {
     id: 'abc',
+    category: 'huruf',
     name: 'Kenal Huruf',
     nameEn: 'Letter Recognition',
     emoji: '🔤',
@@ -127,12 +145,12 @@ export const GAMES = [
     descEn: 'Hear a letter & tap the right one.',
     learn: 'Belajar: huruf & bunyi',
     learnEn: 'Learn: letters & sounds',
-    demo: ['A', 'B', 'C'],
     color: 'var(--color-primary)',
     bg: 'var(--gradient-card-learn)',
   },
   {
     id: 'bunyi',
+    category: 'huruf',
     name: 'Bunyi Huruf',
     nameEn: 'Letter Sound',
     emoji: '🔊',
@@ -145,6 +163,7 @@ export const GAMES = [
   },
   {
     id: 'awal',
+    category: 'huruf',
     name: 'Huruf Awal',
     nameEn: 'First Letter',
     emoji: '🖼️',
@@ -157,6 +176,7 @@ export const GAMES = [
   },
   {
     id: 'vokal',
+    category: 'huruf',
     name: 'Huruf Vokal',
     nameEn: 'Vowels',
     emoji: '🎈',
@@ -169,6 +189,7 @@ export const GAMES = [
   },
   {
     id: 'kuiz',
+    category: 'huruf',
     name: 'Kuiz Huruf',
     nameEn: 'Letter Quiz',
     emoji: '🎯',
@@ -181,6 +202,7 @@ export const GAMES = [
   },
   {
     id: 'besarkecil',
+    category: 'huruf',
     name: 'Huruf Besar & Kecil',
     nameEn: 'Uppercase & Lowercase',
     emoji: '🔡',
@@ -193,6 +215,7 @@ export const GAMES = [
   },
   {
     id: 'ingatan',
+    category: 'huruf',
     name: 'Ingatan Huruf',
     nameEn: 'Letter Memory',
     emoji: '🧠',
@@ -205,6 +228,7 @@ export const GAMES = [
   },
   {
     id: 'cari',
+    category: 'huruf',
     name: 'Cari Huruf',
     nameEn: 'Find the Letter',
     emoji: '🔍',
@@ -217,6 +241,7 @@ export const GAMES = [
   },
   {
     id: 'susun',
+    category: 'huruf',
     name: 'Susun Abjad',
     nameEn: 'Alphabet Order',
     emoji: '🧩',
@@ -229,8 +254,9 @@ export const GAMES = [
   },
   {
     id: 'eja',
-    name: 'Eja Ringkas',
-    nameEn: 'Simple Spelling',
+    category: 'huruf',
+    name: 'Eja Perkataan',
+    nameEn: 'Spelling',
     emoji: '✍️',
     desc: 'Susun huruf jadi perkataan.',
     descEn: 'Arrange letters to spell a word.',
@@ -240,7 +266,47 @@ export const GAMES = [
     bg: 'var(--gradient-card-learn)',
   },
   {
+    id: 'suku',
+    category: 'huruf',
+    name: 'Suku Kata',
+    nameEn: 'Syllables',
+    emoji: '🗣️',
+    desc: 'Kenal & baca suku kata (ba, bi, bu…).',
+    descEn: 'Recognise & read syllables (ba, bi, bu…).',
+    learn: 'Belajar: suku kata',
+    learnEn: 'Learn: syllables',
+    color: 'var(--color-teal)',
+    bg: 'var(--gradient-card-learn)',
+  },
+  {
+    id: 'ulang1',
+    category: 'huruf',
+    name: 'Ulangkaji A–M',
+    nameEn: 'Review A–M',
+    emoji: '🔁',
+    desc: 'Ulang kaji huruf A hingga M.',
+    descEn: 'Review letters A to M.',
+    learn: 'Belajar: ulang kaji A–M',
+    learnEn: 'Learn: review A–M',
+    color: 'var(--color-pink)',
+    bg: 'var(--gradient-card-achieve)',
+  },
+  {
+    id: 'ulang2',
+    category: 'huruf',
+    name: 'Ulangkaji N–Z',
+    nameEn: 'Review N–Z',
+    emoji: '🔁',
+    desc: 'Ulang kaji huruf N hingga Z.',
+    descEn: 'Review letters N to Z.',
+    learn: 'Belajar: ulang kaji N–Z',
+    learnEn: 'Learn: review N–Z',
+    color: 'var(--color-purple)',
+    bg: 'var(--gradient-card-grow)',
+  },
+  {
     id: 'kira',
+    category: 'kira',
     name: 'Mari Mengira',
     nameEn: 'Let\'s Count',
     emoji: '🔢',
@@ -248,12 +314,12 @@ export const GAMES = [
     descEn: 'Count objects & pick the number 1–10.',
     learn: 'Belajar: mengira & nombor',
     learnEn: 'Learn: counting & numbers',
-    demo: ['1', '2', '3'],
     color: 'var(--color-secondary)',
     bg: 'var(--gradient-card-play)',
   },
   {
     id: 'padan',
+    category: 'padan',
     name: 'Padankan Gambar',
     nameEn: 'Picture Match',
     emoji: '🃏',
@@ -261,7 +327,6 @@ export const GAMES = [
     descEn: 'Find the matching animal pairs.',
     learn: 'Belajar: ingatan & pengecaman',
     learnEn: 'Learn: memory & recognition',
-    demo: ['🐱', '🐶', '🐰'],
     color: 'var(--color-purple)',
     bg: 'var(--gradient-card-grow)',
   },

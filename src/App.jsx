@@ -12,6 +12,7 @@ import LetterMatch from './pages/Games/LetterMatch.jsx';
 import LetterFind from './pages/Games/LetterFind.jsx';
 import LetterOrder from './pages/Games/LetterOrder.jsx';
 import LetterSpell from './pages/Games/LetterSpell.jsx';
+import LetterModule from './pages/Games/LetterModule.jsx';
 
 import './styles/reset.css';
 import './styles/tokens.css';
@@ -33,11 +34,15 @@ export default function App() {
             <Route path="/main/awal" element={<LetterChoice mode="awal" />} />
             <Route path="/main/vokal" element={<LetterChoice mode="vokal" />} />
             <Route path="/main/kuiz" element={<LetterChoice mode="kuiz" />} />
+            <Route path="/main/suku" element={<LetterChoice mode="suku" />} />
+            <Route path="/main/ulang1" element={<LetterChoice mode="kuiz" gameId="ulang1" range={[0, 12]} />} />
+            <Route path="/main/ulang2" element={<LetterChoice mode="kuiz" gameId="ulang2" range={[13, 25]} />} />
             <Route path="/main/besarkecil" element={<LetterMatch mode="besarkecil" />} />
             <Route path="/main/ingatan" element={<LetterMatch mode="ingatan" />} />
             <Route path="/main/cari" element={<LetterFind />} />
             <Route path="/main/susun" element={<LetterOrder />} />
             <Route path="/main/eja" element={<LetterSpell />} />
+            <Route path="/main/huruf/:letter" element={<LetterModule />} />
             <Route path="/main/kira" element={<CountingGame />} />
             <Route path="/main/padan" element={<MatchingGame />} />
             <Route path="*" element={<Navigate to="/" replace />} />

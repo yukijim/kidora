@@ -78,6 +78,11 @@
   color: #fff;
   box-shadow: var(--shadow-glow-blue);
 }
+.game-btn--ghost {
+  background: var(--color-white);
+  color: var(--color-primary);
+  border: 2px solid var(--color-primary);
+}
 
 /* Maklum balas (betul / salah) — dikongsi semua permainan */
 .game-feedback {

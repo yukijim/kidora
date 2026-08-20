@@ -1,16 +1,21 @@
 import { useEffect, useState } from 'react';
 import GameShell from '../../components/GameShell.jsx';
 import Confetti from '../../components/Confetti.jsx';
-import { LETTERS, GAMES, VOWELS, pick, shuffle } from '../../data/games.js';
+import { LETTERS, GAMES, VOWELS, SYLLABLES, pick, shuffle } from '../../data/games.js';
 import { useLang } from '../../context/LanguageContext.jsx';
 import { playCorrect, playWrong, playWin, speak } from '../../lib/audio.js';
 import './letter-game.css';
 
 const ROUNDS = 8;
 
-export default function LetterChoice({ mode }) {
+// mode: 'bunyi' | 'awal' | 'vokal' | 'kuiz' | 'suku'
+// gameId: id dalam GAMES untuk tajuk (default = mode)
+// range: [startIdx, endIdx] untuk hadkan huruf (cth ulangkaji A–M)
+export default function LetterChoice({ mode, gameId, range }) {
   const { lang, t, voice } = useLang();
-  const game = GAMES.find((g) => g.id === mode);
+  const game = GAMES.find((g) => g.id === (gameId || mode));
+  const pool = range ? LETTERS.slice(range[0], range[1] + 1) : LETTERS;
+
   const [round, setRound] = useState(0);
   const [score, setScore] = useState(0);
   const [rd, setRd] = useState(null);
@@ -19,20 +24,34 @@ export default function LetterChoice({ mode }) {
   const [done, setDone] = useState(false);
 
   const randomDistinct = (exclude, count) =>
-    shuffle(LETTERS.filter((l) => l.letter !== exclude)).slice(0, count).map((l) => l.letter);
+    shuffle(pool.filter((l) => l.letter !== exclude)).slice(0, count).map((l) => l.letter);
 
   const buildRound = () => {
     setStatus('idle');
     setWrongIdx(null);
 
-    if (mode === 'vowel') {
+    if (mode === 'suku') {
+      const target = SYLLABLES[Math.floor(Math.random() * SYLLABLES.length)];
+      const opts = shuffle([target, ...shuffle(SYLLABLES.filter((s) => s !== target)).slice(0, 2)]);
+      setRd({
+        kind: 'suku',
+        label: t('syllableLabel'),
+        big: target,
+        speakText: target,
+        correct: target,
+        options: opts.map((s) => ({ label: s, value: s })),
+      });
+      return;
+    }
+
+    if (mode === 'vokal') {
       const isVowel = Math.random() < 0.5;
       const letter = isVowel
         ? VOWELS[Math.floor(Math.random() * VOWELS.length)]
-        : shuffle(LETTERS.filter((l) => !VOWELS.includes(l.letter)))[0].letter;
+        : shuffle(pool.filter((l) => !VOWELS.includes(l.letter)))[0].letter;
       const lobj = LETTERS.find((l) => l.letter === letter);
       setRd({
-        kind: 'vowel',
+        kind: 'vokal',
         label: t('vowelLabel'),
         big: letter,
         speakText: `${letter} ${t('forWord')} ${pick(lang, lobj, 'word')}`,
@@ -45,21 +64,21 @@ export default function LetterChoice({ mode }) {
       return;
     }
 
-    const target = LETTERS[Math.floor(Math.random() * LETTERS.length)];
+    const target = pool[Math.floor(Math.random() * pool.length)];
     const opts = [target.letter, ...randomDistinct(target.letter, 2)];
 
-    if (mode === 'sound') {
+    if (mode === 'bunyi') {
       setRd({
-        kind: 'sound',
+        kind: 'bunyi',
         label: t('soundLabel'),
         big: '🔊',
         speakText: `${target.letter} ${t('forWord')} ${pick(lang, target, 'word')}`,
         correct: target.letter,
         options: shuffle(opts.map((l) => ({ label: l, value: l }))),
       });
-    } else if (mode === 'first') {
+    } else if (mode === 'awal') {
       setRd({
-        kind: 'first',
+        kind: 'awal',
         label: t('firstLabel'),
         big: pick(lang, target, 'emoji'),
         word: pick(lang, target, 'word'),
@@ -67,16 +86,16 @@ export default function LetterChoice({ mode }) {
         correct: target.letter,
         options: shuffle(opts.map((l) => ({ label: l, value: l }))),
       });
-    } else if (mode === 'quiz') {
+    } else if (mode === 'kuiz') {
       const after = Math.random() < 0.5;
       const idx = after
-        ? Math.floor(Math.random() * (LETTERS.length - 1))
-        : 1 + Math.floor(Math.random() * (LETTERS.length - 1));
-      const base = LETTERS[idx];
-      const answer = after ? LETTERS[idx + 1] : LETTERS[idx - 1];
+        ? Math.floor(Math.random() * (pool.length - 1))
+        : 1 + Math.floor(Math.random() * (pool.length - 1));
+      const base = pool[idx];
+      const answer = after ? pool[idx + 1] : pool[idx - 1];
       const q = `${after ? t('quizAfter') : t('quizBefore')} ${base.letter}?`;
       setRd({
-        kind: 'quiz',
+        kind: 'kuiz',
         label: q,
         big: '❓',
         speakText: q,
@@ -162,16 +181,16 @@ export default function LetterChoice({ mode }) {
 
           <div className="lg-prompt">
             <p className="lg-prompt__label">{rd?.label}</p>
-            {rd?.kind === 'sound' && (
+            {rd?.kind === 'bunyi' && (
               <button className="lg-speak" onClick={() => speak(rd.speakText, voice)}>🔊</button>
             )}
-            {rd?.kind === 'first' && (
+            {rd?.kind === 'awal' && (
               <>
                 <span className="lg-prompt__big">{rd.big}</span>
                 <p className="lg-prompt__word">{rd.word}</p>
               </>
             )}
-            {(rd?.kind === 'vowel' || rd?.kind === 'quiz') && (
+            {(rd?.kind === 'vokal' || rd?.kind === 'kuiz' || rd?.kind === 'suku') && (
               <span className="lg-prompt__big">{rd.big}</span>
             )}
           </div>
@@ -180,7 +199,7 @@ export default function LetterChoice({ mode }) {
             {(rd?.options || []).map((o, i) => (
               <button
                 key={i}
-                className={`lg-option ${status === 'correct' && o.value === rd?.correct ? 'lg-option--correct' : ''} ${wrongIdx === i ? 'lg-option--wrong' : ''} ${rd?.kind === 'vowel' ? 'lg-option--text' : ''}`}
+                className={`lg-option ${status === 'correct' && o.value === rd?.correct ? 'lg-option--correct' : ''} ${wrongIdx === i ? 'lg-option--wrong' : ''} ${rd?.kind === 'vokal' ? 'lg-option--text' : ''}`}
                 onClick={() => choose(o, i)}
               >
                 {o.label}

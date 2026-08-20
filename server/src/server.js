@@ -30,10 +30,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // ---- Pakej harga (sumber sebenar, dikongsi dengan frontend) ----
+const LETTER_IDS = 'abcdefghijklmnopqrstuvwxyz'.split('').map((c) => `h-${c}`);
+const SKILL_IDS = ['abc', 'bunyi', 'awal', 'vokal', 'kuiz', 'besarkecil', 'ingatan', 'cari', 'susun', 'eja', 'suku', 'ulang1', 'ulang2'];
+const LETTER_GAMES = [...LETTER_IDS, ...SKILL_IDS];
 const PACKAGES = {
-  asas: { name: 'Pakej Asas', price: 9.9, games: ['abc', 'bunyi', 'awal', 'vokal', 'kuiz', 'besarkecil', 'ingatan', 'cari', 'susun', 'eja'], codeCount: 1, tagline: 'Cuba-cuba dulu' },
-  lengkap: { name: 'Pakej Lengkap', price: 19.9, games: ['abc', 'bunyi', 'awal', 'vokal', 'kuiz', 'besarkecil', 'ingatan', 'cari', 'susun', 'eja', 'kira', 'padan'], codeCount: 1, tagline: 'Paling popular' },
-  keluarga: { name: 'Pakej Keluarga', price: 29.9, games: ['abc', 'bunyi', 'awal', 'vokal', 'kuiz', 'besarkecil', 'ingatan', 'cari', 'susun', 'eja', 'kira', 'padan'], codeCount: 3, tagline: 'Untuk seisi keluarga' },
+  asas: { name: 'Pakej Asas', price: 9.9, games: LETTER_GAMES, codeCount: 1, tagline: 'Cuba-cuba dulu' },
+  lengkap: { name: 'Pakej Lengkap', price: 19.9, games: [...LETTER_GAMES, 'kira', 'padan'], codeCount: 1, tagline: 'Paling popular' },
+  keluarga: { name: 'Pakej Keluarga', price: 29.9, games: [...LETTER_GAMES, 'kira', 'padan'], codeCount: 3, tagline: 'Untuk seisi keluarga' },
 };
 
 const CODE_CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
