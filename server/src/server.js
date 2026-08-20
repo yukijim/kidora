@@ -31,9 +31,9 @@ app.use(express.urlencoded({ extended: true }));
 
 // ---- Pakej harga (sumber sebenar, dikongsi dengan frontend) ----
 const PACKAGES = {
-  asas: { name: 'Pakej Asas', price: 9.9, games: ['abc'], codeCount: 1, tagline: 'Cuba-cuba dulu' },
-  lengkap: { name: 'Pakej Lengkap', price: 19.9, games: ['abc', 'kira', 'padan'], codeCount: 1, tagline: 'Paling popular' },
-  keluarga: { name: 'Pakej Keluarga', price: 29.9, games: ['abc', 'kira', 'padan'], codeCount: 3, tagline: 'Untuk seisi keluarga' },
+  asas: { name: 'Pakej Asas', price: 9.9, games: ['abc', 'bunyi', 'awal', 'vokal', 'kuiz', 'besarkecil', 'ingatan', 'cari', 'susun', 'eja'], codeCount: 1, tagline: 'Cuba-cuba dulu' },
+  lengkap: { name: 'Pakej Lengkap', price: 19.9, games: ['abc', 'bunyi', 'awal', 'vokal', 'kuiz', 'besarkecil', 'ingatan', 'cari', 'susun', 'eja', 'kira', 'padan'], codeCount: 1, tagline: 'Paling popular' },
+  keluarga: { name: 'Pakej Keluarga', price: 29.9, games: ['abc', 'bunyi', 'awal', 'vokal', 'kuiz', 'besarkecil', 'ingatan', 'cari', 'susun', 'eja', 'kira', 'padan'], codeCount: 3, tagline: 'Untuk seisi keluarga' },
 };
 
 const CODE_CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';

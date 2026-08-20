@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { api } from '../../lib/api.js';
-import { GAMES, PACKAGES, pick } from '../../data/games.js';
+import { PACKAGES, pick } from '../../data/games.js';
 import { playTap, playWrong } from '../../lib/audio.js';
 import { useLang } from '../../context/LanguageContext.jsx';
 import { rich } from '../../i18n/translations.js';
@@ -191,23 +191,15 @@ export default function Landing() {
         <h2 className="landing-section-title">{t('gamesTitle')}</h2>
         <p className="landing-section-sub">{t('gamesSub')}</p>
         <div className="landing-games__grid">
-          {GAMES.map((g) => (
-            <div key={g.id} className="landing-game" style={{ background: g.bg }}>
-              <div className="landing-game__demo">
-                {(g.demo || []).map((d, i) => (
-                  <span
-                    key={i}
-                    className="landing-game__demo-chip"
-                    style={{ animationDelay: `${i * 0.18}s` }}
-                  >
-                    {d}
-                  </span>
-                ))}
-              </div>
-              <span className="landing-game__emoji">{g.emoji}</span>
-              <h3 className="landing-game__title" style={{ color: g.color }}>{pick(lang, g, 'name')}</h3>
-              <p className="landing-game__desc">{pick(lang, g, 'desc')}</p>
-              <p className="landing-game__learn">{pick(lang, g, 'learn')}</p>
+          {[
+            { emoji: '🔤', title: t('catLetters'), desc: t('catLettersDesc'), color: 'var(--color-primary)', bg: 'var(--gradient-card-learn)' },
+            { emoji: '🔢', title: t('catCount'), desc: t('catCountDesc'), color: 'var(--color-secondary)', bg: 'var(--gradient-card-play)' },
+            { emoji: '🃏', title: t('catMatch'), desc: t('catMatchDesc'), color: 'var(--color-purple)', bg: 'var(--gradient-card-grow)' },
+          ].map((c) => (
+            <div key={c.title} className="landing-game" style={{ background: c.bg }}>
+              <span className="landing-game__emoji">{c.emoji}</span>
+              <h3 className="landing-game__title" style={{ color: c.color }}>{c.title}</h3>
+              <p className="landing-game__desc">{c.desc}</p>
             </div>
           ))}
         </div>

@@ -7,6 +7,11 @@ import ThankYou from './pages/ThankYou/ThankYou.jsx';
 import AbcGame from './pages/Games/AbcGame.jsx';
 import CountingGame from './pages/Games/CountingGame.jsx';
 import MatchingGame from './pages/Games/MatchingGame.jsx';
+import LetterChoice from './pages/Games/LetterChoice.jsx';
+import LetterMatch from './pages/Games/LetterMatch.jsx';
+import LetterFind from './pages/Games/LetterFind.jsx';
+import LetterOrder from './pages/Games/LetterOrder.jsx';
+import LetterSpell from './pages/Games/LetterSpell.jsx';
 
 import './styles/reset.css';
 import './styles/tokens.css';
@@ -24,6 +29,15 @@ export default function App() {
             <Route path="/terima-kasih/:orderId" element={<ThankYou />} />
             <Route path="/main" element={<GameHub />} />
             <Route path="/main/abc" element={<AbcGame />} />
+            <Route path="/main/bunyi" element={<LetterChoice mode="bunyi" />} />
+            <Route path="/main/awal" element={<LetterChoice mode="awal" />} />
+            <Route path="/main/vokal" element={<LetterChoice mode="vokal" />} />
+            <Route path="/main/kuiz" element={<LetterChoice mode="kuiz" />} />
+            <Route path="/main/besarkecil" element={<LetterMatch mode="besarkecil" />} />
+            <Route path="/main/ingatan" element={<LetterMatch mode="ingatan" />} />
+            <Route path="/main/cari" element={<LetterFind />} />
+            <Route path="/main/susun" element={<LetterOrder />} />
+            <Route path="/main/eja" element={<LetterSpell />} />
             <Route path="/main/kira" element={<CountingGame />} />
             <Route path="/main/padan" element={<MatchingGame />} />
             <Route path="*" element={<Navigate to="/" replace />} />

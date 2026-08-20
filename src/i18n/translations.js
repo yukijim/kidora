@@ -14,7 +14,7 @@ export const STRINGS = {
     heroTitle1: 'Tukar Masa Skrin Anak',
     heroTitle2: 'Jadi Masa Belajar',
     heroDesc:
-      'Anak anda asyik main gajet? **KIDORA** ubah kebimbangan itu jadi peluang — 3 permainan pendidikan yang buat anak seronok **kenal huruf, mengira & mengingat**, tanpa mereka sedar sedang belajar.',
+      'Anak anda asyik main gajet? **KIDORA** ubah kebimbangan itu jadi peluang — koleksi permainan pendidikan yang buat anak seronok **kenal huruf, mengira & mengingat**, tanpa mereka sedar sedang belajar.',
     heroCta: 'Cuba KIDORA Sekarang 🎮',
     proof1: '✅ Tiada iklan',
     proof2: '🔒 Bayaran selamat',
@@ -45,8 +45,29 @@ export const STRINGS = {
     solCta: 'Mulakan Sekarang',
 
     // Permainan
-    gamesTitle: '🎮 3 Permainan Yang Anak Akan Suka',
-    gamesSub: 'Setiap permainan direka supaya anak belajar sambil seronok.',
+    gamesTitle: '🎮 Permainan Yang Anak Akan Suka',
+    gamesSub: '10 modul huruf + mengira & padanan — semua direka supaya anak belajar sambil seronok.',
+
+    // Kategori permainan (landing)
+    catLetters: '🔤 10 Modul Huruf',
+    catLettersDesc: 'Kenal huruf, bunyi, susun abjad, eja perkataan & banyak lagi.',
+    catCount: '🔢 Mari Mengira',
+    catCountDesc: 'Kira objek & kenal nombor 1–10.',
+    catMatch: '🃏 Padankan Gambar',
+    catMatchDesc: 'Asah ingatan dengan cari pasangan yang sama.',
+
+    // Permainan huruf baharu
+    soundLabel: '🔊 Dengar bunyi, tekan huruf',
+    soundPlay: '🔊 Dengar',
+    firstLabel: '🖼️ Huruf pertama untuk…',
+    vowelLabel: '🎈 Vokal atau konsonan?',
+    vowelOption: 'Vokal',
+    consonantOption: 'Konsonan',
+    quizAfter: 'Huruf selepas',
+    quizBefore: 'Huruf sebelum',
+    findLabel: '🔍 Cari huruf',
+    orderLabel: '🧩 Susun ikut turutan',
+    spellLabel: '✍️ Eja perkataan ini',
 
     // Testimoni
     testiTitle: '💬 Kata Ibu Bapa',
@@ -175,7 +196,7 @@ export const STRINGS = {
     heroTitle1: 'Turn Screen Time',
     heroTitle2: 'Into Learning Time',
     heroDesc:
-      'Is your child glued to the screen? **KIDORA** turns that worry into an opportunity — 3 educational games that make learning **letters, counting & memory** so fun, they won\'t even notice.',
+      'Is your child glued to the screen? **KIDORA** turns that worry into an opportunity — a collection of educational games that make learning **letters, counting & memory** so fun, they won\'t even notice.',
     heroCta: 'Try KIDORA Now 🎮',
     proof1: '✅ No ads',
     proof2: '🔒 Secure payment',
@@ -206,8 +227,29 @@ export const STRINGS = {
     solCta: 'Get Started',
 
     // Games
-    gamesTitle: '🎮 3 Games Your Child Will Love',
-    gamesSub: 'Every game is designed so kids learn while having fun.',
+    gamesTitle: '🎮 Games Your Child Will Love',
+    gamesSub: '10 letter modules + counting & matching — all designed so kids learn while having fun.',
+
+    // Game categories (landing)
+    catLetters: '🔤 10 Letter Modules',
+    catLettersDesc: 'Recognise letters, sounds, alphabet order, spelling & more.',
+    catCount: '🔢 Let\'s Count',
+    catCountDesc: 'Count objects & learn numbers 1–10.',
+    catMatch: '🃏 Picture Match',
+    catMatchDesc: 'Sharpen memory by finding matching pairs.',
+
+    // New letter games
+    soundLabel: '🔊 Listen to the sound, tap the letter',
+    soundPlay: '🔊 Listen',
+    firstLabel: '🖼️ First letter for…',
+    vowelLabel: '🎈 Vowel or consonant?',
+    vowelOption: 'Vowel',
+    consonantOption: 'Consonant',
+    quizAfter: 'Letter after',
+    quizBefore: 'Letter before',
+    findLabel: '🔍 Find the letter',
+    orderLabel: '🧩 Put in order',
+    spellLabel: '✍️ Spell this word',
 
     // Testimonials
     testiTitle: '💬 What Parents Say',

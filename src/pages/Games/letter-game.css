@@ -1,0 +1,233 @@
+/* ============================================
+   KIDORA — Gaya kongsi permainan huruf
+   ============================================ */
+
+/* Bar kemajuan (titik) */
+.lg-progress {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: var(--space-5);
+}
+.lg-progress__dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--color-border);
+  transition: background var(--transition-fast), transform var(--transition-fast);
+}
+.lg-progress__dot--on {
+  background: var(--color-primary);
+  transform: scale(1.15);
+}
+
+/* Status atas (pasangan / langkah) */
+.lg-status {
+  text-align: center;
+  font-size: var(--text-lg);
+  font-weight: var(--weight-bold);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-4);
+}
+
+/* Prompt (soalan) */
+.lg-prompt {
+  text-align: center;
+  margin-bottom: var(--space-6);
+}
+.lg-prompt__label {
+  font-size: var(--text-lg);
+  font-weight: var(--weight-extrabold);
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-4);
+  text-wrap: balance;
+}
+.lg-prompt__big {
+  font-size: 96px;
+  line-height: 1;
+  font-weight: var(--weight-black);
+  color: var(--color-primary);
+  display: block;
+  margin-bottom: var(--space-3);
+}
+.lg-prompt__word {
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-extrabold);
+  color: var(--color-text-primary);
+}
+.lg-speak {
+  width: 120px;
+  height: 120px;
+  border-radius: var(--radius-full);
+  background: var(--color-primary);
+  box-shadow: var(--shadow-glow-blue);
+  font-size: 60px;
+  margin: 0 auto var(--space-3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform var(--transition-fast);
+}
+.lg-speak:active {
+  transform: scale(0.92);
+}
+
+/* Pilihan jawapan */
+.lg-options {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-4);
+  margin-bottom: var(--space-5);
+}
+.lg-option {
+  min-width: 92px;
+  min-height: 92px;
+  padding: var(--space-3);
+  border-radius: var(--radius-xl);
+  background: #fff;
+  border: 3px solid var(--color-border);
+  font-size: 44px;
+  font-weight: var(--weight-black);
+  color: var(--color-text-primary);
+  box-shadow: var(--shadow-card);
+  transition: transform var(--transition-fast), border-color var(--transition-fast), background var(--transition-fast);
+}
+.lg-option:hover {
+  border-color: var(--color-primary);
+}
+.lg-option:active {
+  transform: scale(0.94);
+}
+.lg-option--correct {
+  background: var(--color-secondary-bg);
+  border-color: var(--color-secondary);
+  animation: lg-pop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.lg-option--wrong {
+  background: var(--color-pink-bg);
+  border-color: var(--color-pink);
+  animation: lg-shake 0.5s ease;
+}
+.lg-option--text {
+  font-size: var(--text-xl);
+  min-height: 72px;
+}
+
+/* Skor */
+.lg-score {
+  text-align: center;
+  font-size: var(--text-lg);
+  font-weight: var(--weight-bold);
+  color: var(--color-text-secondary);
+}
+
+/* Grid (cari huruf / kad) */
+.lg-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-3);
+  max-width: 380px;
+  margin: 0 auto var(--space-5);
+}
+.lg-cell {
+  aspect-ratio: 1;
+  border-radius: var(--radius-lg);
+  background: #fff;
+  border: 3px solid var(--color-border);
+  font-size: 34px;
+  font-weight: var(--weight-black);
+  color: var(--color-text-primary);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform var(--transition-fast);
+}
+.lg-cell:active {
+  transform: scale(0.92);
+}
+.lg-cell--back {
+  background: var(--color-primary-bg);
+  color: var(--color-primary);
+}
+.lg-cell--found {
+  background: var(--color-secondary-bg);
+  border-color: var(--color-secondary);
+  animation: lg-pop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.lg-cell--wrong {
+  background: var(--color-pink-bg);
+  border-color: var(--color-pink);
+  animation: lg-shake 0.5s ease;
+}
+
+/* Jubin (susun / eja) */
+.lg-tiles {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-5);
+  min-height: 84px;
+}
+.lg-tile {
+  width: 72px;
+  height: 72px;
+  border-radius: var(--radius-lg);
+  background: var(--color-primary);
+  color: #fff;
+  font-size: 34px;
+  font-weight: var(--weight-black);
+  box-shadow: var(--shadow-glow-blue);
+  transition: transform var(--transition-fast), opacity var(--transition-fast);
+}
+.lg-tile:active {
+  transform: scale(0.92);
+}
+.lg-tile--used {
+  opacity: 0.22;
+  pointer-events: none;
+}
+.lg-tile--wrong {
+  background: var(--color-pink);
+  animation: lg-shake 0.5s ease;
+}
+
+/* Slot jawapan (susun / eja) */
+.lg-slots {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-5);
+}
+.lg-slot {
+  width: 72px;
+  height: 72px;
+  border-radius: var(--radius-lg);
+  border: 3px dashed var(--color-border);
+  background: var(--color-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 34px;
+  font-weight: var(--weight-black);
+  color: var(--color-primary);
+}
+.lg-slot--filled {
+  border-style: solid;
+  border-color: var(--color-secondary);
+  background: var(--color-secondary-bg);
+}
+
+@keyframes lg-pop {
+  from { transform: scale(0.5); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+@keyframes lg-shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-8px); }
+  40% { transform: translateX(8px); }
+  60% { transform: translateX(-6px); }
+  80% { transform: translateX(6px); }
+}
