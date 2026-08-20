@@ -239,6 +239,49 @@ export default function Landing() {
         </div>
       </section>
 
+      {/* ===== Cara Guna di Telefon ===== */}
+      <section className="landing-guide">
+        <h2 className="landing-section-title">{t('guideTitle')}</h2>
+        <p className="landing-section-sub">{t('guideSub')}</p>
+        <div className="landing-guide__inner">
+          <div className="landing-guide__steps">
+            {[
+              { n: '1', icon: '🌐', title: t('guide1Title'), desc: t('guide1Desc') },
+              { n: '2', icon: '📤', title: t('guide2Title'), desc: t('guide2Desc') },
+              { n: '3', icon: '➕', title: t('guide3Title'), desc: t('guide3Desc') },
+            ].map((s) => (
+              <div key={s.n} className="landing-guide__step">
+                <div className="landing-guide__num">{s.n}</div>
+                <div className="landing-guide__icon">{s.icon}</div>
+                <div>
+                  <h3 className="landing-guide__title">{s.title}</h3>
+                  <p className="landing-guide__desc">{s.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="landing-guide__visual">
+            <div className="landing-guide__phone">
+              <div className="landing-guide__screen">
+                <div className="landing-guide__appgrid">
+                  <span className="landing-guide__app">📞</span>
+                  <span className="landing-guide__app">✉️</span>
+                  <span className="landing-guide__app">📷</span>
+                  <span className="landing-guide__app">🎵</span>
+                  <span className="landing-guide__app landing-guide__app--kidora">🦁</span>
+                  <span className="landing-guide__app">🗺️</span>
+                  <span className="landing-guide__app">📅</span>
+                  <span className="landing-guide__app">⚙️</span>
+                  <span className="landing-guide__app">🎮</span>
+                </div>
+                <div className="landing-guide__label">🦁 KIDORA</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p className="landing-guide__note">{t('guideNote')}</p>
+      </section>
+
       {/* ===== Pakej Harga ===== */}
       <section className="landing-pricing" id="pricing">
         <h2 className="landing-section-title">{t('pricingTitle')}</h2>

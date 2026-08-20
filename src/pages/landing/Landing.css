@@ -555,6 +555,134 @@
   }
 }
 
+/* ---- Cara Guna di Telefon ---- */
+.landing-guide {
+  padding: var(--space-14) var(--space-6);
+  background: var(--color-white);
+}
+.landing-guide__inner {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: var(--space-10);
+  align-items: center;
+  max-width: var(--container-lg);
+  margin: var(--space-8) auto 0;
+}
+.landing-guide__steps {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+.landing-guide__step {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  background: var(--color-bg);
+  border-radius: var(--radius-xl);
+  padding: var(--space-5);
+}
+.landing-guide__num {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  background: var(--color-primary);
+  color: #fff;
+  font-weight: var(--weight-extrabold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.landing-guide__icon {
+  font-size: 34px;
+  flex-shrink: 0;
+}
+.landing-guide__title {
+  font-size: var(--text-lg);
+  font-weight: var(--weight-extrabold);
+  margin-bottom: 2px;
+}
+.landing-guide__desc {
+  color: var(--color-text-secondary);
+  line-height: var(--leading-normal);
+}
+.landing-guide__note {
+  text-align: center;
+  font-weight: var(--weight-bold);
+  color: var(--color-primary-dark);
+  margin-top: var(--space-8);
+  font-size: var(--text-lg);
+}
+
+/* Mockup telefon */
+.landing-guide__visual {
+  display: flex;
+  justify-content: center;
+}
+.landing-guide__phone {
+  width: 230px;
+  height: 460px;
+  background: #fff;
+  border: 8px solid var(--color-text-primary);
+  border-radius: 40px;
+  box-shadow: var(--shadow-xl);
+  padding: 12px;
+}
+.landing-guide__screen {
+  width: 100%;
+  height: 100%;
+  background: var(--gradient-hero);
+  border-radius: 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-5);
+}
+.landing-guide__appgrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+.landing-guide__app {
+  width: 54px;
+  height: 54px;
+  border-radius: 14px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  box-shadow: var(--shadow-sm);
+}
+.landing-guide__app--kidora {
+  background: var(--gradient-sky);
+  animation: float 3s ease-in-out infinite;
+}
+.landing-guide__label {
+  font-weight: var(--weight-extrabold);
+  color: var(--color-text-primary);
+  font-size: var(--text-sm);
+  background: #fff;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-full);
+  box-shadow: var(--shadow-sm);
+}
+
+@media (max-width: 768px) {
+  .landing-guide__inner {
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+  .landing-guide__visual {
+    order: -1;
+  }
+  .landing-guide__phone {
+    width: 180px;
+    height: 360px;
+  }
+}
+
 /* ---- Pricing ---- */
 .landing-pricing {
   padding: var(--space-14) var(--space-6);

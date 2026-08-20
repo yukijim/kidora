@@ -78,6 +78,17 @@ export const STRINGS = {
     nextModule: 'Seterusnya →',
     moduleDone: 'Hebat! Siap modul! 🎉',
 
+    // Cara guna di telefon
+    guideTitle: '📱 Guna Macam App — Tanpa Muat Turun',
+    guideSub: 'Tambahkan KIDORA ke skrin utama telefon — anak boleh buka terus macam aplikasi, tanpa perlu install apa-apa.',
+    guide1Title: 'Buka kidora.com.my',
+    guide1Desc: 'Guna pelayar Chrome (Android) atau Safari (iPhone).',
+    guide2Title: 'Tekan Butang Kongsi',
+    guide2Desc: 'iPhone: tekan ikon Share ⬆️. Android: tekan menu ⋮ di penjuru atas.',
+    guide3Title: 'Pilih "Tambah ke Skrin Utama"',
+    guide3Desc: 'Klik "Add to Home Screen" — KIDORA terus muncul di skrin utama.',
+    guideNote: '✨ Tiada kedai aplikasi, tiada muat turun, tiada bayaran tambahan.',
+
     // Testimoni
     testiTitle: '💬 Kata Ibu Bapa',
     testiSub: 'Ibu bapa Malaysia yang dah cuba KIDORA.',
@@ -268,6 +279,17 @@ export const STRINGS = {
     moduleHear: '🔊 Listen to the sound',
     nextModule: 'Next →',
     moduleDone: 'Great! Module complete! 🎉',
+
+    // How to use on mobile
+    guideTitle: '📱 Use It Like an App — No Download',
+    guideSub: 'Add KIDORA to your phone\'s home screen — your child can open it like a real app, no installation needed.',
+    guide1Title: 'Open kidora.com.my',
+    guide1Desc: 'Use Chrome (Android) or Safari (iPhone).',
+    guide2Title: 'Tap Share',
+    guide2Desc: 'iPhone: tap the Share icon ⬆️. Android: tap the ⋮ menu at the top.',
+    guide3Title: 'Choose "Add to Home Screen"',
+    guide3Desc: 'Tap "Add to Home Screen" and KIDORA appears on your home screen.',
+    guideNote: '✨ No app store, no download, no extra cost.',
 
     // Testimonials
     testiTitle: '💬 What Parents Say',
