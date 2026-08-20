@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { api } from '../../lib/api.js';
 import { PACKAGES, pick } from '../../data/games.js';
 import { playTap, playWrong } from '../../lib/audio.js';
@@ -340,10 +340,10 @@ export default function Landing() {
           <span className="landing-footer__emoji">🦁</span> {t('footerBrand')}
         </div>
         <nav className="landing-footer__links">
-          <a href="/main">{t('playNow')}</a>
-          <a href="/main">{t('footerRecover')}</a>
-          <a href="/terma">{t('footerTerms')}</a>
-          <a href="/privasi">{t('footerPrivacy')}</a>
+          <Link to="/main" onClick={() => playTap()}>{t('playNow')}</Link>
+          <Link to="/main" onClick={() => playTap()}>{t('footerRecover')}</Link>
+          <Link to="/terma">{t('footerTerms')}</Link>
+          <Link to="/privasi">{t('footerPrivacy')}</Link>
           <a href="https://wa.me/60183577910" target="_blank" rel="noreferrer">{t('footerContact')}</a>
         </nav>
         <p className="landing-footer__copy">
