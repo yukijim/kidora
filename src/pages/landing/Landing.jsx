@@ -344,9 +344,8 @@ export default function Landing() {
           <a href="/main">{t('footerRecover')}</a>
           <a href="/terma">{t('footerTerms')}</a>
           <a href="/privasi">{t('footerPrivacy')}</a>
-          <a href="https://wa.me/60123456789" target="_blank" rel="noreferrer">{t('footerContact')}</a>
+          <a href="https://wa.me/60183577910" target="_blank" rel="noreferrer">{t('footerContact')}</a>
         </nav>
-        <p className="landing-footer__contact">✉️ hello@kidora.com.my</p>
         <p className="landing-footer__copy">
           {t('footerCopy')}
         </p>

@@ -876,12 +876,6 @@
   opacity: 1;
   text-decoration: underline;
 }
-.landing-footer__contact {
-  color: var(--color-text-inverse);
-  opacity: 0.75;
-  font-size: var(--text-sm);
-  margin-bottom: var(--space-3);
-}
 .landing-footer__copy {
   font-size: var(--text-sm);
   opacity: 0.75;
