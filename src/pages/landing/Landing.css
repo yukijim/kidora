@@ -447,6 +447,15 @@
   padding: var(--space-14) var(--space-6);
   background: var(--color-bg-warm);
 }
+.landing-testi__img {
+  display: block;
+  width: 100%;
+  max-width: 560px;
+  margin: var(--space-6) auto var(--space-8);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-xl);
+  animation: float 4s ease-in-out infinite;
+}
 .landing-testi__grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
