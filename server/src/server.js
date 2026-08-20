@@ -15,7 +15,7 @@ import path from 'node:path';
 import fs from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { generateToken, listCategories, createBill } from './bizappay.js';
-import { getOrder, saveOrder, findOrderByBillCode, findOrderByCode } from './store.js';
+import { getOrder, saveOrder, findOrderByBillCode, findOrderByCode, findOrderByEmailPhone } from './store.js';
 
 dotenv.config();
 
@@ -189,6 +189,24 @@ app.post('/api/validate-code', (req, res) => {
   if (!order) return res.status(404).json({ valid: false, error: 'Kod akses tidak sah.' });
   const pkg = PACKAGES[order.package] || {};
   return res.json({ valid: true, package: order.package, games: pkg.games || [] });
+});
+
+// ---- Pemulihan kod akses (lupa kod) ----
+app.post('/api/recover-code', (req, res) => {
+  const email = String((req.body && req.body.email) || '').trim().toLowerCase();
+  const phone = String((req.body && req.body.phone) || '').replace(/\D/g, '');
+  if (!email || phone.length < 8) {
+    return res.status(400).json({ error: 'Sila masukkan emel dan nombor telefon yang betul.' });
+  }
+  const order = findOrderByEmailPhone(email, phone);
+  if (!order) {
+    return res.status(404).json({ error: 'Tiada pesanan dijumpai. Sila semak emel & nombor telefon anda.' });
+  }
+  if (order.status !== 'paid') {
+    return res.status(404).json({ error: 'Pesanan anda belum dibayar. Sila selesaikan bayaran dahulu.' });
+  }
+  const pkg = PACKAGES[order.package] || {};
+  return res.json({ package: order.package, packageName: pkg.name, codes: order.codes, games: pkg.games || [] });
 });
 
 // ---- (Pilihan) Jana kod manual — hanya aktif bila ADMIN_KEY ditetapkan ----

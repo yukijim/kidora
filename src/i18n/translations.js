@@ -158,6 +158,13 @@ export const STRINGS = {
     gateUnlock: 'Buka Permainan',
     gateChecking: 'Menyemak…',
     gateBack: '← Kembali ke laman utama',
+    forgotCode: 'Lupa kod?',
+    recoverTitle: 'Dapat Semula Kod Akses',
+    recoverSub: 'Masukkan emel & nombor telefon yang digunakan semasa pembelian.',
+    recoverBtn: 'Dapatkan Kod',
+    recoverLoading: 'Mencari…',
+    recoverFound: 'Kod anda dijumpai:',
+    recoverOpen: 'Buka Permainan Sekarang →',
 
     // Muka Terima Kasih
     tyChecking: 'Sedang Menyemak Bayaran…',
@@ -360,6 +367,13 @@ export const STRINGS = {
     gateUnlock: 'Unlock Games',
     gateChecking: 'Checking…',
     gateBack: '← Back to home',
+    forgotCode: 'Forgot your code?',
+    recoverTitle: 'Recover Your Access Code',
+    recoverSub: 'Enter the email & phone number you used at checkout.',
+    recoverBtn: 'Get My Code',
+    recoverLoading: 'Searching…',
+    recoverFound: 'Here are your codes:',
+    recoverOpen: 'Open Games Now →',
 
     // Thank-you page
     tyChecking: 'Checking Payment…',

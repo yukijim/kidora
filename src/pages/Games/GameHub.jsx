@@ -15,6 +15,11 @@ export default function GameHub() {
   const [code, setCode] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [mode, setMode] = useState('code'); // 'code' | 'recover'
+  const [recForm, setRecForm] = useState({ email: '', phone: '' });
+  const [recError, setRecError] = useState('');
+  const [recLoading, setRecLoading] = useState(false);
+  const [recResult, setRecResult] = useState(null);
 
   const submitCode = async (e) => {
     e.preventDefault();
@@ -36,6 +41,32 @@ export default function GameHub() {
     }
   };
 
+  const submitRecover = async (e) => {
+    e.preventDefault();
+    setRecLoading(true);
+    setRecError('');
+    setRecResult(null);
+    try {
+      const data = await api('/recover-code', {
+        method: 'POST',
+        body: JSON.stringify(recForm),
+      });
+      setRecResult(data);
+      playWin();
+    } catch (err) {
+      playWrong();
+      setRecError(err.message);
+    } finally {
+      setRecLoading(false);
+    }
+  };
+
+  const openRecovered = () => {
+    if (!recResult || !recResult.codes || !recResult.codes.length) return;
+    unlock(recResult.codes[0], recResult.games, recResult.package);
+    playWin();
+  };
+
   if (!access) {
     return (
       <div className="gate page">
@@ -44,23 +75,76 @@ export default function GameHub() {
             <LanguageToggle />
           </div>
           <div className="gate__logo">🦁 KIDORA</div>
-          <h1 className="gate__title">{t('gateTitle')}</h1>
-          <p className="gate__sub">{t('gateSub')}</p>
-          <form onSubmit={submitCode} className="gate__form">
-            <input
-              className="gate__input"
-              value={code}
-              onChange={(e) => setCode(e.target.value.toUpperCase())}
-              placeholder="cth: KIDORA-ABCD-1234"
-              autoCapitalize="characters"
-              autoComplete="off"
-              spellCheck={false}
-            />
-            {error && <p className="gate__error">{error}</p>}
-            <button type="submit" className="gate__btn" disabled={loading}>
-              {loading ? t('gateChecking') : t('gateUnlock')}
-            </button>
-          </form>
+
+          {mode === 'code' ? (
+            <>
+              <h1 className="gate__title">{t('gateTitle')}</h1>
+              <p className="gate__sub">{t('gateSub')}</p>
+              <form onSubmit={submitCode} className="gate__form">
+                <input
+                  className="gate__input"
+                  value={code}
+                  onChange={(e) => setCode(e.target.value.toUpperCase())}
+                  placeholder="cth: KIDORA-ABCD-1234"
+                  autoCapitalize="characters"
+                  autoComplete="off"
+                  spellCheck={false}
+                />
+                {error && <p className="gate__error">{error}</p>}
+                <button type="submit" className="gate__btn" disabled={loading}>
+                  {loading ? t('gateChecking') : t('gateUnlock')}
+                </button>
+              </form>
+              <button className="gate__link" onClick={() => { playTap(); setMode('recover'); setRecError(''); setRecResult(null); }}>
+                {t('forgotCode')}
+              </button>
+            </>
+          ) : (
+            <>
+              <h1 className="gate__title">{t('recoverTitle')}</h1>
+              <p className="gate__sub">{t('recoverSub')}</p>
+              {recResult ? (
+                <>
+                  <p className="gate__sub">{t('recoverFound')}</p>
+                  <div className="gate__codes">
+                    {recResult.codes.map((c) => (
+                      <div key={c} className="gate__code">{c}</div>
+                    ))}
+                  </div>
+                  <button className="gate__btn" onClick={openRecovered}>
+                    {t('recoverOpen')}
+                  </button>
+                </>
+              ) : (
+                <form onSubmit={submitRecover} className="gate__form">
+                  <input
+                    className="gate__input gate__input--plain"
+                    type="email"
+                    value={recForm.email}
+                    onChange={(e) => setRecForm({ ...recForm, email: e.target.value })}
+                    placeholder={t('fieldEmailPh')}
+                    required
+                  />
+                  <input
+                    className="gate__input gate__input--plain"
+                    type="tel"
+                    value={recForm.phone}
+                    onChange={(e) => setRecForm({ ...recForm, phone: e.target.value })}
+                    placeholder={t('fieldPhonePh')}
+                    required
+                  />
+                  {recError && <p className="gate__error">{recError}</p>}
+                  <button type="submit" className="gate__btn" disabled={recLoading}>
+                    {recLoading ? t('recoverLoading') : t('recoverBtn')}
+                  </button>
+                </form>
+              )}
+              <button className="gate__link" onClick={() => { playTap(); setMode('code'); }}>
+                ← {t('gateTitle')}
+              </button>
+            </>
+          )}
+
           <button className="gate__link" onClick={() => { playTap(); navigate('/'); }}>
             {t('gateBack')}
           </button>

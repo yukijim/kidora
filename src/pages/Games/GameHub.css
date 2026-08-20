@@ -92,6 +92,29 @@
   font-size: var(--text-sm);
 }
 
+.gate__input--plain {
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: var(--weight-semibold);
+}
+
+.gate__codes {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+.gate__code {
+  padding: var(--space-3);
+  background: var(--color-primary-bg);
+  border: 2px dashed var(--color-primary);
+  border-radius: var(--radius-lg);
+  font-size: var(--text-lg);
+  font-weight: var(--weight-black);
+  letter-spacing: 0.06em;
+  color: var(--color-primary-dark);
+}
+
 /* ---- Hab Permainan ---- */
 .hub {
   min-height: 100vh;

@@ -57,3 +57,23 @@ export function findOrderByCode(code) {
     Object.values(getOrders()).find((o) => (o.codes || []).some((c) => c === normalized)) || null
   );
 }
+
+export function findOrderByEmailPhone(email, phone) {
+  const e = String(email || '').trim().toLowerCase();
+  const p = String(phone || '').replace(/\D/g, '');
+  if (!e || !p) return null;
+  const matches = Object.values(getOrders()).filter((o) => {
+    const oe = String(o.payerEmail || '').trim().toLowerCase();
+    const op = String(o.payerPhone || '').replace(/\D/g, '');
+    return oe === e && op === p;
+  });
+  if (matches.length === 0) return null;
+  // Utamakan pesanan berbayar, kemudian yang terbaru
+  matches.sort((a, b) => {
+    const pa = a.status === 'paid' ? 1 : 0;
+    const pb = b.status === 'paid' ? 1 : 0;
+    if (pa !== pb) return pb - pa;
+    return String(b.createdAt || '').localeCompare(String(a.createdAt || ''));
+  });
+  return matches[0];
+}
