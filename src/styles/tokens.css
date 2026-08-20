@@ -154,3 +154,14 @@
   --color-text-secondary: #CBD5E0;
   --color-text-muted: #A0AEC0;
 }
+
+/* ---- Responsif: kurangkan ruang menegak pada skrin kecil ---- */
+@media (max-width: 768px) {
+  :root {
+    --space-10: 32px;
+    --space-11: 40px;
+    --space-12: 48px;
+    --space-13: 56px;
+    --space-14: 72px;
+  }
+}

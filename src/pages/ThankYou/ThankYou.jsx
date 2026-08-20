@@ -1,12 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { api } from '../../lib/api.js';
+import { useLang } from '../../context/LanguageContext.jsx';
 import { playTap } from '../../lib/audio.js';
 import './ThankYou.css';
 
 export default function ThankYou() {
   const { orderId } = useParams();
   const navigate = useNavigate();
+  const { t } = useLang();
   const [order, setOrder] = useState(null);
   const [copied, setCopied] = useState(false);
   const timer = useRef(null);
@@ -55,37 +57,37 @@ export default function ThankYou() {
 
         {isWaiting ? (
           <>
-            <h1 className="ty__title">Sedang Menyemak Bayaran…</h1>
-            <p className="ty__sub">Kami sedang sahkan pembayaran anda.</p>
+            <h1 className="ty__title">{t('tyChecking')}</h1>
+            <p className="ty__sub">{t('tyCheckingSub')}</p>
             <div className="ty__spinner" />
-            <p className="ty__hint">Jangan tutup halaman ini. Ia mengambil masa beberapa saat sahaja.</p>
+            <p className="ty__hint">{t('tyCheckingHint')}</p>
           </>
         ) : order.status === 'paid' ? (
           <>
-            <h1 className="ty__title">Terima Kasih! Bayaran Berjaya 🎉</h1>
-            <p className="ty__sub">Ini kod akses anda. Simpan baik-baik:</p>
+            <h1 className="ty__title">{t('tyPaidTitle')}</h1>
+            <p className="ty__sub">{t('tyPaidSub')}</p>
             <div className="ty__codes">
               {order.codes.map((c) => (
                 <div key={c} className="ty__code">{c}</div>
               ))}
             </div>
             <button className="ty__copy" onClick={copyAll}>
-              {copied ? '✓ Disalin!' : 'Salin Kod'}
+              {copied ? t('tyCopied') : t('tyCopy')}
             </button>
             <button className="ty__play" onClick={() => { playTap(); navigate('/main'); }}>
-              Buka Permainan Sekarang →
+              {t('tyPlay')}
             </button>
             <p className="ty__hint">
-              Masukkan kod di halaman <strong>Main</strong> untuk buka permainan. Kod juga disimpan di peranti ini.
+              {t('tyHint')}
             </p>
           </>
         ) : (
           <>
-            <h1 className="ty__title">Bayaran Belum Berjaya</h1>
-            <p className="ty__sub">Nampaknya bayaran tidak selesai.</p>
-            <p className="ty__hint">Kalau anda sudah bayar, tunggu sebentar atau hubungi kami untuk bantuan.</p>
+            <h1 className="ty__title">{t('tyFailedTitle')}</h1>
+            <p className="ty__sub">{t('tyFailedSub')}</p>
+            <p className="ty__hint">{t('tyFailedHint')}</p>
             <button className="ty__play" onClick={() => { playTap(); navigate('/'); }}>
-              ← Kembali ke Laman Utama
+              {t('tyBack')}
             </button>
           </>
         )}

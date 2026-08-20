@@ -27,6 +27,11 @@
   color: var(--color-text-primary);
 }
 
+/* Elak tajuk bahagian tersorok di belakang header tetap */
+[id] {
+  scroll-margin-top: 88px;
+}
+
 /* ============================================
    Gaya kongsi untuk semua permainan
    ============================================ */

@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AccessProvider } from './context/AccessContext.jsx';
+import { LanguageProvider } from './context/LanguageContext.jsx';
 import Landing from './pages/landing/Landing.jsx';
 import GameHub from './pages/Games/GameHub.jsx';
 import ThankYou from './pages/ThankYou/ThankYou.jsx';
@@ -15,18 +16,20 @@ import './App.css';
 
 export default function App() {
   return (
-    <AccessProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Landing />} />
-          <Route path="/terima-kasih/:orderId" element={<ThankYou />} />
-          <Route path="/main" element={<GameHub />} />
-          <Route path="/main/abc" element={<AbcGame />} />
-          <Route path="/main/kira" element={<CountingGame />} />
-          <Route path="/main/padan" element={<MatchingGame />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </BrowserRouter>
-    </AccessProvider>
+    <LanguageProvider>
+      <AccessProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Landing />} />
+            <Route path="/terima-kasih/:orderId" element={<ThankYou />} />
+            <Route path="/main" element={<GameHub />} />
+            <Route path="/main/abc" element={<AbcGame />} />
+            <Route path="/main/kira" element={<CountingGame />} />
+            <Route path="/main/padan" element={<MatchingGame />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </BrowserRouter>
+      </AccessProvider>
+    </LanguageProvider>
   );
 }

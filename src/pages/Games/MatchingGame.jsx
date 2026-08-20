@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react';
 import GameShell from '../../components/GameShell.jsx';
 import Confetti from '../../components/Confetti.jsx';
-import { PAIRS, shuffle } from '../../data/games.js';
+import { PAIRS, GAMES, pick, shuffle } from '../../data/games.js';
+import { useLang } from '../../context/LanguageContext.jsx';
 import { playCorrect, playWrong, playWin, playTap, speak } from '../../lib/audio.js';
 import './MatchingGame.css';
 
 export default function MatchingGame() {
+  const { lang, t, voice } = useLang();
+  const game = GAMES.find((g) => g.id === 'padan');
   const [cards, setCards] = useState([]);
   const [flipped, setFlipped] = useState([]);
   const [matched, setMatched] = useState([]);
@@ -27,6 +30,7 @@ export default function MatchingGame() {
 
   useEffect(() => {
     build();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const isFaceUp = (card) => flipped.includes(card.uid) || matched.includes(card.id);
@@ -52,11 +56,12 @@ export default function MatchingGame() {
 
       if (cardA.id === cardB.id) {
         const newMatched = [...matched, cardA.id];
+        const name = pick(lang, cardA, 'name');
         setMatched(newMatched);
         setFlipped([]);
         playCorrect();
-        speak(cardA.name);
-        showFeedback(`🎉 Padan! ${cardA.name}!`);
+        speak(name, voice);
+        showFeedback(`${t('matchCorrect')} ${name}!`);
         if (newMatched.length === PAIRS.length) {
           setTimeout(() => {
             playWin();
@@ -67,7 +72,7 @@ export default function MatchingGame() {
         setBusy(true);
         setTimeout(() => {
           playWrong();
-          showFeedback('🙈 Bukan pasangan! Cuba lagi!');
+          showFeedback(t('matchWrong'));
         }, 350);
         setTimeout(() => {
           setFlipped([]);
@@ -78,22 +83,22 @@ export default function MatchingGame() {
   };
 
   return (
-    <GameShell title="Padankan Gambar" emoji="🃏">
+    <GameShell title={pick(lang, game, 'name')} emoji="🃏">
       {done ? (
         <div className="game-win">
           <Confetti />
           <div className="game-win__emoji">🏆</div>
-          <h2 className="game-win__title">Hebat! Semua Padan! 🎉</h2>
-          <p className="game-win__score">Siap dalam {moves} langkah 🎯</p>
+          <h2 className="game-win__title">{t('matchWinTitle')}</h2>
+          <p className="game-win__score">{t('matchDoneIn')} {moves} {t('movesWord')} 🎯</p>
           <div className="game-win__stars">
             <span>⭐</span><span>⭐</span><span>⭐</span>
           </div>
-          <button className="game-btn game-btn--primary" onClick={build}>Main Lagi 🔁</button>
+          <button className="game-btn game-btn--primary" onClick={build}>{t('playAgain')}</button>
         </div>
       ) : (
         <>
           <p className="match-status">
-            🐾 Pasangan: {matched.length} / {PAIRS.length} &nbsp;·&nbsp; 🎯 Langkah: {moves}
+            🐾 {t('pairsWord')} {matched.length} / {PAIRS.length} &nbsp;·&nbsp; 🎯 {t('stepsWord')} {moves}
           </p>
 
           {feedback && (
@@ -108,7 +113,7 @@ export default function MatchingGame() {
                   key={card.uid}
                   className={`mcard ${faceUp ? 'mcard--flipped' : ''} ${matched.includes(card.id) ? 'mcard--matched' : ''}`}
                   onClick={() => flip(card)}
-                  aria-label={faceUp ? card.name : 'Kad tertutup'}
+                  aria-label={faceUp ? pick(lang, card, 'name') : t('cardClosed')}
                 >
                   <span className="mcard__inner">
                     <span className="mcard__face mcard__face--back">🐾</span>

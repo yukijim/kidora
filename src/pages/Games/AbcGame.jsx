@@ -1,13 +1,16 @@
 import { useEffect, useState } from 'react';
 import GameShell from '../../components/GameShell.jsx';
 import Confetti from '../../components/Confetti.jsx';
-import { LETTERS, shuffle } from '../../data/games.js';
+import { LETTERS, GAMES, pick, shuffle } from '../../data/games.js';
+import { useLang } from '../../context/LanguageContext.jsx';
 import { playCorrect, playWrong, playWin, speak } from '../../lib/audio.js';
 import './AbcGame.css';
 
 const ROUNDS = 8;
 
 export default function AbcGame() {
+  const { lang, t, voice } = useLang();
+  const game = GAMES.find((g) => g.id === 'abc');
   const [round, setRound] = useState(0);
   const [score, setScore] = useState(0);
   const [target, setTarget] = useState(null);
@@ -17,13 +20,13 @@ export default function AbcGame() {
   const [done, setDone] = useState(false);
 
   const startRound = (r) => {
-    const t = LETTERS[Math.floor(Math.random() * LETTERS.length)];
-    const opts = [t];
+    const tgt = LETTERS[Math.floor(Math.random() * LETTERS.length)];
+    const opts = [tgt];
     while (opts.length < 3) {
       const c = LETTERS[Math.floor(Math.random() * LETTERS.length)];
       if (!opts.includes(c)) opts.push(c);
     }
-    setTarget(t);
+    setTarget(tgt);
     setOptions(shuffle(opts));
     setStatus('idle');
     setWrongIdx(null);
@@ -32,21 +35,24 @@ export default function AbcGame() {
 
   useEffect(() => {
     startRound(0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     if (target) {
-      const timer = setTimeout(() => speak(`${target.letter} untuk ${target.word}`), 350);
+      const word = pick(lang, target, 'word');
+      const timer = setTimeout(() => speak(`${target.letter} ${t('forWord')} ${word}`, voice), 350);
       return () => clearTimeout(timer);
     }
-  }, [target]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [target, lang]);
 
-  const pick = (opt, idx) => {
+  const pickLetter = (opt, idx) => {
     if (status !== 'idle') return;
     if (opt.letter === target.letter) {
       setStatus('correct');
       playCorrect();
-      speak('Betul!');
+      speak(t('correctWord'), voice);
       setScore((s) => s + 1);
       setTimeout(() => {
         if (round + 1 >= ROUNDS) {
@@ -60,7 +66,7 @@ export default function AbcGame() {
       setStatus('wrong');
       setWrongIdx(idx);
       playWrong();
-      speak('Cuba lagi');
+      speak(t('tryAgainWord'), voice);
       setTimeout(() => {
         setStatus('idle');
         setWrongIdx(null);
@@ -74,20 +80,23 @@ export default function AbcGame() {
     startRound(0);
   };
 
+  const word = target ? pick(lang, target, 'word') : '';
+  const emoji = target ? pick(lang, target, 'emoji') : '';
+
   return (
-    <GameShell title="Kenal Huruf ABC" emoji="🔤">
+    <GameShell title={pick(lang, game, 'name')} emoji="🔤">
       {done ? (
         <div className="game-win">
           <Confetti />
           <div className="game-win__emoji">🏆</div>
-          <h2 className="game-win__title">Hebat! Pandainya! 🎉</h2>
-          <p className="game-win__score">Kamu dapat {score} / {ROUNDS} ⭐</p>
+          <h2 className="game-win__title">{t('winTitle')}</h2>
+          <p className="game-win__score">{t('winScore')} {score} / {ROUNDS} ⭐</p>
           <div className="game-win__stars">
             {Array.from({ length: Math.max(1, Math.round((score / ROUNDS) * 3)) }).map((_, i) => (
               <span key={i}>⭐</span>
             ))}
           </div>
-          <button className="game-btn game-btn--primary" onClick={restart}>Main Lagi 🔁</button>
+          <button className="game-btn game-btn--primary" onClick={restart}>{t('playAgain')}</button>
         </div>
       ) : (
         <>
@@ -101,15 +110,15 @@ export default function AbcGame() {
           </div>
 
           <div className="abc-question">
-            <p className="abc-question__label">🔍 Tekan huruf ini</p>
+            <p className="abc-question__label">{t('abcLabel')}</p>
             <div className={`abc-target abc-target--${status}`}>
               <span className="abc-target__letter">{target ? target.letter : ''}</span>
             </div>
-            <button className="abc-question__speak" onClick={() => target && speak(`${target.letter} untuk ${target.word}`)}>
-              🔊 Dengar
+            <button className="abc-question__speak" onClick={() => target && speak(`${target.letter} ${t('forWord')} ${word}`, voice)}>
+              {t('abcListen')}
             </button>
             <p className="abc-question__hint">
-              {target ? `${target.letter} untuk ${target.word} ${target.emoji}` : ''}
+              {target ? `${target.letter} ${t('forWord')} ${word} ${emoji}` : ''}
             </p>
           </div>
 
@@ -120,7 +129,7 @@ export default function AbcGame() {
                 className={`abc-option ${
                   status === 'correct' && o.letter === target?.letter ? 'abc-option--correct' : ''
                 } ${wrongIdx === i ? 'abc-option--wrong' : ''}`}
-                onClick={() => pick(o, i)}
+                onClick={() => pickLetter(o, i)}
               >
                 {o.letter}
               </button>
@@ -129,11 +138,11 @@ export default function AbcGame() {
 
           {status !== 'idle' && (
             <div className={`game-feedback game-feedback--${status}`}>
-              {status === 'correct' ? '🎉 Betul! Hebat!' : '💪 Hampir! Cuba lagi!'}
+              {status === 'correct' ? t('correctShort') : t('wrongShort')}
             </div>
           )}
 
-          <div className="abc-score">⭐ {score} betul</div>
+          <div className="abc-score">⭐ {score} {t('scoreSuffix')}</div>
         </>
       )}
     </GameShell>
