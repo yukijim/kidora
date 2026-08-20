@@ -14,6 +14,7 @@ import LetterFind from './pages/Games/LetterFind.jsx';
 import LetterOrder from './pages/Games/LetterOrder.jsx';
 import LetterSpell from './pages/Games/LetterSpell.jsx';
 import LetterModule from './pages/Games/LetterModule.jsx';
+import DemoGate from './components/DemoGate.jsx';
 
 import './styles/reset.css';
 import './styles/tokens.css';
@@ -26,6 +27,7 @@ export default function App() {
     <LanguageProvider>
       <AccessProvider>
         <BrowserRouter>
+          <DemoGate />
           <Routes>
             <Route path="/" element={<Landing />} />
             <Route path="/terma" element={<Legal kind="terms" />} />

@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { api } from '../../lib/api.js';
 import { PACKAGES, pick, DEMO_GAMES } from '../../data/games.js';
 import { playTap, playWrong } from '../../lib/audio.js';
@@ -15,12 +15,20 @@ import './Landing.css';
 
 export default function Landing() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { lang, t } = useLang();
   const { unlock } = useAccess();
   const [selected, setSelected] = useState(null);
   const [form, setForm] = useState({ name: '', email: '', phone: '' });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    if (location.state?.scrollToPricing) {
+      const id = setTimeout(() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' }), 150);
+      return () => clearTimeout(id);
+    }
+  }, [location.state]);
 
   const openBuy = (pkg) => {
     setSelected(pkg);

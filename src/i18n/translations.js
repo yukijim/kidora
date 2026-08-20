@@ -195,6 +195,9 @@ export const STRINGS = {
     demoPkg: 'Mod Demo',
     demoBanner: 'Anda dalam Mod Demo — cuba sebahagian permainan. Beli untuk buka semua 39 modul.',
     demoBuy: 'Beli Pakej Penuh →',
+    demoOverTitle: 'Suka? Beli sekarang 🎁',
+    demoOverText: 'Masa demo percuma anda sudah tamat. Beli pakej penuh untuk buka semua 39 modul permainan untuk anak anda.',
+    demoOverLater: 'Nanti',
 
     // Skrin menang & dalam permainan
     winTitle: 'Hebat! Pandainya! 🎉',
@@ -412,6 +415,9 @@ export const STRINGS = {
     demoPkg: 'Demo Mode',
     demoBanner: "You're in Demo Mode — try some games. Buy to unlock all 39 modules.",
     demoBuy: 'Buy Full Plan →',
+    demoOverTitle: 'Like it? Buy now 🎁',
+    demoOverText: "Your free demo time is up. Buy the full plan to unlock all 39 game modules for your child.",
+    demoOverLater: 'Later',
 
     // Win screen & in-game
     winTitle: 'Amazing! Well done! 🎉',

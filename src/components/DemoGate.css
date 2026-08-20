@@ -1,0 +1,105 @@
+/* ---- Pemasa + pop-up tamat demo ---- */
+.demogate__pill {
+  position: fixed;
+  top: var(--space-3);
+  right: var(--space-3);
+  z-index: 900;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: var(--color-white);
+  border: 2px solid var(--color-yellow);
+  padding: var(--space-1) var(--space-2) var(--space-1) var(--space-3);
+  border-radius: var(--radius-full);
+  box-shadow: var(--shadow-md);
+  pointer-events: none;
+}
+
+.demogate__pill-tag {
+  background: var(--color-yellow);
+  color: #4a3400;
+  font-size: 11px;
+  font-weight: var(--weight-extrabold);
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  letter-spacing: 0.04em;
+}
+
+.demogate__pill-time {
+  font-weight: var(--weight-extrabold);
+  font-size: var(--text-sm);
+  color: var(--color-text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.demogate__backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(45, 55, 72, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-5);
+}
+
+.demogate__card {
+  background: var(--color-white);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-xl);
+  padding: var(--space-8) var(--space-6);
+  max-width: 420px;
+  width: 100%;
+  text-align: center;
+  animation: demogate-pop var(--transition-bounce);
+}
+
+.demogate__emoji {
+  font-size: 60px;
+  line-height: 1;
+}
+
+.demogate__title {
+  font-size: var(--text-2xl);
+  margin: var(--space-3) 0 var(--space-2);
+}
+
+.demogate__text {
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-6);
+  line-height: 1.6;
+}
+
+.demogate__buy {
+  display: block;
+  width: 100%;
+  background: var(--color-primary);
+  color: #fff;
+  border: none;
+  padding: var(--space-4);
+  border-radius: var(--radius-full);
+  font-size: var(--text-lg);
+  font-weight: var(--weight-extrabold);
+  box-shadow: var(--shadow-glow-blue);
+  cursor: pointer;
+  transition: transform var(--transition-fast);
+}
+.demogate__buy:active {
+  transform: scale(0.97);
+}
+
+.demogate__later {
+  margin-top: var(--space-3);
+  background: none;
+  border: none;
+  color: var(--color-text-muted);
+  font-weight: var(--weight-bold);
+  font-size: var(--text-sm);
+  cursor: pointer;
+}
+
+@keyframes demogate-pop {
+  from { transform: scale(0.8) translateY(20px); opacity: 0; }
+  to { transform: scale(1) translateY(0); opacity: 1; }
+}
