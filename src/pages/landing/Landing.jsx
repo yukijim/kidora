@@ -210,15 +210,17 @@ export default function Landing() {
       <section className="landing-testi">
         <h2 className="landing-section-title">{t('testiTitle')}</h2>
         <p className="landing-section-sub">{t('testiSub')}</p>
-        <img src={parentsImg} alt="Ibu bapa gembira melihat anak belajar" className="landing-testi__img" />
-        <div className="landing-testi__grid">
-          {testimonials.map((ts) => (
-            <div key={ts.name} className="landing-testi__card">
-              <div className="landing-testi__stars">⭐⭐⭐⭐⭐</div>
-              <p className="landing-testi__text">{ts.text}</p>
-              <p className="landing-testi__name">— {ts.name}</p>
-            </div>
-          ))}
+        <div className="landing-testi__inner">
+          <img src={parentsImg} alt="Ibu bapa gembira melihat anak belajar" className="landing-testi__img" />
+          <div className="landing-testi__grid">
+            {testimonials.map((ts) => (
+              <div key={ts.name} className="landing-testi__card">
+                <div className="landing-testi__stars">⭐⭐⭐⭐⭐</div>
+                <p className="landing-testi__text">{ts.text}</p>
+                <p className="landing-testi__name">— {ts.name}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
