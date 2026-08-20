@@ -3,8 +3,16 @@
    Nunito Rounded — Friendly, Clear, Made for Little Explorers
    ============================================ */
 
-/* Google Fonts Import */
-@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,700&display=swap');
+/* Nunito — self-hosted (variable font, wght 200–1000).
+   Self-host supaya tidak bergantung pada Google Fonts (perlahan di Malaysia
+   dan @import menghalang stylesheet utama daripada dimuatkan). */
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 200 1000;
+  font-display: swap;
+  src: url('/fonts/nunito-latin.woff2') format('woff2');
+}
 
 :root {
   /* ---- Font Family ---- */
