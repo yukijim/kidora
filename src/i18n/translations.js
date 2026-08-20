@@ -138,6 +138,10 @@ export const STRINGS = {
     // Footer
     footerBrand: 'KIDORA — Minda Kecil, Pengembaraan Besar',
     footerCopy: 'kidora.com.my · Build by Brojim Digital',
+    footerTerms: 'Terma & Syarat',
+    footerPrivacy: 'Dasar Privasi',
+    footerContact: 'Hubungi Kami',
+    footerRecover: 'Dapat Semula Kod',
 
     // Modal beli
     buy: 'Beli',
@@ -347,6 +351,10 @@ export const STRINGS = {
     // Footer
     footerBrand: 'KIDORA — Little Minds, Big Adventures',
     footerCopy: 'kidora.com.my · Build by Brojim Digital',
+    footerTerms: 'Terms & Conditions',
+    footerPrivacy: 'Privacy Policy',
+    footerContact: 'Contact Us',
+    footerRecover: 'Recover Code',
 
     // Buy modal
     buy: 'Buy',

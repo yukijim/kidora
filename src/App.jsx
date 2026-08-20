@@ -4,6 +4,7 @@ import { LanguageProvider } from './context/LanguageContext.jsx';
 import Landing from './pages/landing/Landing.jsx';
 import GameHub from './pages/Games/GameHub.jsx';
 import ThankYou from './pages/ThankYou/ThankYou.jsx';
+import Legal from './pages/Legal/Legal.jsx';
 import AbcGame from './pages/Games/AbcGame.jsx';
 import CountingGame from './pages/Games/CountingGame.jsx';
 import MatchingGame from './pages/Games/MatchingGame.jsx';
@@ -27,6 +28,8 @@ export default function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Landing />} />
+            <Route path="/terma" element={<Legal kind="terms" />} />
+            <Route path="/privasi" element={<Legal kind="privacy" />} />
             <Route path="/terima-kasih/:orderId" element={<ThankYou />} />
             <Route path="/main" element={<GameHub />} />
             <Route path="/main/abc" element={<AbcGame />} />

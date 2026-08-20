@@ -1,0 +1,42 @@
+.legal {
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: var(--color-bg);
+  padding: var(--space-10) var(--space-5);
+}
+
+.legal__card {
+  max-width: 720px;
+  margin: 0 auto;
+  background: var(--color-white);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-lg);
+  padding: var(--space-8) var(--space-6);
+}
+
+.legal__title {
+  font-size: var(--text-3xl);
+  font-weight: var(--weight-extrabold);
+  margin-bottom: var(--space-6);
+  color: var(--color-primary);
+}
+
+.legal__section {
+  margin-bottom: var(--space-5);
+}
+
+.legal__h {
+  font-size: var(--text-lg);
+  font-weight: var(--weight-extrabold);
+  margin-bottom: var(--space-2);
+  color: var(--color-text-primary);
+}
+
+.legal__p {
+  color: var(--color-text-secondary);
+  line-height: var(--leading-relaxed);
+}
+
+.legal__back {
+  margin-top: var(--space-5);
+}
