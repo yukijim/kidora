@@ -93,6 +93,9 @@ export const LETTER_MODULE_IDS = LETTER_MODULES.map((m) => m.id);
 export const SKILL_GAME_IDS = ['abc', 'bunyi', 'awal', 'vokal', 'kuiz', 'besarkecil', 'ingatan', 'cari', 'susun', 'eja', 'suku', 'ulang1', 'ulang2'];
 export const ALL_LETTER_IDS = [...LETTER_MODULE_IDS, ...SKILL_GAME_IDS]; // 39
 
+// Permainan yang dibuka dalam mod demo (untuk bakal pembeli mencuba)
+export const DEMO_GAMES = ['h-a', 'h-b', 'h-c', 'abc', 'cari', 'vokal', 'kira', 'padan'];
+
 // Pakej harga (mesti sepadan dengan backend server/src/server.js)
 export const PACKAGES = [
   {

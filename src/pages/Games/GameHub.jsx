@@ -220,6 +220,15 @@ export default function GameHub() {
         <h1 className="hub__title">{t('hubGreet')}</h1>
         <p className="hub__sub">{t('hubSub')}</p>
 
+        {access.package === 'demo' && (
+          <div className="hub__demo">
+            <p>{t('demoBanner')}</p>
+            <button className="hub__demo-btn" onClick={() => { playTap(); navigate('/'); }}>
+              {t('demoBuy')}
+            </button>
+          </div>
+        )}
+
         <section className="hub__unit">
           <h2 className="hub__unit-title">📚 {t('unit1')}</h2>
           <div className="hub__grid--letters">{unit1.map(renderLetterCard)}</div>
@@ -243,7 +252,7 @@ export default function GameHub() {
         )}
 
         <p className="hub__pkg">
-          {t('hubPkg')} <strong>{pkg ? pick(lang, pkg, 'name') : '—'}</strong>
+          {t('hubPkg')} <strong>{pkg ? pick(lang, pkg, 'name') : access.package === 'demo' ? t('demoPkg') : '—'}</strong>
         </p>
       </main>
     </div>

@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { api } from '../../lib/api.js';
-import { PACKAGES, pick } from '../../data/games.js';
+import { PACKAGES, pick, DEMO_GAMES } from '../../data/games.js';
 import { playTap, playWrong } from '../../lib/audio.js';
 import { useLang } from '../../context/LanguageContext.jsx';
+import { useAccess } from '../../context/AccessContext.jsx';
 import { rich } from '../../i18n/translations.js';
 import AnimatedMascot from '../../components/AnimatedMascot.jsx';
 import LanguageToggle from '../../components/LanguageToggle.jsx';
@@ -15,6 +16,7 @@ import './Landing.css';
 export default function Landing() {
   const navigate = useNavigate();
   const { lang, t } = useLang();
+  const { unlock } = useAccess();
   const [selected, setSelected] = useState(null);
   const [form, setForm] = useState({ name: '', email: '', phone: '' });
   const [loading, setLoading] = useState(false);
@@ -29,6 +31,12 @@ export default function Landing() {
   const scrollTo = (id) => {
     playTap();
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const startDemo = () => {
+    playTap();
+    unlock('DEMO', DEMO_GAMES, 'demo');
+    navigate('/main');
   };
 
   const submit = async (e) => {
@@ -120,8 +128,8 @@ export default function Landing() {
             </h1>
             <p className="landing-hero__desc">{rich(t('heroDesc'))}</p>
             <div className="landing-hero__buttons">
-              <button className="btn btn--primary btn--lg" onClick={() => { playTap(); navigate('/main'); }}>
-                {t('heroCta')}
+              <button className="btn btn--primary btn--lg" onClick={startDemo}>
+                {t('demoBtn')}
               </button>
               <button className="btn btn--ghost btn--lg" onClick={() => scrollTo('pricing')}>
                 {t('viewPlans')}

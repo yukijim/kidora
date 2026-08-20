@@ -251,6 +251,35 @@
   margin-bottom: var(--space-4);
 }
 
+/* ---- Banner mod demo ---- */
+.hub__demo {
+  background: var(--color-yellow-bg);
+  border: 2px solid var(--color-yellow);
+  border-radius: var(--radius-xl);
+  padding: var(--space-4) var(--space-5);
+  text-align: center;
+  margin-bottom: var(--space-6);
+}
+.hub__demo p {
+  font-weight: var(--weight-bold);
+  color: var(--color-yellow-dark);
+  margin-bottom: var(--space-3);
+  line-height: var(--leading-snug);
+}
+.hub__demo-btn {
+  background: var(--color-primary);
+  color: #fff;
+  padding: var(--space-2) var(--space-5);
+  border-radius: var(--radius-full);
+  font-weight: var(--weight-extrabold);
+  font-size: var(--text-sm);
+  box-shadow: var(--shadow-glow-blue);
+  transition: transform var(--transition-fast);
+}
+.hub__demo-btn:active {
+  transform: scale(0.96);
+}
+
 /* ---- Grid huruf (kompak) ---- */
 .hub__grid--letters {
   display: grid;

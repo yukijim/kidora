@@ -191,6 +191,10 @@ export const STRINGS = {
     hubLocked: 'Belum dibuka',
     hubPkg: 'Pakej anda:',
     hubLogout: 'Keluar',
+    demoBtn: 'Cuba Demo Percuma 🎁',
+    demoPkg: 'Mod Demo',
+    demoBanner: 'Anda dalam Mod Demo — cuba sebahagian permainan. Beli untuk buka semua 39 modul.',
+    demoBuy: 'Beli Pakej Penuh →',
 
     // Skrin menang & dalam permainan
     winTitle: 'Hebat! Pandainya! 🎉',
@@ -404,6 +408,10 @@ export const STRINGS = {
     hubLocked: 'Locked',
     hubPkg: 'Your plan:',
     hubLogout: 'Exit',
+    demoBtn: 'Try Free Demo 🎁',
+    demoPkg: 'Demo Mode',
+    demoBanner: "You're in Demo Mode — try some games. Buy to unlock all 39 modules.",
+    demoBuy: 'Buy Full Plan →',
 
     // Win screen & in-game
     winTitle: 'Amazing! Well done! 🎉',
