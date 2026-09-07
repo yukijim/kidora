@@ -1,0 +1,141 @@
+.admin {
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: var(--color-bg);
+  padding: var(--space-6);
+  font-size: var(--text-sm);
+}
+
+.admin__gate {
+  max-width: 360px;
+  margin: 10vh auto;
+  background: var(--color-white);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-lg);
+  padding: var(--space-8);
+  text-align: center;
+}
+
+.admin__gate form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+}
+
+.admin__input {
+  padding: var(--space-3);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  font-size: var(--text-base);
+}
+
+.admin__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-6);
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.admin__btn {
+  padding: var(--space-2) var(--space-4);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-white);
+  font-weight: var(--weight-bold);
+  cursor: pointer;
+  margin-left: var(--space-2);
+}
+
+.admin__btn--primary {
+  background: var(--color-primary);
+  color: #fff;
+  border-color: var(--color-primary);
+  margin-left: 0;
+}
+
+.admin__btn--confirm {
+  background: var(--color-secondary);
+  color: #fff;
+  border-color: var(--color-secondary);
+  margin-left: 0;
+  white-space: nowrap;
+}
+
+.admin__error {
+  color: var(--color-pink-dark);
+  background: var(--color-pink-bg);
+  padding: var(--space-3);
+  border-radius: var(--radius-lg);
+  margin-bottom: var(--space-4);
+}
+
+.admin__muted {
+  color: var(--color-text-muted);
+  font-size: var(--text-xs);
+}
+
+.admin section {
+  margin-bottom: var(--space-8);
+}
+
+.admin__tableWrap {
+  overflow-x: auto;
+  background: var(--color-white);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-sm);
+}
+
+.admin__table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 720px;
+}
+
+.admin__table th,
+.admin__table td {
+  padding: var(--space-3);
+  border-bottom: 1px solid var(--color-border);
+  text-align: left;
+  vertical-align: top;
+}
+
+.admin__row--pending {
+  background: var(--color-yellow-bg);
+}
+
+.admin__name {
+  font-weight: var(--weight-bold);
+}
+
+.admin__badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: var(--radius-full);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-bold);
+  text-transform: capitalize;
+}
+
+.admin__badge--pending {
+  background: var(--color-yellow-bg);
+  color: var(--color-yellow-dark);
+}
+
+.admin__badge--paid {
+  background: var(--color-secondary-bg);
+  color: var(--color-secondary-dark);
+}
+
+.admin__badge--failed {
+  background: var(--color-pink-bg);
+  color: var(--color-pink-dark);
+}
+
+.admin__codes {
+  font-family: monospace;
+  font-size: var(--text-xs);
+  margin-bottom: var(--space-2);
+}

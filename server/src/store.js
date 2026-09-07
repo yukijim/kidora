@@ -46,11 +46,6 @@ export function saveOrder(order) {
   save(ORDERS_FILE, orders);
 }
 
-export function findOrderByBillCode(billCode) {
-  if (!billCode) return null;
-  return Object.values(getOrders()).find((o) => o.billCode === billCode) || null;
-}
-
 export function findOrderByCode(code) {
   const normalized = String(code).trim().toUpperCase();
   return (

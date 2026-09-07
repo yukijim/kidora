@@ -97,8 +97,58 @@
   animation: spin 0.9s linear infinite;
 }
 
+.ty__spinner--sm {
+  width: 24px;
+  height: 24px;
+  border-width: 3px;
+  margin-top: var(--space-3);
+}
+
 @keyframes spin {
   to {
     transform: rotate(360deg);
   }
+}
+
+.ty__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-2) 0;
+  border-bottom: 1px solid var(--color-border);
+  text-align: left;
+  font-size: var(--text-sm);
+}
+
+.ty__row span {
+  color: var(--color-text-secondary);
+}
+
+.ty__row--amount strong {
+  font-size: var(--text-lg);
+  color: var(--color-primary-dark);
+}
+
+.ty__bank {
+  background: var(--color-primary-bg);
+  border: 2px dashed var(--color-primary);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  margin: var(--space-4) 0;
+}
+
+.ty__bankTitle {
+  font-weight: var(--weight-extrabold);
+  margin-bottom: var(--space-2);
+  color: var(--color-primary-dark);
+}
+
+.ty__bank .ty__row {
+  border-bottom-color: rgba(0, 0, 0, 0.08);
+}
+
+.ty__whatsapp {
+  background: #25d366;
+  box-shadow: none;
 }

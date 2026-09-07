@@ -104,7 +104,7 @@ export const STRINGS = {
     how1Title: 'Pilih Pakej',
     how1Desc: 'Pilih pakej yang sesuai dan klik "Beli Sekarang".',
     how2Title: 'Bayar Online',
-    how2Desc: 'Bayar guna FPX, eWallet atau kad melalui BizApp Pay.',
+    how2Desc: 'Bayar guna FPX, eWallet atau kad melalui Bayarcash.',
     how3Title: 'Masukkan Kod & Main',
     how3Desc: 'Dapat kod akses, masukkan, dan anak terus main!',
 
@@ -113,7 +113,7 @@ export const STRINGS = {
     pricingSub: 'Bayaran **sekali sahaja**. Tiada yuran bulanan tersembunyi. Main selamanya.',
     popularBadge: '⭐ Paling Popular',
     buyNow: 'Beli Sekarang',
-    pricingNote: '🔒 Bayaran selamat melalui BizApp Pay — FPX, eWallet & kad.',
+    pricingNote: '🔒 Bayaran selamat melalui Bayarcash — FPX, eWallet & kad.',
 
     // Soalan lazim
     faqTitle: '❓ Soalan Lazim',
@@ -128,7 +128,7 @@ export const STRINGS = {
     faq5q: 'Ada iklan ke?',
     faq5a: 'Tiada iklan langsung. Pengalaman anak bersih dan selamat.',
     faq6q: 'Bayaran selamat?',
-    faq6a: 'Ya. Semua bayaran diproses oleh BizApp Pay yang menyokong FPX, eWallet dan kad bank.',
+    faq6a: 'Ya. Semua bayaran diproses oleh Bayarcash yang menyokong FPX, eWallet dan kad bank.',
 
     // CTA akhir
     ctaTitle: 'Mulakan Pengembaraan Belajar Hari Ini!',
@@ -154,7 +154,7 @@ export const STRINGS = {
     fieldPhonePh: 'cth: 0123456789',
     payNow: 'Bayar Sekarang',
     payLoading: 'Menyediakan bayaran…',
-    modalHint: '🔒 Anda akan dibawa ke halaman bayaran selamat BizApp Pay.',
+    modalHint: '🔒 Anda akan dibawa ke halaman bayaran selamat Bayarcash.',
 
     // Gerbang kod akses
     gateTitle: 'Masukkan Kod Akses',
@@ -324,7 +324,7 @@ export const STRINGS = {
     how1Title: 'Choose a Plan',
     how1Desc: 'Pick a plan and click "Buy Now".',
     how2Title: 'Pay Online',
-    how2Desc: 'Pay via FPX, eWallet or card through BizApp Pay.',
+    how2Desc: 'Pay via FPX, eWallet or card through Bayarcash.',
     how3Title: 'Enter Code & Play',
     how3Desc: 'Get your access code, enter it, and your child can play right away!',
 
@@ -333,7 +333,7 @@ export const STRINGS = {
     pricingSub: 'Pay **once only**. No hidden monthly fees. Play forever.',
     popularBadge: '⭐ Most Popular',
     buyNow: 'Buy Now',
-    pricingNote: '🔒 Secure payment via BizApp Pay — FPX, eWallet & card.',
+    pricingNote: '🔒 Secure payment via Bayarcash — FPX, eWallet & card.',
 
     // FAQ
     faqTitle: '❓ Frequently Asked Questions',
@@ -348,7 +348,7 @@ export const STRINGS = {
     faq5q: 'Are there ads?',
     faq5a: 'No ads at all. A clean and safe experience for your child.',
     faq6q: 'Is payment secure?',
-    faq6a: 'Yes. All payments are processed by BizApp Pay, which supports FPX, eWallet and bank cards.',
+    faq6a: 'Yes. All payments are processed by Bayarcash, which supports FPX, eWallet and bank cards.',
 
     // Final CTA
     ctaTitle: 'Start the Learning Adventure Today!',
@@ -374,7 +374,7 @@ export const STRINGS = {
     fieldPhonePh: 'e.g. 0123456789',
     payNow: 'Pay Now',
     payLoading: 'Preparing payment…',
-    modalHint: '🔒 You\'ll be taken to BizApp Pay\'s secure payment page.',
+    modalHint: '🔒 You\'ll be taken to Bayarcash\'s secure payment page.',
 
     // Access code gate
     gateTitle: 'Enter Access Code',

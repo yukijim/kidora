@@ -15,6 +15,7 @@ import LetterOrder from './pages/Games/LetterOrder.jsx';
 import LetterSpell from './pages/Games/LetterSpell.jsx';
 import LetterModule from './pages/Games/LetterModule.jsx';
 import DemoGate from './components/DemoGate.jsx';
+import Admin from './pages/Admin/Admin.jsx';
 
 import './styles/reset.css';
 import './styles/tokens.css';
@@ -33,6 +34,7 @@ export default function App() {
             <Route path="/terma" element={<Legal kind="terms" />} />
             <Route path="/privasi" element={<Legal kind="privacy" />} />
             <Route path="/terima-kasih/:orderId" element={<ThankYou />} />
+            <Route path="/admin-kidora" element={<Admin />} />
             <Route path="/main" element={<GameHub />} />
             <Route path="/main/abc" element={<AbcGame />} />
             <Route path="/main/bunyi" element={<LetterChoice mode="bunyi" />} />

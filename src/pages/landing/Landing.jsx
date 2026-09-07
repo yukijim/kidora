@@ -61,7 +61,7 @@ export default function Landing() {
           phone: form.phone,
         }),
       });
-      window.location.href = data.url;
+      navigate(`/terima-kasih/${data.orderId}`);
     } catch (err) {
       setError(err.message);
       playWrong();

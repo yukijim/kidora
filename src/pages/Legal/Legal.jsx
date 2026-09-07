@@ -21,7 +21,7 @@ const CONTENT = {
       sections: [
         { h: '1. Maklumat Yang Dikumpul', b: 'Kami mengumpul nama, emel dan nombor telefon anda semasa pembelian untuk memproses pesanan dan menghantar kod akses.' },
         { h: '2. Cara Kami Menggunakan Maklumat', b: 'Maklumat anda digunakan untuk: memproses bayaran, menghantar kod akses, dan memberikan sokongan pelanggan.' },
-        { h: '3. Perkongsian Data', b: 'Kami tidak menjual atau menyewa data anda kepada pihak ketiga. Bayaran diproses oleh BizApp Pay bagi pihak kami.' },
+        { h: '3. Perkongsian Data', b: 'Kami tidak menjual atau menyewa data anda kepada pihak ketiga. Bayaran diproses oleh Bayarcash bagi pihak kami.' },
         { h: '4. Penyimpanan Data', b: 'Data pesanan disimpan dengan selamat dan hanya untuk tujuan sokongan dan pemulihan kod akses.' },
         { h: '5. Hak Anda', b: 'Anda boleh meminta kami memadam maklumat anda pada bila-bila masa dengan menghubungi kami.' },
       ],
@@ -44,7 +44,7 @@ const CONTENT = {
       sections: [
         { h: '1. Information We Collect', b: 'We collect your name, email and phone number at checkout to process your order and deliver your access code.' },
         { h: '2. How We Use It', b: 'Your information is used to: process payment, deliver your access code, and provide customer support.' },
-        { h: '3. Data Sharing', b: 'We do not sell or rent your data to third parties. Payments are processed by BizApp Pay on our behalf.' },
+        { h: '3. Data Sharing', b: 'We do not sell or rent your data to third parties. Payments are processed by Bayarcash on our behalf.' },
         { h: '4. Data Storage', b: 'Order data is stored securely and used only for support and access-code recovery.' },
         { h: '5. Your Rights', b: 'You may ask us to delete your information at any time by contacting us.' },
       ],

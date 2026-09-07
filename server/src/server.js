@@ -1,11 +1,14 @@
 // ============================================
 // KIDORA Backend — serve static frontend + API:
-//   - /api/packages          : senarai pakej harga
-//   - /api/order             : cipta bil BizApp Pay → return URL bayaran
-//   - /api/bizappay/callback : webhook BizApp Pay (bayaran berjaya → jana kod)
-//   - /api/order/:id         : status pesanan (untuk polling muka terima kasih)
-//   - /api/validate-code     : semak kod akses
-//   - /api/admin/issue       : (pilihan) jana kod manual
+//   - /api/packages            : senarai pakej harga
+//   - /api/order               : cipta payment intent Bayarcash → return URL bayaran
+//   - /api/bayarcash/callback  : webhook Bayarcash (server-to-server, bayaran berjaya → jana kod)
+//   - /api/order/:id           : status pesanan (untuk polling muka terima kasih)
+//   - /api/validate-code       : semak kod akses
+//   - /api/recover-code        : dapatkan semula kod akses (lupa kod)
+//   - /api/admin/orders        : (admin) senarai pesanan
+//   - /api/admin/confirm/:id   : (admin) sahkan bayaran manual untuk satu pesanan (fallback)
+//   - /api/admin/issue         : (admin) jana kod manual (tanpa pesanan sedia ada)
 // ============================================
 
 import express from 'express';
@@ -14,18 +17,24 @@ import dotenv from 'dotenv';
 import path from 'node:path';
 import fs from 'node:fs';
 import { fileURLToPath } from 'node:url';
-import { generateToken, listCategories, createBill } from './bizappay.js';
-import { getOrder, saveOrder, findOrderByBillCode, findOrderByCode, findOrderByEmailPhone } from './store.js';
+import { createPaymentIntent, verifyTransactionCallbackData } from './bayarcash.js';
+import { getOrder, getOrders, saveOrder, findOrderByCode, findOrderByEmailPhone } from './store.js';
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-const API_KEY = process.env.BIZAPPAY_API_KEY || '';
 const BASE_URL = process.env.BASE_URL || `http://localhost:${PORT}`;
 const ADMIN_KEY = process.env.ADMIN_KEY || '';
 
+// ---- Bayarcash Payment Gateway ----
+const BC_TOKEN = process.env.BAYARCASH_PAT || '';
+const BC_SECRET = process.env.BAYARCASH_SECRET_KEY || '';
+const BC_PORTAL = process.env.BAYARCASH_PORTAL_KEY || '';
+const BC_SANDBOX = String(process.env.BAYARCASH_SANDBOX || 'true').toLowerCase() !== 'false';
+
 app.use(cors());
+// Simpan raw body sekali (untuk debug/log) — Bayarcash callback hantar JSON biasa.
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -49,17 +58,11 @@ function genCodes(count) {
   return Array.from({ length: count }, genCode);
 }
 
-let cachedCategory = null;
-async function resolveCategory(apiKey, token) {
-  if (cachedCategory) return cachedCategory;
-  if (process.env.BIZAPPAY_CATEGORY) {
-    cachedCategory = process.env.BIZAPPAY_CATEGORY;
-    return cachedCategory;
-  }
-  const categories = await listCategories(apiKey, token);
-  cachedCategory = (categories[0] && categories[0].code) || '';
-  if (!cachedCategory) throw new Error('Tiada kategori bil. Buat kategori di dashboard BizApp Pay.');
-  return cachedCategory;
+function requireAdmin(req, res, next) {
+  const key = req.headers['x-admin-key'] || req.query.key || (req.body && req.body.key);
+  if (!ADMIN_KEY) return res.status(503).json({ error: 'Admin belum dikonfigurasi (ADMIN_KEY tiada di server).' });
+  if (key !== ADMIN_KEY) return res.status(401).json({ error: 'Kunci admin salah.' });
+  next();
 }
 
 // ---- Kesihatan ----
@@ -70,7 +73,7 @@ app.get('/api/packages', (_req, res) => {
   res.json({ packages: Object.entries(PACKAGES).map(([id, p]) => ({ id, ...p })) });
 });
 
-// ---- Cipta pesanan → bil BizApp Pay ----
+// ---- Cipta pesanan → payment intent Bayarcash → return URL checkout ----
 app.post('/api/order', async (req, res) => {
   const { package: pkgId, name, email, phone } = req.body || {};
   const pkg = PACKAGES[pkgId];
@@ -84,32 +87,28 @@ app.post('/api/order', async (req, res) => {
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(payerEmail)) return res.status(400).json({ error: 'Emel tidak sah.' });
   if (payerPhone.replace(/\D/g, '').length < 8) return res.status(400).json({ error: 'Nombor telefon tidak sah.' });
 
-  if (!API_KEY) return res.status(503).json({ error: 'Bayaran belum dikonfigurasi. Sila hubungi kami.' });
+  if (!BC_TOKEN || !BC_SECRET || !BC_PORTAL) {
+    return res.status(503).json({ error: 'Bayaran belum dikonfigurasi. Sila hubungi kami.' });
+  }
 
   const orderId = `ord_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 8)}`;
-  const callbackUrl = `${BASE_URL}/api/bizappay/callback`;
-  const returnUrl = `${BASE_URL}/terima-kasih/${orderId}`;
 
   try {
-    const token = await generateToken(API_KEY);
-    const category = await resolveCategory(API_KEY, token);
-    const bill = await createBill({
-      apiKey: API_KEY,
-      token,
-      category,
-      name: `KIDORA ${pkg.name}`,
+    const intent = await createPaymentIntent({
+      token: BC_TOKEN,
+      secretKey: BC_SECRET,
+      portalKey: BC_PORTAL,
+      sandbox: BC_SANDBOX,
+      orderNumber: orderId,
       amount: pkg.price.toFixed(2),
       payerName,
       payerEmail,
-      payerPhone,
-      callbackUrl,
-      returnUrl,
-      extReference: orderId,
+      payerPhone: payerPhone.replace(/\D/g, ''),
+      callbackUrl: `${BASE_URL}/api/bayarcash/callback`,
+      returnUrl: `${BASE_URL}/terima-kasih/${orderId}`,
     });
 
-    if (bill.status !== 'ok' || !bill.url) {
-      throw new Error(bill.msg || 'Gagal cipta bil BizApp Pay.');
-    }
+    if (!intent.url) throw new Error('Gagal cipta payment intent Bayarcash.');
 
     saveOrder({
       orderId,
@@ -118,53 +117,53 @@ app.post('/api/order', async (req, res) => {
       payerName,
       payerEmail,
       payerPhone,
-      billCode: bill.billCode,
+      paymentIntentId: intent.id,
       status: 'pending',
       codes: [],
       createdAt: new Date().toISOString(),
     });
 
-    return res.json({ orderId, url: bill.url, billCode: bill.billCode });
+    return res.json({ orderId, url: intent.url });
   } catch (err) {
-    console.error('[order] ralat:', err.message);
+    console.error('[order] ralat Bayarcash:', err.message);
     return res.status(500).json({ error: err.message || 'Gagal cipta pesanan. Sila cuba lagi.' });
   }
 });
 
-// ---- Webhook / callback BizApp Pay (GET atau POST) ----
-async function handleCallback(req, res) {
-  const params = { ...req.query, ...req.body };
-  console.log('[callback]', JSON.stringify(params));
+// ---- Webhook Bayarcash (server-to-server, POST) — bayaran berjaya → jana kod ----
+app.post('/api/bayarcash/callback', (req, res) => {
+  const body = req.body || {};
+  console.log('[bayarcash callback]', JSON.stringify(body));
 
-  const billcode = params.billcode || params.billCode;
-  const billstatus = params.billstatus || params.billStatus;
-  const billinvoice = params.billinvoice || params.billInvoice;
-
-  const order = findOrderByBillCode(billcode);
-  if (!order) {
-    console.error('[callback] billcode tidak dikenali:', billcode);
-    return res.status(404).send('UNKNOWN');
+  if (!BC_SECRET || !verifyTransactionCallbackData(body, BC_SECRET)) {
+    console.error('[bayarcash callback] checksum tidak sah, diabaikan.');
+    return res.status(400).send('INVALID_CHECKSUM');
   }
 
-  if (String(billstatus) === '1') {
-    // 1 = berjaya
+  const order = getOrder(body.order_number);
+  if (!order) {
+    console.error('[bayarcash callback] order_number tidak dikenali:', body.order_number);
+    return res.status(404).send('UNKNOWN_ORDER');
+  }
+
+  const status = Number(body.status);
+  if (status === 3) {
+    // 3 = Success
     if (order.status !== 'paid') {
       const count = PACKAGES[order.package]?.codeCount || 1;
       order.codes = genCodes(count);
     }
     order.status = 'paid';
     order.paidAt = new Date().toISOString();
-    order.billinvoice = billinvoice || order.billinvoice;
-  } else if (String(billstatus) === '3') {
+    order.transactionId = body.transaction_id;
+  } else if (status === 2 || status === 4) {
+    // 2 = Failed, 4 = Cancelled
     order.status = 'failed';
-  } else if (String(billstatus) === '2') {
-    order.status = 'pending';
   }
+  // 0 = New, 1 = Pending — kekalkan status semasa
   saveOrder(order);
-  return res.send('RECEIVED');
-}
-app.get('/api/bizappay/callback', handleCallback);
-app.post('/api/bizappay/callback', handleCallback);
+  return res.status(200).send('OK');
+});
 
 // ---- Status pesanan (untuk muka terima kasih) ----
 app.get('/api/order/:id', (req, res) => {
@@ -175,6 +174,7 @@ app.get('/api/order/:id', (req, res) => {
     orderId: order.orderId,
     package: order.package,
     packageName: pkg.name,
+    amount: order.amount,
     status: order.status,
     games: pkg.games || [],
     codes: order.status === 'paid' ? order.codes : [],
@@ -209,32 +209,67 @@ app.post('/api/recover-code', (req, res) => {
   return res.json({ package: order.package, packageName: pkg.name, codes: order.codes, games: pkg.games || [] });
 });
 
-// ---- (Pilihan) Jana kod manual — hanya aktif bila ADMIN_KEY ditetapkan ----
-if (ADMIN_KEY) {
-  app.post('/api/admin/issue', (req, res) => {
-    const { key, package: pkgId, name, email, phone, codeCount } = req.body || {};
-    if (key !== ADMIN_KEY) return res.status(401).json({ error: 'Kunci admin salah.' });
-    const pkg = PACKAGES[pkgId];
-    if (!pkg) return res.status(400).json({ error: 'Pakej tidak sah.' });
-    const count = Number(codeCount) || pkg.codeCount;
-    const codes = genCodes(count);
-    const orderId = `man_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 8)}`;
-    saveOrder({
-      orderId,
-      package: pkgId,
-      amount: pkg.price,
-      payerName: name || '',
-      payerEmail: email || '',
-      payerPhone: phone || '',
-      billCode: null,
-      status: 'paid',
-      codes,
-      manual: true,
-      createdAt: new Date().toISOString(),
-    });
-    return res.json({ orderId, codes });
+// ---- (Admin) Senarai pesanan — untuk semak & pantau, atau sahkan bayaran secara manual (fallback) ----
+app.get('/api/admin/orders', requireAdmin, (_req, res) => {
+  const orders = Object.values(getOrders())
+    .sort((a, b) => String(b.createdAt || '').localeCompare(String(a.createdAt || '')))
+    .slice(0, 200)
+    .map((o) => ({
+      orderId: o.orderId,
+      package: o.package,
+      packageName: PACKAGES[o.package]?.name || o.package,
+      amount: o.amount,
+      payerName: o.payerName,
+      payerEmail: o.payerEmail,
+      payerPhone: o.payerPhone,
+      status: o.status,
+      codes: o.codes || [],
+      manual: !!o.manual,
+      createdAt: o.createdAt,
+      paidAt: o.paidAt,
+    }));
+  res.json({ orders });
+});
+
+// ---- (Admin) Sahkan bayaran satu pesanan sedia ada secara manual — fallback jika callback gagal ----
+app.post('/api/admin/confirm/:id', requireAdmin, (req, res) => {
+  const order = getOrder(req.params.id);
+  if (!order) return res.status(404).json({ error: 'Pesanan tidak dijumpai.' });
+  const pkg = PACKAGES[order.package];
+  if (!pkg) return res.status(400).json({ error: 'Pakej pesanan ini tidak sah.' });
+
+  if (order.status !== 'paid') {
+    order.codes = genCodes(pkg.codeCount);
+    order.status = 'paid';
+    order.paidAt = new Date().toISOString();
+    saveOrder(order);
+  }
+  return res.json({ orderId: order.orderId, codes: order.codes });
+});
+
+// ---- (Admin) Jana kod manual — tanpa pesanan sedia ada (cth. bayaran diterima terus via WhatsApp) ----
+app.post('/api/admin/issue', requireAdmin, (req, res) => {
+  const { package: pkgId, name, email, phone, codeCount } = req.body || {};
+  const pkg = PACKAGES[pkgId];
+  if (!pkg) return res.status(400).json({ error: 'Pakej tidak sah.' });
+  const count = Number(codeCount) || pkg.codeCount;
+  const codes = genCodes(count);
+  const orderId = `man_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 8)}`;
+  saveOrder({
+    orderId,
+    package: pkgId,
+    amount: pkg.price,
+    payerName: name || '',
+    payerEmail: email || '',
+    payerPhone: phone || '',
+    status: 'paid',
+    codes,
+    manual: true,
+    createdAt: new Date().toISOString(),
+    paidAt: new Date().toISOString(),
   });
-}
+  return res.json({ orderId, codes });
+});
 
 // ---- Serve frontend (production) + SPA fallback ----
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -250,5 +285,6 @@ if (fs.existsSync(STATIC_DIR)) {
 app.listen(PORT, () => {
   console.log(`KIDORA backend berjalan di :${PORT}`);
   console.log(`BASE_URL=${BASE_URL}`);
-  console.log(`BIZAPPAY_API_KEY=${API_KEY ? '✔ ditetapkan' : '✘ belum ditetapkan'}`);
+  console.log(`Bayarcash: ${BC_SANDBOX ? 'SANDBOX' : 'PRODUCTION'} — ${BC_TOKEN && BC_SECRET && BC_PORTAL ? '✔ dikonfigurasi' : '✘ belum lengkap (BAYARCASH_PAT/SECRET_KEY/PORTAL_KEY)'}`);
+  console.log(`ADMIN_KEY=${ADMIN_KEY ? '✔ ditetapkan' : '✘ belum ditetapkan'}`);
 });
