@@ -82,7 +82,7 @@ export function verifyReturnUrlCallbackData(callbackData, secretKey) {
  * @param {string} [opts.payerPhone]
  * @param {string} [opts.callbackUrl]  Server-to-server (POST)
  * @param {string} [opts.returnUrl]    Redirect browser (GET)
- * @param {number[]} [opts.paymentChannels] Default: FPX, DuitNow Online Banking/Wallets, DuitNow QR, Kad Kredit
+ * @param {number[]} [opts.paymentChannels] Default: FPX dan DuitNow QR (saluran aktif portal Kidora)
  */
 export async function createPaymentIntent({
   token,
@@ -96,7 +96,7 @@ export async function createPaymentIntent({
   payerPhone,
   callbackUrl,
   returnUrl,
-  paymentChannels = [1, 5, 6, 12],
+  paymentChannels = [1, 6],
 }) {
   const data = {
     payment_channel: paymentChannels,
@@ -128,3 +128,4 @@ export async function createPaymentIntent({
   }
   return body; // { id, url, order_number, amount, ... }
 }
+
