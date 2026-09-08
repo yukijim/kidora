@@ -10,13 +10,8 @@ export default function ThankYou() {
   const navigate = useNavigate();
   const { t } = useLang();
   const [order, setOrder] = useState(null);
-  const [payment, setPayment] = useState(null);
   const [copied, setCopied] = useState(false);
   const timer = useRef(null);
-
-  useEffect(() => {
-    api('/payment-info').then(setPayment).catch(() => {});
-  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -42,17 +37,6 @@ export default function ThankYou() {
     };
   }, [orderId]);
 
-  const copyAccount = async () => {
-    if (!payment?.accountNumber) return;
-    try {
-      await navigator.clipboard.writeText(payment.accountNumber);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch {
-      /* clipboard tidak tersedia */
-    }
-  };
-
   const copyAll = async () => {
     if (!order?.codes?.length) return;
     try {
@@ -62,16 +46,6 @@ export default function ThankYou() {
     } catch {
       /* clipboard tidak tersedia */
     }
-  };
-
-  const whatsappHref = () => {
-    const base = payment?.whatsapp ? `https://wa.me/${payment.whatsapp}` : null;
-    if (!base || !order) return base || '#';
-    const msg = t('tyPendingWhatsappMsg')
-      .replace('{ref}', order.orderId)
-      .replace('{package}', order.packageName || order.package || '')
-      .replace('{amount}', Number(order.amount || 0).toFixed(2));
-    return `${base}?text=${encodeURIComponent(msg)}`;
   };
 
   const isPending = order && order.status === 'pending';
@@ -93,7 +67,7 @@ export default function ThankYou() {
           </>
         ) : isPending ? (
           <>
-            <h1 className="ty__title">{t('tyPendingTitle')}</h1>
+            <h1 className="ty__title">{t('tyChecking')}</h1>
             <p className="ty__sub">{t('tyPendingSub')}</p>
 
             <div className="ty__row">
@@ -105,41 +79,7 @@ export default function ThankYou() {
               <strong>RM {Number(order.amount || 0).toFixed(2)}</strong>
             </div>
 
-            {payment && (
-              <div className="ty__bank">
-                <p className="ty__bankTitle">{t('tyPendingBankTitle')}</p>
-                <div className="ty__row">
-                  <span>{t('tyPendingBank')}</span>
-                  <strong>{payment.bankName}</strong>
-                </div>
-                <div className="ty__row">
-                  <span>{t('tyPendingAccName')}</span>
-                  <strong>{payment.accountName}</strong>
-                </div>
-                {payment.accountNumber && (
-                  <div className="ty__row">
-                    <span>{t('tyPendingAccNumber')}</span>
-                    <strong>{payment.accountNumber}</strong>
-                  </div>
-                )}
-                {payment.accountNumber && (
-                  <button className="ty__copy" onClick={copyAccount}>
-                    {copied ? t('tyPendingCopied') : t('tyPendingCopy')}
-                  </button>
-                )}
-              </div>
-            )}
-
-            <a
-              className="ty__play ty__whatsapp"
-              href={whatsappHref()}
-              target="_blank"
-              rel="noreferrer"
-              onClick={() => playTap()}
-            >
-              {t('tyPendingWhatsapp')}
-            </a>
-            <p className="ty__hint">{t('tyPendingAutoNote')}</p>
+            <p className="ty__hint">{t('tyFailedHint')}</p>
             <div className="ty__spinner ty__spinner--sm" />
           </>
         ) : order.status === 'paid' ? (

@@ -61,7 +61,10 @@ export default function Landing() {
           phone: form.phone,
         }),
       });
-      navigate(`/terima-kasih/${data.orderId}`);
+      if (!data.url || !/^https:\/\//i.test(data.url)) {
+        throw new Error(t('checkoutUnavailable'));
+      }
+      window.location.assign(data.url);
     } catch (err) {
       setError(err.message);
       playWrong();
