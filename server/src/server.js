@@ -104,8 +104,11 @@ app.post('/api/order', rateLimit('orders', 30, 900000), async (req, res) => {
 
   if (pkgId === 'whitelabel') {
     if (req.body.acceptedTerms !== true || req.body.termsVersion !== WHITELABEL.termsVersion) return res.status(400).json({ error: 'Sila baca dan terima terma tawaran whitelabel semasa.' });
-    const existing = existingWhitelabelOrder(payerEmail);
-    if (existing?.checkoutUrl) return res.json({ orderId: existing.orderId, url: existing.checkoutUrl });
+    if (!/^[a-f0-9-]{36}$/i.test(String(req.body.requestKey || ''))) return res.status(400).json({ error: 'Sila muat semula halaman tawaran sebelum membuat pesanan.' });
+    const existing = existingWhitelabelOrder(req.body.requestKey);
+    if (existing && existing.payerEmail.toLowerCase() !== payerEmail.toLowerCase()) return res.status(409).json({ error: 'Permintaan ini sudah digunakan. Sila hubungi sokongan.' });
+    if (existing?.status === 'paid') return res.json({ orderId: existing.orderId, url: `${BASE_URL}/terima-kasih/${existing.orderId}` });
+    if (existing?.status === 'pending' && existing.checkoutUrl) return res.json({ orderId: existing.orderId, url: existing.checkoutUrl });
     if (existing) return res.status(409).json({ error: 'Pesanan untuk emel ini sedang diproses. Sila hubungi sokongan sebelum membuat pesanan baharu.' });
     if (!whitelabelAvailability().available) return res.status(409).json({ error: 'Semua 10 slot telah ditempah atau disahkan. Sila hubungi kami untuk semakan.' });
   }
@@ -113,7 +116,7 @@ app.post('/api/order', rateLimit('orders', 30, 900000), async (req, res) => {
   const affiliateId = referralFor(req);
   saveOrder({ orderId, package: pkgId, amount: pkg.price, payerName, payerEmail, payerPhone,
     ...commissionSnapshot(affiliateId, pkg.price),
-    ...(pkgId === 'whitelabel' ? { whitelabelSlot: true, termsVersion: WHITELABEL.termsVersion, acceptedTermsAt: new Date().toISOString(), serviceYears: 1, renewalAmount: WHITELABEL.renewalCents / 100, guaranteeDays: WHITELABEL.guaranteeDays, fulfillmentStatus: 'awaiting_payment' } : {}), status: 'pending', codes: [], createdAt: new Date().toISOString() });
+    ...(pkgId === 'whitelabel' ? { whitelabelSlot: true, whitelabelRequestKey: req.body.requestKey, termsVersion: WHITELABEL.termsVersion, acceptedTermsAt: new Date().toISOString(), serviceYears: 1, renewalAmount: WHITELABEL.renewalCents / 100, guaranteeDays: WHITELABEL.guaranteeDays, fulfillmentStatus: 'awaiting_payment' } : {}), status: 'pending', codes: [], createdAt: new Date().toISOString() });
 
   try {
     const intent = await createPaymentIntent({
