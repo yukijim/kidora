@@ -25,7 +25,7 @@ function callback(order,extra={}){
  const data={record_type:'transaction',transaction_id:'txn-'+order.orderId,exchange_reference_number:'ref',exchange_transaction_id:'ex',order_number:order.orderId,currency:'MYR',amount:order.amount.toFixed(2),payer_name:order.payerName,payer_email:order.payerEmail,payer_bank_name:'Test bank',status:3,status_description:'Successful',datetime:new Date().toISOString(),...extra};
  data.checksum=crypto.createHmac('sha256','test-secret').update(Object.keys(data).sort().map(k=>data[k]).join('|')).digest('hex');return data;
 }
-const buyer={name:'Test Buyer',email:'buyer@example.com',phone:'0123456789'};
+const buyer={name:'Test Buyer',email:'buyer@example.com',phone:'0198765432'};
 let accountA,accountB,sessionA,sessionB,refCookie,order;
 await test('pricing and exact commission rounding',()=>{assert.deepEqual(Object.values(PRICE_CENTS),[1990,2990,3990]);assert.deepEqual(Object.values(PRICE_CENTS).map(commissionCents),[597,947,1297]);assert.equal(commissionCents(0),0);});
 await test('protected reports, JSON origin validation and registration',async()=>{
