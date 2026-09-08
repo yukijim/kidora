@@ -84,7 +84,7 @@ await test('reports include more than 200 records and existing order prices pers
 
 await test('whitelabel terms, checkout reuse, strict ten-slot cap and onboarding fulfillment',async()=>{
  const {WHITELABEL}=await import('../../shared/whitelabel.js');
- const body={...buyer,email:'white-first@example.com',package:'whitelabel',acceptedTerms:true,termsVersion:WHITELABEL.termsVersion};
+ const body={...buyer,email:'white-first@example.com',package:'whitelabel',requestKey:crypto.randomUUID(),acceptedTerms:true,termsVersion:WHITELABEL.termsVersion};
  assert.equal((await request('/api/order',{body:{...body,acceptedTerms:false}})).status,400);
  assert.equal((await request('/api/whitelabel/offer')).data.remainingSlots,10);
  const a=await request('/api/order',{body});assert.equal(a.status,200);assert.equal(sentIntent.amount,'897.00');
@@ -93,7 +93,7 @@ await test('whitelabel terms, checkout reuse, strict ten-slot cap and onboarding
  const pending=getOrder(a.data.orderId);assert.equal(pending.renewalAmount,897);assert.equal(pending.termsVersion,WHITELABEL.termsVersion);
  await request('/api/bayarcash/callback',{body:callback(pending)});
  const paid=getOrder(a.data.orderId);assert.equal(paid.status,'paid');assert.deepEqual(paid.codes,[]);assert.equal(paid.fulfillmentStatus,'pending_setup');
- const more=await Promise.all(Array.from({length:11},(_,i)=>request('/api/order',{body:{...body,email:`white-${i}@example.com`}})));
+ const more=await Promise.all(Array.from({length:11},(_,i)=>request('/api/order',{body:{...body,requestKey:crypto.randomUUID(),email:`white-${i}@example.com`}})));
  assert.equal(more.filter(r=>r.status===200).length,9);assert.equal(more.filter(r=>r.status===409).length,2);
  const offer=(await request('/api/whitelabel/offer')).data;assert.equal(offer.available,false);assert.equal(offer.remainingSlots,0);assert.equal(offer.confirmedSlots,1);
  assert.equal((await request('/api/admin/issue',{admin:'test-admin-key-only',body:{package:'whitelabel'}})).status,400);
