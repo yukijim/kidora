@@ -11,7 +11,9 @@ const hash = (value) => crypto.createHash('sha256').update(value).digest('hex');
 const cookieOptions = { httpOnly: true, sameSite: 'lax', secure: process.env.NODE_ENV === 'production', path: '/' };
 const cookies = (req) => Object.fromEntries(String(req.headers.cookie || '').split(';').map(p => {
   const i = p.indexOf('=');
-  return i < 0 ? ['', ''] : [p.slice(0, i).trim(), p.slice(i + 1).trim()];
+  if (i < 0) return ['', ''];
+  try { return [p.slice(0, i).trim(), decodeURIComponent(p.slice(i + 1).trim())]; }
+  catch { return ['', '']; }
 }));
 let cookieKey;
 function signingKey() {
