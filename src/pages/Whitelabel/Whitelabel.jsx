@@ -5,12 +5,13 @@ import { money } from '../../../shared/pricing.js';
 import './Whitelabel.css';
 
 export default function Whitelabel() {
+ const [requestKey]=useState(()=>{let key=sessionStorage.getItem('kidora_whitelabel_request');if(!key){key=crypto.randomUUID();sessionStorage.setItem('kidora_whitelabel_request',key);}return key;});
  const [offer,setOffer]=useState(null);
  useEffect(()=>{api('/whitelabel/offer').then(setOffer).catch(()=>setOffer(null));const oldTitle=document.title;document.title='Whitelabel Kidora — Brand Sendiri | RM897 Setahun';return()=>{document.title=oldTitle;};},[]);
  const [price,setPrice]=useState(2990),[sales,setSales]=useState(50),[cost,setCost]=useState(0),[fixed,setFixed]=useState(0);
  const [form,setForm]=useState({name:'',email:'',phone:''}),[agreed,setAgreed]=useState(false),[busy,setBusy]=useState(false),[error,setError]=useState('');
  const result=salesProjection(price,sales,cost,fixed);
- const checkout=async e=>{e.preventDefault();setError('');if(!WHITELABEL.ready||!offer?.available){setError('Slot belum tersedia. Sila muat semula atau hubungi kami untuk semakan.');return;}setBusy(true);try{const data=await api('/order',{method:'POST',body:JSON.stringify({...form,package:'whitelabel',termsVersion:WHITELABEL.termsVersion,acceptedTerms:agreed})});if(!data.url||!/^https:\/\//i.test(data.url))throw new Error('Pautan pembayaran tidak tersedia. Sila cuba lagi.');window.location.assign(data.url);}catch(e){setError(e.message);setBusy(false);}};
+ const checkout=async e=>{e.preventDefault();setError('');if(!WHITELABEL.ready||!offer?.available){setError('Slot belum tersedia. Sila muat semula atau hubungi kami untuk semakan.');return;}setBusy(true);try{const data=await api('/order',{method:'POST',body:JSON.stringify({...form,package:'whitelabel',requestKey,termsVersion:WHITELABEL.termsVersion,acceptedTerms:agreed})});if(!data.url||!/^https:\/\//i.test(data.url))throw new Error('Pautan pembayaran tidak tersedia. Sila cuba lagi.');window.location.assign(data.url);}catch(e){setError(e.message);setBusy(false);}};
  const cta=(label='Bina brand saya — RM897')=><a className="wl-button" href="#daftar">{label}<span aria-hidden="true">↗</span></a>;
  return <div className="wl">
  <nav className="wl-nav"><a href="https://kidora.com.my" className="wl-logo">KIDORA<span>WHITELABEL</span></a><a href="#simulasi" className="wl-nav-link">Kira potensi jualan</a>{cta('Dapatkan tawaran')}</nav>
