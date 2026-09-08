@@ -1,4 +1,5 @@
 // ============================================
+import { PRICE_CENTS, money } from '../../shared/pricing.js';
 // KIDORA — Data permainan, modul & pakej (dwibahasa)
 // ============================================
 
@@ -102,7 +103,7 @@ export const PACKAGES = [
     id: 'asas',
     name: 'Pakej Asas',
     nameEn: 'Basic Plan',
-    priceLabel: 'RM 9.90',
+    priceLabel: money(PRICE_CENTS.asas),
     tagline: 'Cuba-cuba dulu',
     taglineEn: 'Just try it',
     games: ALL_LETTER_IDS,
@@ -114,7 +115,7 @@ export const PACKAGES = [
     id: 'lengkap',
     name: 'Pakej Lengkap',
     nameEn: 'Complete Plan',
-    priceLabel: 'RM 19.90',
+    priceLabel: money(PRICE_CENTS.lengkap),
     tagline: 'Paling popular',
     taglineEn: 'Most popular',
     games: [...ALL_LETTER_IDS, 'kira', 'padan'],
@@ -126,7 +127,7 @@ export const PACKAGES = [
     id: 'keluarga',
     name: 'Pakej Keluarga',
     nameEn: 'Family Plan',
-    priceLabel: 'RM 29.90',
+    priceLabel: money(PRICE_CENTS.keluarga),
     tagline: 'Untuk seisi keluarga',
     taglineEn: 'For the whole family',
     games: [...ALL_LETTER_IDS, 'kira', 'padan'],
