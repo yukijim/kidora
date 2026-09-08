@@ -16,9 +16,10 @@ RUN npm run build
 FROM node:20-alpine AS runtime
 WORKDIR /app
 COPY --from=build /app/server ./server
+COPY --from=build /app/shared ./shared
 COPY --from=build /app/dist ./dist
 WORKDIR /app/server
-RUN npm ci --omit=dev
+RUN npm ci --omit=dev && npm test
 ENV NODE_ENV=production
 ENV PORT=5000
 EXPOSE 5000

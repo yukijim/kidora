@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { api } from '../../lib/api.js';
+import { portalUrls } from '../../lib/portal.js';
 import { PACKAGES, pick, DEMO_GAMES } from '../../data/games.js';
 import { playTap, playWrong } from '../../lib/audio.js';
 import { useLang } from '../../context/LanguageContext.jsx';
@@ -354,11 +355,16 @@ export default function Landing() {
       </section>
 
       {/* ===== Footer ===== */}
+      <section className="landing-affiliate">
+        <div><h2>{lang === 'en' ? 'Share Kidora. Earn with every sale.' : 'Kongsi Kidora. Jana komisyen jualan.'}</h2><p>{lang === 'en' ? 'Free affiliate registration, your own sales link and a performance dashboard.' : 'Daftar affiliate percuma, dapat link jualan sendiri dan pantau prestasi dalam dashboard.'}</p></div>
+        <a className="btn btn--primary" href={portalUrls.affiliate}>{lang === 'en' ? 'Join as an affiliate' : 'Daftar sebagai affiliate'}</a>
+      </section>
       <footer className="landing-footer">
         <div className="landing-footer__brand">
           <span className="landing-footer__emoji">🦁</span> {t('footerBrand')}
         </div>
         <nav className="landing-footer__links">
+          <a href={portalUrls.affiliate}>{lang === 'en' ? 'Become an affiliate' : 'Daftar Affiliate'}</a>
           <Link to="/main" onClick={() => playTap()}>{t('playNow')}</Link>
           <Link to="/main" onClick={() => playTap()}>{t('footerRecover')}</Link>
           <Link to="/terma">{t('footerTerms')}</Link>
