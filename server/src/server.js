@@ -21,6 +21,8 @@ import { createPaymentIntent, verifyTransactionCallbackData } from './bayarcash.
 import { getOrder, getOrders, saveOrder, findOrderByCode, findOrderByEmailPhone } from './store.js';
 
 import { PRICE_CENTS } from '../../shared/pricing.js';
+import { WHITELABEL } from '../../shared/whitelabel.js';
+import { whitelabelAvailability, existingWhitelabelOrder } from './whitelabel.js';
 import { registerCommerce, referralFor, commissionSnapshot, settleOrder, rateLimit } from './commerce.js';
 
 dotenv.config();
@@ -47,6 +49,7 @@ const LETTER_IDS = 'abcdefghijklmnopqrstuvwxyz'.split('').map((c) => `h-${c}`);
 const SKILL_IDS = ['abc', 'bunyi', 'awal', 'vokal', 'kuiz', 'besarkecil', 'ingatan', 'cari', 'susun', 'eja', 'suku', 'ulang1', 'ulang2'];
 const LETTER_GAMES = [...LETTER_IDS, ...SKILL_IDS];
 const PACKAGES = {
+  whitelabel: { name: 'Whitelabel — 1 Tahun', price: WHITELABEL.priceCents / 100, games: [], codeCount: 0, tagline: 'Jenama dan harga jualan sendiri' },
   asas: { name: 'Pakej Asas', price: PRICE_CENTS.asas / 100, games: LETTER_GAMES, codeCount: 1, tagline: 'Cuba-cuba dulu' },
   lengkap: { name: 'Pakej Lengkap', price: PRICE_CENTS.lengkap / 100, games: [...LETTER_GAMES, 'kira', 'padan'], codeCount: 1, tagline: 'Paling popular' },
   keluarga: { name: 'Pakej Keluarga', price: PRICE_CENTS.keluarga / 100, games: [...LETTER_GAMES, 'kira', 'padan'], codeCount: 3, tagline: 'Untuk seisi keluarga' },
@@ -76,6 +79,7 @@ registerCommerce(app, { requireAdmin, baseUrl: BASE_URL, packages: PACKAGES });
 app.get('/api/health', (_req, res) => res.json({ status: 'healthy', name: 'KIDORA' }));
 
 // ---- Senarai pakej ----
+app.get('/api/whitelabel/offer', (_req,res) => { res.set('Cache-Control','no-store').json({ ...whitelabelAvailability(), priceCents: WHITELABEL.priceCents, renewalCents: WHITELABEL.renewalCents, termsVersion: WHITELABEL.termsVersion }); });
 app.get('/api/packages', (_req, res) => {
   res.json({ packages: Object.entries(PACKAGES).map(([id, p]) => ({ id, ...p })) });
 });
@@ -98,10 +102,18 @@ app.post('/api/order', rateLimit('orders', 30, 900000), async (req, res) => {
     return res.status(503).json({ error: 'Bayaran belum dikonfigurasi. Sila hubungi kami.' });
   }
 
+  if (pkgId === 'whitelabel') {
+    if (req.body.acceptedTerms !== true || req.body.termsVersion !== WHITELABEL.termsVersion) return res.status(400).json({ error: 'Sila baca dan terima terma tawaran whitelabel semasa.' });
+    const existing = existingWhitelabelOrder(payerEmail);
+    if (existing?.checkoutUrl) return res.json({ orderId: existing.orderId, url: existing.checkoutUrl });
+    if (existing) return res.status(409).json({ error: 'Pesanan untuk emel ini sedang diproses. Sila hubungi sokongan sebelum membuat pesanan baharu.' });
+    if (!whitelabelAvailability().available) return res.status(409).json({ error: 'Semua 10 slot telah ditempah atau disahkan. Sila hubungi kami untuk semakan.' });
+  }
   const orderId = `ord_${crypto.randomBytes(16).toString('hex')}`;
   const affiliateId = referralFor(req);
   saveOrder({ orderId, package: pkgId, amount: pkg.price, payerName, payerEmail, payerPhone,
-    ...commissionSnapshot(affiliateId, pkg.price), status: 'pending', codes: [], createdAt: new Date().toISOString() });
+    ...commissionSnapshot(affiliateId, pkg.price),
+    ...(pkgId === 'whitelabel' ? { whitelabelSlot: true, termsVersion: WHITELABEL.termsVersion, acceptedTermsAt: new Date().toISOString(), serviceYears: 1, renewalAmount: WHITELABEL.renewalCents / 100, guaranteeDays: WHITELABEL.guaranteeDays, fulfillmentStatus: 'awaiting_payment' } : {}), status: 'pending', codes: [], createdAt: new Date().toISOString() });
 
   try {
     const intent = await createPaymentIntent({
@@ -122,6 +134,7 @@ app.post('/api/order', rateLimit('orders', 30, 900000), async (req, res) => {
 
     const order = getOrder(orderId);
     order.paymentIntentId = intent.id;
+    if (pkgId === 'whitelabel') order.checkoutUrl = intent.url;
     saveOrder(order);
 
     return res.json({ orderId, url: intent.url });
@@ -157,7 +170,7 @@ app.post('/api/bayarcash/callback', (req, res) => {
   if (status === 3) {
     if (!body.transaction_id) return res.status(400).send('MISSING_TRANSACTION');
     if (order.transactionId && order.transactionId !== body.transaction_id) return res.status(409).send('TRANSACTION_MISMATCH');
-    if (order.status !== 'paid') settleOrder(order, genCodes(PACKAGES[order.package]?.codeCount || 1));
+    if (order.status !== 'paid') settleOrder(order, genCodes(PACKAGES[order.package]?.codeCount ?? 1));
     order.transactionId = body.transaction_id;
   } else if ((status === 2 || status === 4) && order.status !== 'paid') {
     order.status = 'failed';
@@ -175,6 +188,7 @@ app.get('/api/order/:id', (req, res) => {
     orderId: order.orderId,
     package: order.package,
     packageName: pkg.name,
+    fulfillmentStatus: order.fulfillmentStatus,
     amount: order.amount,
     status: order.status,
     games: pkg.games || [],
@@ -252,6 +266,7 @@ app.post('/api/admin/issue', requireAdmin, (req, res) => {
   const { package: pkgId, name, email, phone, codeCount } = req.body || {};
   const pkg = Object.hasOwn(PACKAGES, pkgId) ? PACKAGES[pkgId] : null;
   if (!pkg) return res.status(400).json({ error: 'Pakej tidak sah.' });
+  if (pkgId === 'whitelabel') return res.status(400).json({ error: 'Whitelabel perlu melalui pesanan dan penyediaan jenama.' });
   const count = Number(codeCount) || pkg.codeCount;
   if (!Number.isInteger(count) || count < 1 || count > 3) return res.status(400).json({ error: 'Bilangan kod tidak sah.' });
   const codes = genCodes(count);
