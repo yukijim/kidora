@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useLang } from '../context/LanguageContext.jsx';
 import { useAccess } from '../context/AccessContext.jsx';
 import { playTap } from '../lib/audio.js';
@@ -9,6 +9,7 @@ const pad = (n) => String(n).padStart(2, '0');
 
 export default function DemoGate() {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
   const { t } = useLang();
   const { access, lock } = useAccess();
   const [now, setNow] = useState(Date.now());
@@ -23,7 +24,7 @@ export default function DemoGate() {
     return () => clearInterval(id);
   }, [isDemo, expired]);
 
-  if (!isDemo) return null;
+  if (!isDemo || !pathname.startsWith('/main')) return null;
 
   const goHome = () => {
     playTap();
