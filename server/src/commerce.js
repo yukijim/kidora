@@ -48,6 +48,7 @@ export function settleOrder(order, codes, now = new Date().toISOString()) {
   order.status = 'paid';
   order.paidAt = now;
   order.codes = codes;
+  if (order.package === 'whitelabel') order.fulfillmentStatus = 'pending_setup';
   if (order.affiliateId) {
     order.commissionCents = order.expectedCommissionCents ?? commissionCents(Math.round(order.amount * 100));
     order.commissionStatus = 'unpaid';
@@ -86,6 +87,7 @@ export function rateLimit(namespace, maximum, duration) {
 }
 export function registerCommerce(app, { requireAdmin, baseUrl, packages }) {
   const base = baseUrl.replace(/\/$/, '');
+  const referralCookies = { ...cookieOptions, ...(new URL(base).hostname === 'kidora.com.my' ? { domain: 'kidora.com.my' } : {}) }; 
   const wrap = (fn) => (req, res, next) => Promise.resolve().then(() => fn(req, res)).catch(next);
   app.use(['/api/admin', '/api/affiliate'], (_req, res, next) => { res.set('Cache-Control', 'no-store'); next(); });
   app.use('/api/affiliate', (req, res, next) => {
@@ -163,8 +165,8 @@ export function registerCommerce(app, { requireAdmin, baseUrl, packages }) {
       entry.visitors[visitorKey] = { first: previous?.first || now, last: now };
       saveAffiliateData(d);
     }
-    res.cookie('kidora_visitor', signed(visitor), { ...cookieOptions, maxAge: 365 * DAY });
-    res.cookie('kidora_ref', signed(`${a.id}:${now + 30 * DAY}`), { ...cookieOptions, maxAge: 30 * DAY });
+    res.cookie('kidora_visitor', signed(visitor), { ...referralCookies, maxAge: 365 * DAY });
+    res.cookie('kidora_ref', signed(`${a.id}:${now + 30 * DAY}`), { ...referralCookies, maxAge: 30 * DAY });
     res.redirect(302, '/');
   });
   app.get('/api/affiliate/dashboard', requireAffiliate, (req, res) => {

@@ -69,7 +69,7 @@ export function findOrderByEmailPhone(email, phone) {
   const matches = Object.values(getOrders()).filter((o) => {
     const oe = String(o.payerEmail || '').trim().toLowerCase();
     const op = String(o.payerPhone || '').replace(/\D/g, '');
-    return oe === e && op === p;
+    return o.package !== 'whitelabel' && oe === e && op === p;
   });
   if (matches.length === 0) return null;
   // Utamakan pesanan berbayar, kemudian yang terbaru

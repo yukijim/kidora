@@ -82,7 +82,18 @@ export default function ThankYou() {
             <p className="ty__hint">{t('tyFailedHint')}</p>
             <div className="ty__spinner ty__spinner--sm" />
           </>
+        ) : order.status === 'paid' && order.package === 'whitelabel' ? (
+          <>
+            <h1 className="ty__title">Bayaran whitelabel diterima.</h1>
+            <p className="ty__sub">Pakej Whitelabel — 1 Tahun · RM897</p>
+            <div className="ty__row"><span>Rujukan pesanan</span><strong style={{overflowWrap:'anywhere'}}>{order.orderId}</strong></div>
+            <p className="ty__hint">Langkah seterusnya: hubungi pasukan untuk menyelaraskan logo, nama jenama, domain, pemasangan pembayaran dan sesi coaching 1-to-1. Penyediaan jenama memerlukan proses onboarding; ini bukan kod akses permainan segera.</p>
+            <a className="ty__play" href={'https://wa.me/60183577910?text='+encodeURIComponent('Saya telah membeli pakej Whitelabel. Rujukan: '+order.orderId+'. Saya ingin menyelaraskan jenama dan sesi coaching.')} target="_blank" rel="noreferrer">Urus penyediaan jenama & coaching</a>
+            <p className="ty__hint">Pembaharuan RM897 setahun. Jaminan 30 hari dari pembayaran tertakluk pada kehadiran coaching dan tiada jualan selepas sesi. Hubungi pasukan awal untuk menjadualkan sesi.</p>
+            <a href="/whitelabel#jaminan">Lihat terma jaminan</a>
+          </>
         ) : order.status === 'paid' ? (
+
           <>
             <h1 className="ty__title">{t('tyPaidTitle')}</h1>
             <p className="ty__sub">{t('tyPaidSub')}</p>
