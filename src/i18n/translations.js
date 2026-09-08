@@ -154,6 +154,7 @@ export const STRINGS = {
     fieldPhonePh: 'cth: 0123456789',
     payNow: 'Bayar Sekarang',
     payLoading: 'Menyediakan bayaran…',
+    checkoutUnavailable: 'Pautan bayaran tidak tersedia. Sila cuba lagi atau hubungi kami.',
     modalHint: '🔒 Anda akan dibawa ke halaman bayaran selamat Bayarcash.',
 
     // Gerbang kod akses
@@ -173,6 +174,9 @@ export const STRINGS = {
     // Muka Terima Kasih
     tyChecking: 'Sedang Menyemak Bayaran…',
     tyCheckingSub: 'Kami sedang sahkan pembayaran anda.',
+    tyPendingSub: 'Kami sedang menunggu pengesahan daripada Bayarcash. Kod akses akan dipaparkan selepas bayaran disahkan.',
+    tyPendingRef: 'Rujukan pesanan',
+    tyPendingAmount: 'Jumlah',
     tyCheckingHint: 'Jangan tutup halaman ini. Ia mengambil masa beberapa saat sahaja.',
     tyPaidTitle: 'Terima Kasih! Bayaran Berjaya 🎉',
     tyPaidSub: 'Ini kod akses anda. Simpan baik-baik:',
@@ -391,8 +395,12 @@ export const STRINGS = {
     recoverOpen: 'Open Games Now →',
 
     // Thank-you page
+    checkoutUnavailable: 'The payment link is unavailable. Please try again or contact us.',
     tyChecking: 'Checking Payment…',
     tyCheckingSub: 'We are confirming your payment.',
+    tyPendingSub: 'We are waiting for confirmation from Bayarcash. Your access code will appear once payment is confirmed.',
+    tyPendingRef: 'Order reference',
+    tyPendingAmount: 'Amount',
     tyCheckingHint: 'Please don\'t close this page. It only takes a few seconds.',
     tyPaidTitle: 'Thank You! Payment Successful 🎉',
     tyPaidSub: 'Here is your access code. Keep it safe:',
