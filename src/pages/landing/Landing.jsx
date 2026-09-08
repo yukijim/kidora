@@ -364,6 +364,7 @@ export default function Landing() {
           <span className="landing-footer__emoji">🦁</span> {t('footerBrand')}
         </div>
         <nav className="landing-footer__links">
+          <a href={portalUrls.whitelabel}>{lang === 'en' ? 'Build your own brand' : 'Whitelabel — Brand Sendiri'}</a>
           <a href={portalUrls.affiliate}>{lang === 'en' ? 'Become an affiliate' : 'Daftar Affiliate'}</a>
           <Link to="/main" onClick={() => playTap()}>{t('playNow')}</Link>
           <Link to="/main" onClick={() => playTap()}>{t('footerRecover')}</Link>
