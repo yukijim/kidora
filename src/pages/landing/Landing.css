@@ -962,3 +962,4 @@
   color: var(--color-text-muted);
   text-align: center;
 }
+.landing-affiliate{max-width:1080px;margin:30px auto;padding:28px;display:flex;align-items:center;justify-content:space-between;gap:24px;border:1px solid #d9e9df;border-radius:20px;background:#f1f8f1}.landing-affiliate h2{font-size:22px;margin-bottom:8px;color:#243e36}.landing-affiliate p{color:#5e7269;line-height:1.6}.landing-affiliate a{flex-shrink:0;text-decoration:none}@media(max-width:720px){.landing-affiliate{margin:20px 16px;flex-direction:column;align-items:stretch}}
