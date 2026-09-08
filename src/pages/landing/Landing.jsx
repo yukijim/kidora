@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { api } from '../../lib/api.js';
+import { portalUrls } from '../../lib/portal.js';
 import { PACKAGES, pick, DEMO_GAMES } from '../../data/games.js';
 import { playTap, playWrong } from '../../lib/audio.js';
 import { useLang } from '../../context/LanguageContext.jsx';
@@ -359,6 +360,7 @@ export default function Landing() {
           <span className="landing-footer__emoji">🦁</span> {t('footerBrand')}
         </div>
         <nav className="landing-footer__links">
+          <a href={portalUrls.affiliate}>{lang === 'en' ? 'Become an affiliate' : 'Daftar Affiliate'}</a>
           <Link to="/main" onClick={() => playTap()}>{t('playNow')}</Link>
           <Link to="/main" onClick={() => playTap()}>{t('footerRecover')}</Link>
           <Link to="/terma">{t('footerTerms')}</Link>
