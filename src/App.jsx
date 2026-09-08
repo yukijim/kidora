@@ -17,6 +17,7 @@ import LetterModule from './pages/Games/LetterModule.jsx';
 import DemoGate from './components/DemoGate.jsx';
 import Admin from './pages/Admin/Admin.jsx';
 import Affiliate from './pages/Affiliate/Affiliate.jsx';
+import Whitelabel from './pages/Whitelabel/Whitelabel.jsx';
 import { portalHost } from './lib/portal.js';
 
 import './styles/reset.css';
@@ -32,8 +33,9 @@ export default function App() {
         <BrowserRouter>
           <DemoGate />
           <Routes>
-            <Route path="/" element={portalHost === 'admin' ? <Admin /> : portalHost === 'affiliate' ? <Affiliate /> : <Landing />} />
+            <Route path="/" element={portalHost === 'whitelabel' ? <Whitelabel /> : portalHost === 'admin' ? <Admin /> : portalHost === 'affiliate' ? <Affiliate /> : <Landing />} />
             <Route path="/affiliate" element={<Affiliate />} />
+            <Route path="/whitelabel" element={<Whitelabel />} />
             <Route path="/terma" element={<Legal kind="terms" />} />
             <Route path="/privasi" element={<Legal kind="privacy" />} />
             <Route path="/terima-kasih/:orderId" element={<ThankYou />} />
