@@ -1,161 +1,27 @@
-// ============================================
-// KIDORA — Panel Admin (dalaman)
-// Semak pesanan & sahkan bayaran tunai/pindahan bank secara manual.
-// Akses: /admin-kidora — dilindungi ADMIN_KEY (bukan untuk pelanggan).
-// ============================================
 import { useEffect, useState } from 'react';
 import { api } from '../../lib/api.js';
-import './Admin.css';
-
-const KEY_STORAGE = 'kidora_admin_key';
-
-export default function Admin() {
-  const [key, setKey] = useState(() => sessionStorage.getItem(KEY_STORAGE) || '');
-  const [keyInput, setKeyInput] = useState('');
-  const [orders, setOrders] = useState(null);
-  const [error, setError] = useState('');
-  const [busyId, setBusyId] = useState(null);
-
-  const load = async (activeKey) => {
-    setError('');
-    try {
-      const data = await api('/admin/orders', { headers: { 'x-admin-key': activeKey } });
-      setOrders(data.orders);
-      sessionStorage.setItem(KEY_STORAGE, activeKey);
-      setKey(activeKey);
-    } catch (err) {
-      setError(err.message);
-      setOrders(null);
-    }
-  };
-
-  useEffect(() => {
-    if (key) load(key);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const confirmPayment = async (orderId) => {
-    setBusyId(orderId);
-    setError('');
-    try {
-      await api(`/admin/confirm/${orderId}`, { method: 'POST', headers: { 'x-admin-key': key } });
-      await load(key);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setBusyId(null);
-    }
-  };
-
-  const logout = () => {
-    sessionStorage.removeItem(KEY_STORAGE);
-    setKey('');
-    setOrders(null);
-  };
-
-  if (!key || !orders) {
-    return (
-      <div className="admin page">
-        <div className="admin__gate">
-          <h1>🦁 KIDORA Admin</h1>
-          <p>Masukkan kunci admin (ADMIN_KEY) untuk lihat & sahkan pesanan.</p>
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              if (keyInput.trim()) load(keyInput.trim());
-            }}
-          >
-            <input
-              type="password"
-              value={keyInput}
-              onChange={(e) => setKeyInput(e.target.value)}
-              placeholder="ADMIN_KEY"
-              className="admin__input"
-              autoFocus
-            />
-            <button type="submit" className="admin__btn admin__btn--primary">Masuk</button>
-          </form>
-          {error && <p className="admin__error">{error}</p>}
-        </div>
-      </div>
-    );
-  }
-
-  const pending = orders.filter((o) => o.status === 'pending');
-  const others = orders.filter((o) => o.status !== 'pending');
-
-  const Row = ({ o }) => (
-    <tr className={o.status === 'pending' ? 'admin__row--pending' : ''}>
-      <td>{new Date(o.createdAt).toLocaleString('ms-MY')}</td>
-      <td>
-        <div className="admin__name">{o.payerName}</div>
-        <div className="admin__muted">{o.payerEmail} · {o.payerPhone}</div>
-      </td>
-      <td>{o.packageName}</td>
-      <td>RM {Number(o.amount || 0).toFixed(2)}</td>
-      <td>
-        <span className={`admin__badge admin__badge--${o.status}`}>{o.status}</span>
-      </td>
-      <td>
-        {o.codes?.length > 0 && (
-          <div className="admin__codes">{o.codes.join(', ')}</div>
-        )}
-        {o.status === 'pending' && (
-          <button
-            className="admin__btn admin__btn--confirm"
-            disabled={busyId === o.orderId}
-            onClick={() => confirmPayment(o.orderId)}
-          >
-            {busyId === o.orderId ? 'Sahkan…' : '✅ Sahkan Bayaran'}
-          </button>
-        )}
-      </td>
-    </tr>
-  );
-
-  return (
-    <div className="admin page">
-      <header className="admin__header">
-        <h1>🦁 KIDORA Admin — Pesanan</h1>
-        <div>
-          <button className="admin__btn" onClick={() => load(key)}>🔄 Muat Semula</button>
-          <button className="admin__btn" onClick={logout}>Log Keluar</button>
-        </div>
-      </header>
-
-      {error && <p className="admin__error">{error}</p>}
-
-      <section>
-        <h2>⏳ Menunggu Pengesahan ({pending.length})</h2>
-        {pending.length === 0 ? (
-          <p className="admin__muted">Tiada pesanan menunggu.</p>
-        ) : (
-          <div className="admin__tableWrap">
-            <table className="admin__table">
-              <thead>
-                <tr><th>Tarikh</th><th>Pelanggan</th><th>Pakej</th><th>Jumlah</th><th>Status</th><th>Tindakan</th></tr>
-              </thead>
-              <tbody>
-                {pending.map((o) => <Row key={o.orderId} o={o} />)}
-              </tbody>
-            </table>
-          </div>
-        )}
-      </section>
-
-      <section>
-        <h2>📋 Sejarah</h2>
-        <div className="admin__tableWrap">
-          <table className="admin__table">
-            <thead>
-              <tr><th>Tarikh</th><th>Pelanggan</th><th>Pakej</th><th>Jumlah</th><th>Status</th><th>Kod</th></tr>
-            </thead>
-            <tbody>
-              {others.map((o) => <Row key={o.orderId} o={o} />)}
-            </tbody>
-          </table>
-        </div>
-      </section>
-    </div>
-  );
+import { BusinessShell, Stat, DateFilter, Status, Trend, localDate, downloadCsv } from '../../components/BusinessUI.jsx';
+import { money } from '../../../shared/pricing.js';
+const STORAGE='kidora_admin_key';
+export default function Admin(){
+ const [key,setKey]=useState(()=>sessionStorage.getItem(STORAGE)||''),[input,setInput]=useState(''),[data,setData]=useState(null),[error,setError]=useState(''),[busy,setBusy]=useState(false);
+ const [range,setRange]=useState({from:'',to:''}),[search,setSearch]=useState(''),[status,setStatus]=useState(''),[dialog,setDialog]=useState(null),[reference,setReference]=useState('');
+ const load=async(k=key,r=range)=>{setBusy(true);setError('');try{setData(await api(`/admin/sales?${new URLSearchParams(r)}`,{headers:{'x-admin-key':k}}));setKey(k);sessionStorage.setItem(STORAGE,k);setInput('');}catch(e){setError(e.message);if([401,503].includes(e.status))setData(null);}finally{setBusy(false);}};
+ useEffect(()=>{if(key)load(key,{from:'',to:''});},[]);
+ const logout=()=>{sessionStorage.removeItem(STORAGE);setKey('');setData(null);};
+ const action=async e=>{e.preventDefault();setBusy(true);setError('');try{await api(dialog.type==='commission'?`/admin/commission/${dialog.order.orderId}/paid`:`/admin/confirm/${dialog.order.orderId}`,{method:'POST',headers:{'x-admin-key':key},body:JSON.stringify({reference})});setDialog(null);await load();}catch(e){setError(e.message);}finally{setBusy(false);}};
+ if(!data)return <BusinessShell kind="admin"><section className="business__panel business__auth"><div className="business__eyebrow">AKSES PENTADBIR</div><h1>Urus jualan Kidora.</h1><p className="business__subtitle">Pembelian, pelanggan dan affiliate dalam satu tempat.</p><form onSubmit={e=>{e.preventDefault();load(input);}}><label>Kunci akses admin<input required type="password" autoComplete="current-password" value={input} onChange={e=>setInput(e.target.value)}/></label><button className="business__button" disabled={busy}>{busy?'Menyemak…':'Masuk dashboard'}</button></form>{error&&<p role="alert" className="business__error">{error}</p>}</section></BusinessShell>;
+ const s=data.summary, orders=data.orders.filter(o=>(!status||o.status===status)&&[o.orderId,o.payerName,o.payerEmail,o.payerPhone,o.affiliateName,o.packageName].some(v=>String(v||'').toLowerCase().includes(search.toLowerCase())));
+ const open=(type,order)=>{setDialog({type,order});setReference('');setError('');};
+ return <BusinessShell kind="admin" name="Kidora Admin" onLogout={logout}>
+ <div className="business__eyebrow">PUSAT OPERASI KIDORA</div><h1>Jualan, pembeli & affiliate.</h1><p className="business__subtitle">Pantau perjalanan daripada klik sehingga pembelian dan pembayaran komisyen.</p>
+ <DateFilter range={range} setRange={setRange} onApply={()=>load()} busy={busy}/>{error&&<p role="alert" className="business__error">{error}</p>}
+ <div className="business__stats"><Stat label="Jualan berjaya" value={money(s.revenueCents)} hint="Kasar sebelum fee & komisyen"/><Stat label="Pembelian berjaya" value={s.paid} hint={`${s.orders} jumlah pesanan`}/><Stat label="Menunggu bayaran" value={s.pending} hint={`${s.failed} gagal`}/><Stat label="Komisyen belum dibayar" value={money(s.unpaidCommissionCents)} hint={`${money(s.paidCommissionCents)} direkod dibayar`}/></div>
+ <div className="business__grid"><section className="business__panel"><h2>Trend jualan</h2><Trend rows={data.daily} field="revenueCents" monetary/><small>14 tarikh terakhir yang mempunyai jualan berjaya.</small></section><section className="business__panel"><h2>Aliran operasi</h2><div className="business__steps" style={{gridTemplateColumns:'1fr'}}><div><strong>01 · Bayaran disahkan</strong>Bayarcash mengemas kini pesanan dan mengeluarkan kod akses.</div><div><strong>02 · Komisyen direkod</strong>35% harga jualan ditolak RM1 bagi pembelian affiliate berjaya.</div><div><strong>03 · Bayar affiliate</strong>Buat pindahan, kemudian rekod rujukan pembayaran di bawah.</div></div></section></div>
+ <section className="business__panel"><div className="business__toolbar"><h2>Rekod pembelian ({orders.length})</h2><button className="business__button business__button--light" onClick={()=>downloadCsv('kidora-pesanan.csv',[['Rujukan','Tarikh','Nama','Emel','Telefon','Pakej','Jumlah RM','Status','Affiliate','Komisyen RM','Status komisyen','Rujukan komisyen'],...orders.map(o=>[o.orderId,localDate(o.createdAt),o.payerName,o.payerEmail,o.payerPhone,o.packageName,Number(o.amount).toFixed(2),o.status,o.affiliateName,((o.commissionCents||0)/100).toFixed(2),o.commissionStatus,o.commissionPaymentReference])])}>Eksport CSV</button></div>
+ <div className="business__toolbar"><input aria-label="Cari pembelian" placeholder="Cari nama, emel, telefon atau rujukan" value={search} onChange={e=>setSearch(e.target.value)} style={{flex:1}}/><select aria-label="Status bayaran" value={status} onChange={e=>setStatus(e.target.value)}><option value="">Semua status</option><option value="paid">Berjaya</option><option value="pending">Menunggu</option><option value="failed">Gagal</option></select></div>
+ <div className="business__tableWrap"><table><thead><tr><th>Pembeli</th><th>Pesanan</th><th>Pakej / jumlah</th><th>Bayaran / kod</th><th>Affiliate / komisyen</th></tr></thead><tbody>{orders.map(o=><tr key={o.orderId}><td><strong>{o.payerName}</strong><small>{o.payerEmail}</small><small>{o.payerPhone}</small></td><td>{localDate(o.createdAt)}<small style={{maxWidth:180,overflowWrap:'anywhere'}}>{o.orderId}</small>{o.transactionId&&<small>Transaksi: {o.transactionId}</small>}</td><td>{o.packageName}<strong>{money(Math.round(o.amount*100))}</strong></td><td><Status status={o.status}/>{o.codes?.map(c=><small key={c}>{c}</small>)}{o.status!=='paid'&&<button className="business__button business__button--light" onClick={()=>open('confirm',o)}>Sahkan manual</button>}{o.manuallyConfirmedAt&&<small>Disahkan manual</small>}</td><td>{o.affiliateName||'Jualan terus'}{o.affiliateId&&<><strong>{money(o.commissionCents||0)}</strong><small>{o.commissionStatus==='paid'?'Komisyen dibayar':o.status==='paid'?'Belum dibayar':'Belum layak'}</small>{o.commissionPaymentReference&&<small>Rujukan: {o.commissionPaymentReference}</small>}{o.commissionStatus==='unpaid'&&<button className="business__button business__button--light" onClick={()=>open('commission',o)}>Rekod pembayaran</button>}</>}</td></tr>)}</tbody></table>{!orders.length&&<p className="business__empty">Tiada pesanan sepadan.</p>}</div></section>
+ <section className="business__panel"><div className="business__toolbar"><h2>Rakan affiliate ({data.affiliates.length})</h2><button className="business__button business__button--light" onClick={()=>downloadCsv('kidora-affiliate.csv',[['Nama','Emel','Telefon','Link','Lawatan','Pembelian','Jualan RM','Komisyen RM','Belum dibayar RM'],...data.affiliates.map(a=>[a.name,a.email,a.phone,a.link,a.visits,a.paid,(a.revenueCents/100).toFixed(2),(a.commissionCents/100).toFixed(2),(a.unpaidCommissionCents/100).toFixed(2)])])}>Eksport CSV</button></div><div className="business__tableWrap"><table><thead><tr><th>Affiliate</th><th>Link jualan</th><th>Lawatan</th><th>Pembelian</th><th>Jualan</th><th>Komisyen</th></tr></thead><tbody>{data.affiliates.map(a=><tr key={a.id}><td><strong>{a.name}</strong><small>{a.email}</small><small>{a.phone}</small></td><td><a href={a.link}>{a.link}</a></td><td>{a.visits}<small>{a.newVisitors} baharu</small></td><td>{a.paid}</td><td>{money(a.revenueCents)}</td><td>{money(a.commissionCents)}<small>{money(a.unpaidCommissionCents)} belum dibayar</small></td></tr>)}</tbody></table>{!data.affiliates.length&&<p className="business__empty">Belum ada affiliate berdaftar.</p>}</div></section>
+ {dialog&&<div className="business__dialog" role="dialog" aria-modal="true" aria-labelledby="action-title"><form onSubmit={action}><h2 id="action-title">{dialog.type==='commission'?'Rekod komisyen dibayar':'Sahkan bayaran diterima'}</h2><p>{dialog.type==='commission'?`Pastikan ${money(dialog.order.commissionCents)} sudah dipindahkan kepada ${dialog.order.affiliateName}. Tindakan ini merekod pembayaran sahaja.`:`Sahkan selepas menyemak penerimaan ${money(Math.round(dialog.order.amount*100))} daripada ${dialog.order.payerName}. Kod akses dan komisyen berkaitan akan dikeluarkan.`}</p>{dialog.type==='commission'&&<label>Rujukan pindahan<input autoFocus required minLength={3} maxLength={120} value={reference} onChange={e=>setReference(e.target.value)}/></label>}{error&&<p role="alert" className="business__error">{error}</p>}<footer><button type="button" disabled={busy} className="business__button business__button--light" onClick={()=>setDialog(null)}>Batal</button><button disabled={busy} className="business__button">{busy?'Menyimpan…':'Ya, bayaran telah dibuat'}</button></footer></form></div>}
+ </BusinessShell>;
 }
