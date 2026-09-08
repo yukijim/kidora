@@ -355,6 +355,10 @@ export default function Landing() {
       </section>
 
       {/* ===== Footer ===== */}
+      <section className="landing-affiliate">
+        <div><h2>{lang === 'en' ? 'Share Kidora. Earn with every sale.' : 'Kongsi Kidora. Jana komisyen jualan.'}</h2><p>{lang === 'en' ? 'Free affiliate registration, your own sales link and a performance dashboard.' : 'Daftar affiliate percuma, dapat link jualan sendiri dan pantau prestasi dalam dashboard.'}</p></div>
+        <a className="btn btn--primary" href={portalUrls.affiliate}>{lang === 'en' ? 'Join as an affiliate' : 'Daftar sebagai affiliate'}</a>
+      </section>
       <footer className="landing-footer">
         <div className="landing-footer__brand">
           <span className="landing-footer__emoji">🦁</span> {t('footerBrand')}
