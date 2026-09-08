@@ -1,6 +1,7 @@
 const live = typeof window !== 'undefined' && /(^|\.)kidora\.com\.my$/.test(window.location.hostname);
 export const portalUrls = {
   home: live ? 'https://kidora.com.my' : '/',
+  whitelabel: live ? 'https://whitelabel.kidora.com.my' : '/whitelabel',
   affiliate: live ? 'https://affiliate.kidora.com.my' : '/affiliate',
   admin: live ? 'https://admin.kidora.com.my' : '/admin-kidora',
 };
