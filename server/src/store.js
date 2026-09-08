@@ -8,7 +8,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const DATA_DIR = process.env.DATA_DIR || path.join(__dirname, '..', 'data');
+export const DATA_DIR = process.env.DATA_DIR || path.join(__dirname, '..', 'data');
 const ORDERS_FILE = path.join(DATA_DIR, 'orders.json');
 
 function ensureDir() {
@@ -20,8 +20,16 @@ function load(file, fallback) {
     if (fs.existsSync(file)) return JSON.parse(fs.readFileSync(file, 'utf8'));
   } catch (err) {
     console.error('Gagal baca', file, err.message);
+    throw err; // Never replace corrupt sales data with an empty store.
   }
   return fallback;
+}
+
+export function getAffiliateData() {
+  return load(path.join(DATA_DIR, 'affiliates.json'), { accounts: {}, sessions: {}, traffic: {} });
+}
+export function saveAffiliateData(data) {
+  save(path.join(DATA_DIR, 'affiliates.json'), data);
 }
 
 function save(file, data) {
@@ -37,7 +45,8 @@ export function getOrders() {
 }
 
 export function getOrder(orderId) {
-  return getOrders()[orderId] || null;
+  const orders = getOrders();
+  return Object.hasOwn(orders, orderId) ? orders[orderId] : null;
 }
 
 export function saveOrder(order) {
