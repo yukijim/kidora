@@ -24,6 +24,8 @@ import { PRICE_CENTS } from '../../shared/pricing.js';
 import { WHITELABEL } from '../../shared/whitelabel.js';
 import { whitelabelAvailability, existingWhitelabelOrder } from './whitelabel.js';
 import { registerCommerce, referralFor, commissionSnapshot, settleOrder, rateLimit } from './commerce.js';
+import { DATA_DIR, getAffiliateData } from './store.js';
+import { startNotifications } from './notification-service.js';
 
 dotenv.config();
 
@@ -74,6 +76,8 @@ function requireAdmin(req, res, next) {
 
 app.use('/api/admin', rateLimit('admin', 300, 900000));
 registerCommerce(app, { requireAdmin, baseUrl: BASE_URL, packages: PACKAGES });
+let notifications = { status: () => ({ enabled: false }) };
+app.get('/api/admin/notifications', requireAdmin, (_req, res) => res.json(notifications.status()));
 
 // ---- Kesihatan ----
 app.get('/api/health', (_req, res) => res.json({ status: 'healthy', name: 'KIDORA' }));
@@ -307,9 +311,18 @@ if (fs.existsSync(STATIC_DIR)) {
   });
 }
 
-if (process.env.KIDORA_NO_LISTEN !== '1') app.listen(PORT, () => {
+if (process.env.KIDORA_NO_LISTEN !== '1') {
+  try {
+    notifications = await startNotifications({ directory: DATA_DIR, getOrders, getAccounts: () => getAffiliateData().accounts });
+  } catch {
+    console.error('[notifications] Initialization failed; check configuration/storage and restart.');
+    notifications = { status: () => ({ enabled: true, healthy: false, error: 'initialization_failed' }) };
+  }
+  app.listen(PORT, () => {
   console.log(`KIDORA backend berjalan di :${PORT}`);
   console.log(`BASE_URL=${BASE_URL}`);
   console.log(`Bayarcash: ${BC_SANDBOX ? 'SANDBOX' : 'PRODUCTION'} — ${BC_TOKEN && BC_SECRET && BC_PORTAL ? '✔ dikonfigurasi' : '✘ belum lengkap (BAYARCASH_PAT/SECRET_KEY/PORTAL_KEY)'}`);
   console.log(`ADMIN_KEY=${ADMIN_KEY ? '✔ ditetapkan' : '✘ belum ditetapkan'}`);
 });
+}
+
