@@ -39,7 +39,7 @@ export async function createSenders(env = process.env, { fetcher = fetch, create
     if (![465, 587].includes(port)) throw new Error('Use TLS SMTP port 465 or 587');
     const transport = createTransport({
       host: env.SMTP_HOST, port, secure: port === 465, requireTLS: true,
-      auth: { user: env.SMTP_USER, pass: env.SMTP_PASS },
+      auth: { user: env.SMTP_USER, pass: env.SMTP_HOST === 'smtp.gmail.com' ? env.SMTP_PASS.replace(/\s/g, '') : env.SMTP_PASS },
       connectionTimeout: 10000, greetingTimeout: 10000, socketTimeout: 20000,
       logger: false, debug: false, disableFileAccess: true, disableUrlAccess: true,
     });
